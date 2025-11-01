@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Distributed Systems on UnisonDB</title>
+    <link>http://localhost:1313/categories/distributed-systems/</link>
+    <description>Recent content in Distributed Systems on UnisonDB</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/distributed-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</title>
+      <link>http://localhost:1313/docs/examples/multi-dc-crdts/</link>
+      <pubDate>Sat, 01 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/docs/examples/multi-dc-crdts/</guid>
+      <description>&lt;p&gt;Hi There&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

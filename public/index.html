@@ -29,7 +29,7 @@ Key Features# Multi-Modal Storage: Key-Value, Wide-Column, and Large Objects (LO
   <meta itemprop="description" content="UnisonDB# A reactive, multi-modal database built on B&#43;Trees and WAL-based streaming replication, designed for local-first, edge-scale applications.
 What is UnisonDB? UnisonDB is a log-native database that replicates like a message bus. It combines database semantics with streaming mechanics to provide a powerful foundation for reactive architectures and local-first systems.
 Key Features# Multi-Modal Storage: Key-Value, Wide-Column, and Large Objects (LOB) Streaming Replication: WAL-based replication with sub-second fan-out to 100&#43; edge replicas Real-Time Notifications: ZeroMQ-based change notifications with sub-millisecond latency Durable &amp; Fast: B&#43;Tree storage with Write-Ahead Logging Edge-First Design: Optimized for edge computing and local-first architectures Namespace Isolation: Multi-tenancy support with namespace-based isolation Architecture Highlights ┌───────────────────────────────────────────────┐ │ UnisonDB │ ├───────────────────────────────────────────────┤ Clients &amp; Systems ────▶ │ HTTP API (REST / Txn) │ │ (Reads, Writes, Transactions) │ ├───────────────────────────────────────────────┤ │ Storage Engine │ │ ┌──────────┐ ┌──────────┐ ┌────────┐ │ │ │ KV │ │ Row │ │ LOB │ │ │ └──────────┘ └──────────┘ └────────┘ │ ├───────────────────────────────────────────────┤ │ Log-Native Core: WAL &#43; MemTable &#43; │ │ B&#43;Tree (LMDB/BoltDB) │ ├───────────────────────────────────────────────┤ │ Streaming Replication │ │ (Hub-and-Spoke / Peer-to-Peer) │ └───────┬───────────────────────────┬───────────┘ │ │ ▼ ▼ ┌─────────────────┐ ┌─────────────────┐ │ Edge Replica │ ... │ Edge Replica │ │ Local Queries │ │ Local Queries │ └────────┬────────┘ └────────┬────────┘ │ │ │ (Post-Commit) │ (Post-Commit) ▼ ▼ ┌────────────────────────────┐ ┌────────────────────────────┐ │ ZeroMQ PUB/SUB Sidecar │ │ ZeroMQ PUB/SUB Sidecar │ │ • Local change feed │ │ • Local change feed │ │ • Runs on primary/edge │ │ • Runs on primary/edge │ └────────────────────────────┘ └────────────────────────────┘ Quick Start# # Clone the repository git clone https://github.com/ankur-anand/unisondb cd unisondb # Build go build -o unisondb ./cmd/unisondb # Run in replicator mode (primary) ./unisondb server --mode replicator --config config.toml # Use the HTTP API curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{&#34;value&#34;:&#34;bXl2YWx1ZQ==&#34;}&#39;Deployment Topologies# 1. Single Server# ┌─────────────────┐ │ Primary Server │ │ (Server Mode) │ │ - HTTP API │ │ - Writes OK │ │ - Reads OK │ └─────────────────┘Simple deployment for small workloads.">
-  <meta itemprop="wordCount" content="724">
+  <meta itemprop="wordCount" content="730">
 
 <title>UnisonDB | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
@@ -39,16 +39,16 @@ Key Features# Multi-Modal Storage: Key-Value, Wide-Column, and Large Objects (LO
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js" integrity="sha256-&#43;G7k8kv2lsr6StYfL&#43;ZjBY&#43;6zH9Q5NnFD2bt0hHM1vI=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.f6283b1a3f4fb9a8729b4faa733ef110303d310414f226d46d89fc9e17eca893.js" integrity="sha256-9ig7Gj9Puahym0&#43;qcz7xEDA9MQQU8ibUbYn8nhfsqJM=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-GXZKSVMHYJ');
 </script>
 
 <link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="UnisonDB" />
@@ -170,6 +170,39 @@ Key Features# Multi-Modal Storage: Key-Value, Wide-Column, and Large Objects (LO
   
     <a href="/docs/api/http-api/" class="">
       HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdts/" class="">
+      Multi-DC CRDT Replication</a>
   
 
         </li>
@@ -464,6 +497,7 @@ Clients & Systems  ────▶ │           HTTP API (REST / Txn)          
 <li><strong><a href="/docs/getting-started/">Getting Started</a></strong> - Installation, configuration, and quick start</li>
 <li><strong><a href="/docs/architecture/">Architecture</a></strong> - Deep dive into UnisonDB internals</li>
 <li><strong><a href="/docs/api/http-api/">HTTP API</a></strong> - REST API reference with examples</li>
+<li><strong><a href="/docs/examples/">Examples</a></strong> - Various Use Case Examples</li>
 </ul>
 <h2 id="community--support">Community &amp; Support<a class="anchor" href="#community--support">#</a></h2>
 <ul>

@@ -257,6 +257,7 @@ Replicate data across geographic regions with configurable consistency.
 - **[Getting Started](/docs/getting-started/)** - Installation, configuration, and quick start
 - **[Architecture](/docs/architecture/)** - Deep dive into UnisonDB internals
 - **[HTTP API](/docs/api/http-api/)** - REST API reference with examples
+- **[Examples](/docs/examples/)** - Various Use Case Examples
 
 ## Community & Support
 
