@@ -1,0 +1,308 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Architecture Overview# UnisonDB is a log-native database that replicates like a message bus, combining database semantics with streaming mechanics. It operates in two modes: Server Mode (primary/standalone) and Relayer Mode (replica/streaming).
+Operational Modes# Server Mode# Primary instance that accepts writes and serves reads. This is the source of truth for data.
+Characteristics:
+Accepts write operations via HTTP APIs Maintains the authoritative Write-Ahead Log (WAL) Streams WAL changes to relayers via gRPC Can publish local change notifications via ZeroMQ Stores data in LMDB B+Tree Relayer Mode# Replica instance that streams changes from one or more upstream servers and serves local reads.
+"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://unisondb.io/docs/architecture/"><meta property="og:site_name" content="UnisonDB"><meta property="og:title" content="Architecture"><meta property="og:description" content="Architecture Overview# UnisonDB is a log-native database that replicates like a message bus, combining database semantics with streaming mechanics. It operates in two modes: Server Mode (primary/standalone) and Relayer Mode (replica/streaming).
+Operational Modes# Server Mode# Primary instance that accepts writes and serves reads. This is the source of truth for data.
+Characteristics:
+Accepts write operations via HTTP APIs Maintains the authoritative Write-Ahead Log (WAL) Streams WAL changes to relayers via gRPC Can publish local change notifications via ZeroMQ Stores data in LMDB B+Tree Relayer Mode# Replica instance that streams changes from one or more upstream servers and serves local reads."><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><meta itemprop=name content="Architecture"><meta itemprop=description content="Architecture Overview# UnisonDB is a log-native database that replicates like a message bus, combining database semantics with streaming mechanics. It operates in two modes: Server Mode (primary/standalone) and Relayer Mode (replica/streaming).
+Operational Modes# Server Mode# Primary instance that accepts writes and serves reads. This is the source of truth for data.
+Characteristics:
+Accepts write operations via HTTP APIs Maintains the authoritative Write-Ahead Log (WAL) Streams WAL changes to relayers via gRPC Can publish local change notifications via ZeroMQ Stores data in LMDB B+Tree Relayer Mode# Replica instance that streams changes from one or more upstream servers and serves local reads."><meta itemprop=wordCount content="2108"><title>Architecture | UnisonDB</title><link rel=icon href=/images/logo.svg><link rel=manifest href=/manifest.json><link rel=canonical href=https://unisondb.io/docs/architecture/><link rel=stylesheet href=/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj+RQ9XBXU=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js integrity="sha256-+G7k8kv2lsr6StYfL+ZjBY+6zH9Q5NnFD2bt0hHM1vI=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XXXXXXXXXX")</script><link rel=alternate type=application/rss+xml href=https://unisondb.io/docs/architecture/index.xml title=UnisonDB></head><body dir=ltr class="book-kind-section book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/images/logo.svg alt=Logo><span>UnisonDB</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/getting-started/>Getting Started</a><ul><li><a href=/docs/getting-started/configurations/>Configuration</a></li></ul></li><li><a href=/docs/architecture/ class=active>Architecture</a><ul></ul></li><li><a href=/docs/api/>API Reference</a><ul><li><a href=/docs/api/http-api/>HTTP API Reference</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Architecture</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#architecture-overview>Architecture Overview</a><ul><li><a href=#operational-modes>Operational Modes</a><ul><li><a href=#server-mode>Server Mode</a></li><li><a href=#relayer-mode>Relayer Mode</a></li></ul></li><li><a href=#communication-architecture>Communication Architecture</a><ul><li><a href=#1-grpc---replication-channel-node-to-node>1. gRPC - Replication Channel (Node-to-Node)</a></li><li><a href=#2-zeromq---notification-channel-interprocess-communication>2. ZeroMQ - Notification Channel (Interprocess Communication)</a></li></ul></li><li><a href=#high-level-architecture>High-Level Architecture</a></li><li><a href=#core-components>Core Components</a><ul><li><a href=#write-ahead-log-wal>[Write-Ahead Log (WAL)]</a></li><li><a href=#storage-engine>[Storage Engine]</a></li><li><a href=#replication-system>[Replication System]</a></li><li><a href=#change-notifications>[Change Notifications]</a></li></ul></li><li><a href=#design-principles>Design Principles</a><ul><li><a href=#1-log-native-design>1. Log-Native Design</a></li><li><a href=#2-multi-modal-storage>2. Multi-Modal Storage</a></li><li><a href=#3-edge-first-architecture>3. Edge-First Architecture</a></li><li><a href=#4-separation-of-concerns>4. Separation of Concerns</a></li></ul></li><li><a href=#data-flow>Data Flow</a><ul><li><a href=#write-path-server-mode>Write Path (Server Mode)</a></li><li><a href=#read-path>Read Path</a></li><li><a href=#replication-flow-grpc>Replication Flow (gRPC)</a></li><li><a href=#notification-flow-zeromq>Notification Flow (ZeroMQ)</a></li></ul></li><li><a href=#storage-layout>Storage Layout</a><ul><li><a href=#directory-structure>Directory Structure</a></li><li><a href=#key-encoding>Key Encoding</a></li><li><a href=#wal-segment-format>WAL Segment Format</a></li></ul></li><li><a href=#concurrency-model>Concurrency Model</a></li><li><a href=#failure-modes-and-recovery>Failure Modes and Recovery</a><ul><li><a href=#crash-recovery-both-modes>Crash Recovery (Both Modes)</a></li><li><a href=#replication-failure>Replication Failure</a></li></ul></li><li><a href=#deployment-topologies>Deployment Topologies</a><ul><li><a href=#1-single-server>1. Single Server</a></li><li><a href=#2-primary--replicas-read-scaling>2. Primary + Replicas (Read Scaling)</a></li><li><a href=#3-hub-and-spoke-edge-computing>3. Hub-and-Spoke (Edge Computing)</a></li><li><a href=#4-multi-hub-geographic-distribution>4. Multi-Hub (Geographic Distribution)</a></li><li><a href=#5-multi-hop-relay-deep-edge>5. Multi-Hop Relay (Deep Edge)</a></li><li><a href=#6-hybrid-replication--local-notifications>6. Hybrid: Replication + Local Notifications</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=architecture-overview>Architecture Overview<a class=anchor href=#architecture-overview>#</a></h1><p>UnisonDB is a log-native database that replicates like a message bus, combining database semantics with streaming mechanics. It operates in two modes: <strong>Server Mode</strong> (primary/standalone) and <strong>Relayer Mode</strong> (replica/streaming).</p><h2 id=operational-modes>Operational Modes<a class=anchor href=#operational-modes>#</a></h2><h3 id=server-mode>Server Mode<a class=anchor href=#server-mode>#</a></h3><p>Primary instance that accepts writes and serves reads. This is the source of truth for data.</p><p><strong>Characteristics</strong>:</p><ul><li>Accepts write operations via HTTP APIs</li><li>Maintains the authoritative Write-Ahead Log (WAL)</li><li>Streams WAL changes to relayers via gRPC</li><li>Can publish local change notifications via ZeroMQ</li><li>Stores data in LMDB B+Tree</li></ul><h3 id=relayer-mode>Relayer Mode<a class=anchor href=#relayer-mode>#</a></h3><p>Replica instance that streams changes from one or more upstream servers and serves local reads.</p><p><strong>Characteristics</strong>:</p><ul><li>Connects to upstream server(s) via gRPC</li><li>Receives and applies WAL segment streams</li><li>Read-only local access (no direct writes)</li><li>Can relay to downstream instances</li><li>Can publish local change notifications via ZeroMQ</li><li>Provides data locality and read scalability</li></ul><h2 id=communication-architecture>Communication Architecture<a class=anchor href=#communication-architecture>#</a></h2><p>UnisonDB uses two distinct communication channels for different purposes:</p><h3 id=1-grpc---replication-channel-node-to-node>1. gRPC - Replication Channel (Node-to-Node)<a class=anchor href=#1-grpc---replication-channel-node-to-node>#</a></h3><p><strong>Purpose</strong>: Stream WAL segments between UnisonDB nodes for replication.</p><p><strong>Use Cases</strong>:</p><ul><li>Server → Relayer replication (primary to replica)</li><li>Multi-hop replication (relayer → relayer)</li><li>Cross-region data distribution</li><li>Hub-and-spoke topologies</li></ul><p><strong>Characteristics</strong>:</p><ul><li>Bidirectional streaming RPC</li><li>mTLS authentication.</li><li>Segment-based streaming with flow control</li></ul><p><strong>Security</strong>:</p><ul><li>TLS/mTLS required in production</li><li>Can run insecure mode (development only)</li></ul><h3 id=2-zeromq---notification-channel-interprocess-communication>2. ZeroMQ - Notification Channel (Interprocess Communication)<a class=anchor href=#2-zeromq---notification-channel-interprocess-communication>#</a></h3><p><strong>Purpose</strong>: Publish real-time change notifications to local applications on the same machine.</p><p><strong>Use Cases</strong>:</p><ul><li>React to data changes in real-time</li><li>Trigger local application logic on writes</li><li>Build event-driven architectures</li><li>Cache invalidation signals</li><li>Local microservices coordination</li></ul><p><strong>Characteristics</strong>:</p><ul><li>PUB/SUB pattern (one-to-many)</li><li>Per-namespace sockets (isolation)</li><li>Local IPC only (same machine)</li><li>Fire-and-forget (no acknowledgments)</li></ul><p><strong>Typical Flow</strong>:</p><pre tabindex=0><code>Application A writes to UnisonDB → UnisonDB writes to WAL →
+ZeroMQ publishes notification → Applications B, C, D receive notification</code></pre><h2 id=high-level-architecture>High-Level Architecture<a class=anchor href=#high-level-architecture>#</a></h2><pre tabindex=0><code>+--------------------------------------------------------------------------------------+
+|                                 UnisonDB Instance                                   |
++--------------------------------------------------------------------------------------+
+|                              Client / Integration Layer                             |
+|                                                                                      |
+|   +------------------+   +------------------+   +------------------+                  |
+|   |   HTTP / REST    |   | Transaction API  |   |  Admin / Stats   |                  |
+|   +------------------+   +------------------+   +------------------+                  |
+|              |                        |                       |                     |
++--------------+------------------------+-----------------------+----------------------+
+|                              Multi-Model Data Interfaces                            |
+|                                                                                      |
+|   +-------------+    +----------------+    +------------------+                      |
+|   | Key-Value   |    | Wide-Column    |    | LOB (Chunked TXN)|                      |
+|   +-------------+    +----------------+    +------------------+                      |
+|              \__________   _____________/                                            |
+|                         \ /                                                         |
++--------------------------v-----------------------------------------------------------+
+|                               Storage Engine (dbkernel)                             |
+|                                                                                      |
+|   Write Path:                                                                        |
+|     +----------------+    +----------------+    +----------------+                   |
+|     |   WALFS        | -&gt; |   MemTable     | -&gt; |   B+Tree Store |                   |
+|     | (append-only,  |    | (in-memory)    |    | (LMDB / Bolt)  |                   |
+|     |  mmap, ordered)|    +----------------+    +----------------+                   |
+|     +----------------+                                                           *   |
+|                                                                                 *    |
+|   Read Path: B+Tree (+MemTable overlay) ---------------------------------------*----&gt;|
+|                                                                                      |
++--------------------------------------------------------------------------------------+
+|                           Replication &amp; Notifications                                |
+|                                                                                      |
+|   +-----------------------+         +-----------------------------+                  |
+|   | gRPC Replicator       |         | Change Notifier             |                  |
+|   | - Stream WAL          |         | - PUB/SUB (ZeroMQ / MQTT)   |                  |
+|   | - Offset catch-up     |         | - Per-namespace topics      |                  |
+|   | - TLS / mTLS          |         | - Fire-and-forget delivery  |                  |
+|   +-----------------------+         +-----------------------------+                  |
+|           |                                        |                                 |
+|           v                                        v                                 |
+|   +------------------+                    +------------------+                       |
+|   |  Follower Node   |                    | Reactive Clients |                       |
+|   |  (Edge Replica)  |                    | (Dashboards etc.)|                       |
+|   +------------------+                    +------------------+                       |
++--------------------------------------------------------------------------------------+
+
+Data Flow Summary:
+  1. Client writes → WALFS (append-only)
+  2. WALFS → MemTable → B+Tree (commit-ordered)
+  3. gRPC Replicator streams WAL entries to other nodes
+  4. Notifier publishes change events to local/remote subscribers
+  5. Readers query locally from B+Tree + MemTable (no network call)</code></pre><h2 id=core-components>Core Components<a class=anchor href=#core-components>#</a></h2><h3 id=write-ahead-log-wal>[Write-Ahead Log (WAL)]<a class=anchor href=#write-ahead-log-wal>#</a></h3><p>Transaction logging system that enables streaming replication and crash recovery.</p><p><strong>Responsibilities</strong>:</p><ul><li>Sequential write log (append-only)</li><li>Segment-based storage (configurable size)</li><li>Checksum validation for integrity</li><li>Source of truth for replication</li><li>Crash recovery mechanism</li></ul><p><strong>WAL Lifecycle</strong>:</p><ol><li>Client writes → WAL append</li><li>WAL fsync (durability)</li><li>MemTable update</li><li>Background flush to B+Tree</li><li>Segment cleanup (after checkpoint)</li></ol><h3 id=storage-engine>[Storage Engine]<a class=anchor href=#storage-engine>#</a></h3><p>Built on B+Trees (LMDB/BOLT-DB).</p><p><strong>Responsibilities</strong>:</p><ul><li>Multi-modal data storage (KV, Wide-Column, LOB)</li><li>Crash recovery via WAL replay</li></ul><h3 id=replication-system>[Replication System]<a class=anchor href=#replication-system>#</a></h3><p>gRPC-based streaming replication with WAL segment fan-out.</p><p><strong>Server Mode</strong> (WAL Producer):</p><ul><li>Exposes gRPC streaming endpoint</li><li>Streams WAL segments to connected relayers</li><li>Monitors replication lag</li></ul><p><strong>Relayer Mode</strong> (WAL Consumer):</p><ul><li>Connects to upstream gRPC endpoints</li><li>Receives WAL segments in order</li><li>Applies segments to local storage</li><li>Can relay to downstream instances</li><li>Multiple upstream sources supported</li></ul><p><strong>Replication Guarantees</strong>:</p><ul><li><strong>Eventual Consistency</strong>: All replicas converge to same state</li><li><strong>Ordered Delivery</strong>: Segments applied in correct order</li><li><strong>At-Least-Once</strong>: Retries ensure delivery</li><li><strong>Gap Detection</strong>: Missing segments are requested</li></ul><h3 id=change-notifications>[Change Notifications]<a class=anchor href=#change-notifications>#</a></h3><p>ZeroMQ-based PUB/SUB system for local interprocess communication.</p><p><strong>Architecture</strong>:</p><ul><li>One ZeroMQ PUB socket per namespace</li><li>Local applications subscribe via SUB sockets</li><li>Notifications triggered on WAL writes</li><li>Non-blocking, fire-and-forget delivery</li></ul><p><strong>Notification Flow</strong>:</p><pre tabindex=0><code>Write Request → WAL Append → [optional delay for coalescing] →
+ZeroMQ Publish → Local Subscribers</code></pre><p><strong>Configuration Options</strong>:</p><ul><li><code>bind_port</code>: TCP port for namespace socket</li><li><code>high_water_mark</code>: Max queued messages before dropping</li><li><code>linger_time</code>: Wait time for pending messages on shutdown</li></ul><p><strong>Use Case Example</strong>:</p><pre tabindex=0><code>Namespace: &#34;inventory&#34;
+- UnisonDB binds: tcp://*:5555
+- Warehouse app subscribes: tcp://localhost:5555
+- Web API app subscribes: tcp://localhost:5555
+- Both apps receive real-time inventory updates</code></pre><h2 id=design-principles>Design Principles<a class=anchor href=#design-principles>#</a></h2><h3 id=1-log-native-design>1. Log-Native Design<a class=anchor href=#1-log-native-design>#</a></h3><p>The Write-Ahead Log is a first-class citizen, not just a recovery mechanism.</p><p><strong>Implications</strong>:</p><ul><li><strong>Log is the source of truth</strong>: All operations flow through WAL</li><li><strong>Replication is log streaming</strong>: No separate replication protocol needed</li><li><strong>Recovery is log replay</strong>: Database state reconstructed from WAL</li><li><strong>Time-travel possible</strong>: Historic state can be reconstructed from log</li></ul><h3 id=2-multi-modal-storage>2. Multi-Modal Storage<a class=anchor href=#2-multi-modal-storage>#</a></h3><p>Three storage models share the same underlying B+Tree and WAL.</p><p><strong>Key-Value Storage</strong>:</p><pre tabindex=0><code>Key: &#34;user:123&#34;
+Value: {&#34;name&#34;: &#34;Alice&#34;, &#34;email&#34;: &#34;alice@example.com&#34;}</code></pre><p><strong>Wide-Column Storage</strong> (like Cassandra/HBase):</p><pre tabindex=0><code>RowKey: &#34;user:123&#34;
+Columns: {
+  &#34;profile:name&#34;: &#34;Alice&#34;,
+  &#34;profile:email&#34;: &#34;alice@example.com&#34;,
+  &#34;settings:theme&#34;: &#34;dark&#34;
+}</code></pre><p><strong>Large Object (LOB) Storage</strong>:</p><pre tabindex=0><code>ObjectKey: &#34;video:abc&#34;
+Chunks: [chunk0, chunk1, chunk2, ...] (streaming support)</code></pre><h3 id=3-edge-first-architecture>3. Edge-First Architecture<a class=anchor href=#3-edge-first-architecture>#</a></h3><p>Designed for edge computing, local-first applications, and distributed topologies.</p><p><strong>Characteristics</strong>:</p><ul><li>Hub-and-Spoke: Central primary, many edge replicas</li><li>Multi-hop: Relayers can relay to other relayers</li><li>Eventual consistency: Replicas converge over time</li><li>Offline operation: Edge nodes work independently</li><li>Local reads: Read from nearby replica (data locality)</li></ul><p><strong>Example Topology</strong>:</p><pre tabindex=0><code>          ┌──────────────┐
+          │ Primary (US) │
+          └──────┬───────┘
+                 │ gRPC replication
+        ┌────────┴────────┐
+        ↓                 ↓
+  ┌──────────┐      ┌──────────┐
+  │ Relayer  │      │ Relayer  │
+  │ (Europe) │      │  (Asia)  │
+  └────┬─────┘      └────┬─────┘
+       │                 │
+   ZeroMQ            ZeroMQ
+   (local)           (local)
+       ↓                 ↓
+  Local Apps        Local Apps</code></pre><h3 id=4-separation-of-concerns>4. Separation of Concerns<a class=anchor href=#4-separation-of-concerns>#</a></h3><p><strong>gRPC for Distribution</strong> (between machines):</p><ul><li>Durable replication</li><li>Network-tolerant</li><li>Authenticated and encrypted</li><li>Handles intermittent connectivity</li></ul><p><strong>ZeroMQ for Local Reactivity</strong> (within machine):</p><ul><li>Fast interprocess communication</li><li>Event-driven architecture</li><li>No network overhead</li><li>Decoupled local services</li></ul><h2 id=data-flow>Data Flow<a class=anchor href=#data-flow>#</a></h2><h3 id=write-path-server-mode>Write Path (Server Mode)<a class=anchor href=#write-path-server-mode>#</a></h3><pre tabindex=0><code>Client Write Request
+    ↓
+HTTP/gRPC API Handler
+    ↓
+Transaction Context
+    ↓
+Storage Engine (dbkernel)
+    ↓
+┌───────────────────────────┐
+│ 1. Append to WAL          │ ← Sequential write (durability)
+│ 2. fsync (if configured)  │
+└───────────┬───────────────┘
+            ↓
+┌───────────────────────────┐
+│ 3. Update MemTable        │ ← In-memory write buffer
+└───────────┬───────────────┘
+            ↓
+┌───────────────────────────┐
+│ 4. Background flush to    │ ← Periodic flush to LMDB
+│    B+Tree when full       │
+└───────────┬───────────────┘
+            ↓
+Response to Client
+            │
+            ├──────────────────┐
+            ↓                  ↓
+   ┌──────────────────┐  ┌─────────────────┐
+   │ gRPC Stream to   │  │ ZeroMQ Publish  │
+   │ Relayers         │  │ to Local Apps   │
+   └──────────────────┘  └─────────────────┘</code></pre><h3 id=read-path>Read Path<a class=anchor href=#read-path>#</a></h3><pre tabindex=0><code>Client Read Request
+    ↓
+HTTP/gRPC API Handler
+    ↓
+Storage Engine (dbkernel)
+    ↓
+┌───────────────────────────┐
+│ 1. Check MemTable         │ ← Recent writes (hot data)
+└───────────┬───────────────┘
+            │ (if not found)
+            ↓
+┌───────────────────────────┐
+│ 2. Query B+Tree (LMDB)    │ ← Persistent storage
+└───────────┬───────────────┘
+            ↓
+Response to Client</code></pre><h3 id=replication-flow-grpc>Replication Flow (gRPC)<a class=anchor href=#replication-flow-grpc>#</a></h3><pre tabindex=0><code>Server Mode (Primary)
+    │
+    │ gRPC Streaming RPC
+    │ (bidirectional)
+    ↓
+┌─────────────────────────┐
+│ WAL Segment Streaming   │
+│ - Segment metadata      │
+│ - Binary WAL data       │
+│ - Checksum validation   │
+└──────────┬──────────────┘
+           │ Network (TLS/mTLS)
+           ↓
+Relayer Mode (Replica)
+    │
+    ↓
+┌─────────────────────────┐
+│ 1. Receive WAL segment  │
+│ 2. Validate checksum    │
+│ 3. Write to local WAL   │
+│ 4. Apply to MemTable    │
+│ 5. Flush to B+Tree      │
+└─────────────────────────┘
+    │
+    ├──────────────────┐
+    ↓                  ↓
+Can relay to      Can notify
+downstream        local apps
+relayers          via ZeroMQ</code></pre><h3 id=notification-flow-zeromq>Notification Flow (ZeroMQ)<a class=anchor href=#notification-flow-zeromq>#</a></h3><pre tabindex=0><code>WAL Write Event
+    ↓
+┌─────────────────────────────┐
+│ Write Notify Coalescer      │ ← Optional delay (max_delay)
+│ (reduces notification spam) │    to batch rapid writes
+└───────────┬─────────────────┘
+            ↓
+┌─────────────────────────────┐
+│ ZeroMQ PUB Socket           │ ← Per-namespace socket
+│ tcp://*:{bind_port}         │
+└───────────┬─────────────────┘
+            │ Local IPC
+    ┌───────┴───────┬──────────┐
+    ↓               ↓          ↓
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│  App A   │  │  App B   │  │  App C   │
+│  (SUB)   │  │  (SUB)   │  │  (SUB)   │
+└──────────┘  └──────────┘  └──────────┘
+ tcp://localhost:{bind_port}</code></pre><h2 id=storage-layout>Storage Layout<a class=anchor href=#storage-layout>#</a></h2><h3 id=directory-structure>Directory Structure<a class=anchor href=#directory-structure>#</a></h3><pre tabindex=0><code>data/
+├── default/                    # Namespace: default
+│   ├── wal/                   # Write-Ahead Log directory
+│   │   ├── segment-00000000   # WAL segment 0 (16MB)
+│   │   ├── segment-00000001   # WAL segment 1
+│   │   ├── segment-00000002   # WAL segment 2
+│   │   └── ...
+│   ├── db/                    # LMDB B+Tree database
+│   │   ├── data.mdb           # LMDB data file
+│   │   └── lock.mdb           # LMDB lock file
+│   └── checkpoint             # Checkpoint metadata
+│       └── last_applied       # Last applied WAL offset
+├── users/                     # Namespace: users
+│   ├── wal/
+│   ├── db/
+│   └── checkpoint
+└── metrics/                   # Namespace: metrics
+    ├── wal/
+    ├── db/
+    └── checkpoint</code></pre><h3 id=key-encoding>Key Encoding<a class=anchor href=#key-encoding>#</a></h3><p>Internal key structure varies by storage model:</p><pre tabindex=0><code>Key-Value:
+  Internal Key: &lt;user-provided-key&gt;
+  Example: &#34;user:123&#34;
+
+Wide-Column (Row):
+  Internal Key: &lt;rowKey&gt;:&lt;columnName&gt;
+  Example: &#34;user:123:profile:name&#34;
+
+Large Object (LOB):
+  Internal Key: &lt;objectKey&gt;:chunk:&lt;chunkIndex&gt;
+  Example: &#34;video:abc:chunk:0000000042&#34;</code></pre><h3 id=wal-segment-format>WAL Segment Format<a class=anchor href=#wal-segment-format>#</a></h3><pre tabindex=0><code>┌────────────────────────────────────────┐
+│          WAL Segment Header            │
+│  - Magic Number (validation)           │
+│  - Segment Number                      │
+│  - Timestamp                           │
+└────────────────────────────────────────┘
+│          WAL Entry 1                   │
+│  - Entry Type (Put/Delete/Txn)         │
+│  - Namespace                           │
+│  - Key Length                          │
+│  - Value Length                        │
+│  - Key Data                            │
+│  - Value Data                          │
+│  - Checksum (CRC32)                    │
+├────────────────────────────────────────┤
+│          WAL Entry 2                   │
+│  ...                                   │
+├────────────────────────────────────────┤
+│          WAL Entry N                   │
+│  ...                                   │
+└────────────────────────────────────────┘</code></pre><h2 id=concurrency-model>Concurrency Model<a class=anchor href=#concurrency-model>#</a></h2><p><strong>Per-Namespace Isolation</strong>:</p><ul><li>Different namespaces are independent</li><li>Concurrent access to different namespaces</li></ul><h2 id=failure-modes-and-recovery>Failure Modes and Recovery<a class=anchor href=#failure-modes-and-recovery>#</a></h2><h3 id=crash-recovery-both-modes>Crash Recovery (Both Modes)<a class=anchor href=#crash-recovery-both-modes>#</a></h3><p><strong>Server Mode Recovery</strong>:</p><ol><li><strong>Scan WAL</strong>: Identify all uncommitted operations</li><li><strong>Replay WAL</strong>: Re-apply operations to MemTable and B+Tree</li><li><strong>Validate Checkpoint</strong>: Ensure consistency with last checkpoint</li><li><strong>Resume Operations</strong>: Begin accepting requests</li></ol><p><strong>Relayer Mode Recovery</strong>:</p><ol><li><strong>Scan Local WAL</strong>: Determine last applied segment</li><li><strong>Resume Stream</strong>: Reconnect to upstream at last offset</li><li><strong>Gap Detection</strong>: Request missing segments if needed</li><li><strong>Catch-up</strong>: Apply backlog before accepting reads</li></ol><h3 id=replication-failure>Replication Failure<a class=anchor href=#replication-failure>#</a></h3><p><strong>Segment Gap Detection</strong>:</p><ul><li>Relayers track segment sequence numbers</li><li>Missing segments trigger explicit requests</li><li>Prevents inconsistent state</li></ul><h2 id=deployment-topologies>Deployment Topologies<a class=anchor href=#deployment-topologies>#</a></h2><h3 id=1-single-server>1. Single Server<a class=anchor href=#1-single-server>#</a></h3><pre tabindex=0><code>┌─────────────────┐
+│  Primary Server │
+│  (Server Mode)  │
+│  - HTTP API     │
+│  - Writes OK    │
+│  - Reads OK     │
+└─────────────────┘</code></pre><p>Simple deployment for small workloads.</p><h3 id=2-primary--replicas-read-scaling>2. Primary + Replicas (Read Scaling)<a class=anchor href=#2-primary--replicas-read-scaling>#</a></h3><pre tabindex=0><code>       ┌─────────────────┐
+       │  Primary Server │
+       │  (Server Mode)  │
+       └────────┬────────┘
+                │ gRPC replication
+       ┌────────┴────────┐
+       ↓                 ↓
+┌─────────────┐   ┌─────────────┐
+│  Relayer 1  │   │  Relayer 2  │
+│ (Read-only) │   │ (Read-only) │
+└─────────────┘   └─────────────┘</code></pre><p>Primary handles all writes, relayers provide read scalability.</p><h3 id=3-hub-and-spoke-edge-computing>3. Hub-and-Spoke (Edge Computing)<a class=anchor href=#3-hub-and-spoke-edge-computing>#</a></h3><pre tabindex=0><code>           ┌──────────────────┐
+           │   Central Hub    │
+           │  (Server Mode)   │
+           └────────┬─────────┘
+                    │ gRPC replication
+         ┌──────────┼──────────┐
+         ↓          ↓          ↓
+    ┌────────┐ ┌────────┐ ┌────────┐
+    │ Edge 1 │ │ Edge 2 │ │ Edge 3 │
+    │Relayer │ │Relayer │ │Relayer │
+    └───┬────┘ └───┬────┘ └───┬────┘
+        │          │          │
+     ZeroMQ     ZeroMQ     ZeroMQ
+        ↓          ↓          ↓
+    Local      Local      Local
+    Apps       Apps       Apps</code></pre><p>Central hub replicates to many edge nodes. Each edge serves local apps via ZeroMQ.</p><h3 id=4-multi-hub-geographic-distribution>4. Multi-Hub (Geographic Distribution)<a class=anchor href=#4-multi-hub-geographic-distribution>#</a></h3><pre tabindex=0><code>┌──────────────┐           ┌──────────────┐
+│  Hub US-East │◄─────────►│  Hub Europe  │
+│ (Server Mode)│   gRPC    │(Server Mode) │
+└──────┬───────┘  bidirect.└──────┬───────┘
+       │                          │
+   gRPC│                          │gRPC
+       ↓                          ↓
+  ┌────────┐                 ┌────────┐
+  │ East   │                 │ Europe │
+  │Relayers│                 │Relayers│
+  └────────┘                 └────────┘</code></pre><p>Multiple hubs for geographic distribution. Each hub can be a server accepting local writes.</p><h3 id=5-multi-hop-relay-deep-edge>5. Multi-Hop Relay (Deep Edge)<a class=anchor href=#5-multi-hop-relay-deep-edge>#</a></h3><pre tabindex=0><code>    ┌─────────┐
+    │ Primary │ (Server Mode)
+    └────┬────┘
+         │ gRPC
+         ↓
+    ┌─────────┐
+    │ Relay L1│ (Relayer Mode)
+    └────┬────┘
+         │ gRPC
+    ┌────┴─────┐
+    ↓          ↓
+┌─────────┐ ┌─────────┐
+│Relay L2a│ │Relay L2b│ (Relayer Mode)
+└────┬────┘ └────┬────┘
+     │           │ ZeroMQ
+     ↓           ↓
+  Local       Local
+  Apps        Apps</code></pre><p>Multi-hop replication for deep edge deployments.</p><h3 id=6-hybrid-replication--local-notifications>6. Hybrid: Replication + Local Notifications<a class=anchor href=#6-hybrid-replication--local-notifications>#</a></h3><pre tabindex=0><code>┌─────────────────────────────────────┐
+│         Primary Server              │
+│         (Server Mode)               │
+│  ┌──────────────┐                   │
+│  │   Storage    │                   │
+│  └──────┬───────┘                   │
+│         │                           │
+│    ┌────┴────┐                      │
+│    ↓         ↓                      │
+│ [gRPC]   [ZeroMQ]                   │
+└───┬──────────┬──────────────────────┘
+    │          │
+    │          └──→ Local Apps (IPC)
+    │              - Cache service
+    │              - Analytics service
+    │              - Audit logger
+    ↓
+  Relayers (other machines)</code></pre><p>Same instance uses gRPC for replication AND ZeroMQ for local notifications.</p><h2 id=summary>Summary<a class=anchor href=#summary>#</a></h2><p>UnisonDB&rsquo;s architecture is built around two key insights:</p><ol><li><p><strong>Dual Communication Channels</strong>:</p><ul><li><strong>gRPC</strong> for durable, network-based replication between nodes</li><li><strong>ZeroMQ</strong> for fast, local interprocess notifications</li></ul></li><li><p><strong>Dual Operational Modes</strong>:</p><ul><li><strong>Server Mode</strong> for writable primary instances</li><li><strong>Relayer Mode</strong> for read-scalable replicas</li></ul></li></ol><p>This separation allows you to build sophisticated topologies:</p><ul><li>Hub-and-spoke for edge computing</li><li>Multi-region for geographic distribution</li><li>Local event-driven architectures via ZeroMQ</li><li>Scalable read replicas via gRPC streaming</li></ul><p>The log-native design ensures that replication, recovery, and notifications all flow naturally from the Write-Ahead Log, making the system simple to reason about while remaining powerful and flexible.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div><a class="flex align-center" href=https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/architecture/_index.md target=_blank rel="noopener edit"><img src=/icons/edit.svg class=book-icon alt=Edit>
+<span>Edit this page</span></a></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/getting-started/configurations/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
+<span>Configuration</span>
+</a></span><span><a href=/docs/api/ class="flex align-center"><span>API Reference</span>
+<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#architecture-overview>Architecture Overview</a><ul><li><a href=#operational-modes>Operational Modes</a><ul><li><a href=#server-mode>Server Mode</a></li><li><a href=#relayer-mode>Relayer Mode</a></li></ul></li><li><a href=#communication-architecture>Communication Architecture</a><ul><li><a href=#1-grpc---replication-channel-node-to-node>1. gRPC - Replication Channel (Node-to-Node)</a></li><li><a href=#2-zeromq---notification-channel-interprocess-communication>2. ZeroMQ - Notification Channel (Interprocess Communication)</a></li></ul></li><li><a href=#high-level-architecture>High-Level Architecture</a></li><li><a href=#core-components>Core Components</a><ul><li><a href=#write-ahead-log-wal>[Write-Ahead Log (WAL)]</a></li><li><a href=#storage-engine>[Storage Engine]</a></li><li><a href=#replication-system>[Replication System]</a></li><li><a href=#change-notifications>[Change Notifications]</a></li></ul></li><li><a href=#design-principles>Design Principles</a><ul><li><a href=#1-log-native-design>1. Log-Native Design</a></li><li><a href=#2-multi-modal-storage>2. Multi-Modal Storage</a></li><li><a href=#3-edge-first-architecture>3. Edge-First Architecture</a></li><li><a href=#4-separation-of-concerns>4. Separation of Concerns</a></li></ul></li><li><a href=#data-flow>Data Flow</a><ul><li><a href=#write-path-server-mode>Write Path (Server Mode)</a></li><li><a href=#read-path>Read Path</a></li><li><a href=#replication-flow-grpc>Replication Flow (gRPC)</a></li><li><a href=#notification-flow-zeromq>Notification Flow (ZeroMQ)</a></li></ul></li><li><a href=#storage-layout>Storage Layout</a><ul><li><a href=#directory-structure>Directory Structure</a></li><li><a href=#key-encoding>Key Encoding</a></li><li><a href=#wal-segment-format>WAL Segment Format</a></li></ul></li><li><a href=#concurrency-model>Concurrency Model</a></li><li><a href=#failure-modes-and-recovery>Failure Modes and Recovery</a><ul><li><a href=#crash-recovery-both-modes>Crash Recovery (Both Modes)</a></li><li><a href=#replication-failure>Replication Failure</a></li></ul></li><li><a href=#deployment-topologies>Deployment Topologies</a><ul><li><a href=#1-single-server>1. Single Server</a></li><li><a href=#2-primary--replicas-read-scaling>2. Primary + Replicas (Read Scaling)</a></li><li><a href=#3-hub-and-spoke-edge-computing>3. Hub-and-Spoke (Edge Computing)</a></li><li><a href=#4-multi-hub-geographic-distribution>4. Multi-Hub (Geographic Distribution)</a></li><li><a href=#5-multi-hop-relay-deep-edge>5. Multi-Hop Relay (Deep Edge)</a></li><li><a href=#6-hybrid-replication--local-notifications>6. Hybrid: Replication + Local Notifications</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></li></ul></nav></div></aside></main></body></html>

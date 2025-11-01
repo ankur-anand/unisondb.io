@@ -1,0 +1,50 @@
+baseURL = 'https://unisondb.io/'
+title = 'UnisonDB'
+languageCode = 'en-us'
+theme = 'book'
+
+[services]
+[services.googleAnalytics]
+  ID = 'G-XXXXXXXXXX'
+
+[module]
+[module.hugoVersion]
+  extended = true
+  min = "0.146.0"
+
+[params]
+  BookTheme = 'light'
+  BookLogo = '/images/logo.svg'
+  BookFavicon = '/images/logo.svg'
+  BookSection = 'docs'
+  BookRepo = 'https://github.com/ankur-anand/unisondb'
+  BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/docs/{{ .Path }}'
+  BookDateFormat = 'January 2, 2006'
+  BookSearch = true
+  BookComments = false
+  BookPortableLinks = true
+  BookServiceWorker = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 3
+
+[menu]
+  [[menu.main]]
+    name = 'Documentation'
+    url = '/docs/'
+    weight = 10
+
+  [[menu.main]]
+    name = 'API Reference'
+    url = '/docs/api/'
+    weight = 20
+
+  [[menu.main]]
+    name = 'GitHub'
+    url = 'https://github.com/ankur-anand/unisondb'
+    weight = 30
