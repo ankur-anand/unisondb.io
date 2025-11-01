@@ -1,23 +1,327 @@
-<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
 Table of Contents# Prerequisites Installation Running in Server Mode Running in Relayer Mode Prerequisites# System Requirements# Operating System: Linux or macOS Go: Version 1.24 or higher Installation# Building from Source# UnisonDB requires CGO to be enabled for LMDB bindings.
 # Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://unisondb.io/docs/getting-started/"><meta property="og:site_name" content="UnisonDB"><meta property="og:title" content="Getting Started"><meta property="og:description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="Getting Started">
+  <meta property="og:description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
 Table of Contents# Prerequisites Installation Running in Server Mode Running in Relayer Mode Prerequisites# System Requirements# Operating System: Linux or macOS Go: Version 1.24 or higher Installation# Building from Source# UnisonDB requires CGO to be enabled for LMDB bindings.
-# Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:"><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><meta itemprop=name content="Getting Started"><meta itemprop=description content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
+# Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Getting Started">
+  <meta itemprop="description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
 Table of Contents# Prerequisites Installation Running in Server Mode Running in Relayer Mode Prerequisites# System Requirements# Operating System: Linux or macOS Go: Version 1.24 or higher Installation# Building from Source# UnisonDB requires CGO to be enabled for LMDB bindings.
-# Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:"><meta itemprop=wordCount content="1157"><title>Getting Started | UnisonDB</title><link rel=icon href=/images/logo.svg><link rel=manifest href=/manifest.json><link rel=canonical href=https://unisondb.io/docs/getting-started/><link rel=stylesheet href=/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj+RQ9XBXU=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js integrity="sha256-+G7k8kv2lsr6StYfL+ZjBY+6zH9Q5NnFD2bt0hHM1vI=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XXXXXXXXXX")</script><link rel=alternate type=application/rss+xml href=https://unisondb.io/docs/getting-started/index.xml title=UnisonDB></head><body dir=ltr class="book-kind-section book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/images/logo.svg alt=Logo><span>UnisonDB</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/getting-started/ class=active>Getting Started</a><ul><li><a href=/docs/getting-started/configurations/>Configuration</a></li></ul></li><li><a href=/docs/architecture/>Architecture</a><ul></ul></li><li><a href=/docs/api/>API Reference</a><ul><li><a href=/docs/api/http-api/>HTTP API Reference</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Getting Started</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#getting-started-with-unisondb>Getting Started with UnisonDB</a><ul><li><a href=#table-of-contents>Table of Contents</a></li><li><a href=#prerequisites>Prerequisites</a><ul><li><a href=#system-requirements>System Requirements</a></li></ul></li><li><a href=#installation>Installation</a><ul><li><a href=#building-from-source>Building from Source</a></li><li><a href=#building-with-fuzzer-support-optional>Building with Fuzzer Support (Optional)</a></li><li><a href=#installation-to-system-path-optional>Installation to System Path (Optional)</a></li></ul></li><li><a href=#running-in-server-mode>Running in Server Mode</a><ul><li><a href=#1-generate-tls-certificates-recommended>1. Generate TLS Certificates (Recommended)</a></li><li><a href=#2-create-server-configuration>2. Create Server Configuration</a></li><li><a href=#3-start-the-server>3. Start the Server</a></li><li><a href=#4-verify-server-is-running>4. Verify Server is Running</a></li><li><a href=#development-mode-insecure>Development Mode (Insecure)</a></li></ul></li><li><a href=#running-in-relayer-mode>Running in Relayer Mode</a><ul><li><a href=#1-create-relayer-configuration>1. Create Relayer Configuration</a></li><li><a href=#2-start-the-relayer>2. Start the Relayer</a></li><li><a href=#3-enable-grpc-server-on-relayer-multi-hop>3. Enable gRPC Server on Relayer (Multi-Hop)</a></li><li><a href=#development-mode-insecure-1>Development Mode (Insecure)</a></li></ul></li><li><a href=#basic-operations>Basic Operations</a><ul><li><a href=#writing-data>Writing Data</a></li><li><a href=#reading-data>Reading Data</a></li><li><a href=#subscribing-to-changes-zeromq>Subscribing to Changes (ZeroMQ)</a></li></ul></li><li><a href=#common-deployment-patterns>Common Deployment Patterns</a><ul><li><a href=#1-single-server-development>1. Single Server (Development)</a></li><li><a href=#2-server--single-relayer-read-scaling>2. Server + Single Relayer (Read Scaling)</a></li><li><a href=#3-server--multiple-relayers-edge-computing>3. Server + Multiple Relayers (Edge Computing)</a></li><li><a href=#4-multi-hop-relayer--relayer>4. Multi-Hop (Relayer → Relayer)</a></li></ul></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=getting-started-with-unisondb>Getting Started with UnisonDB<a class=anchor href=#getting-started-with-unisondb>#</a></h1><p>This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.</p><h2 id=table-of-contents>Table of Contents<a class=anchor href=#table-of-contents>#</a></h2><ul><li><a href=#prerequisites>Prerequisites</a></li><li><a href=#installation>Installation</a></li><li><a href=#running-in-server-mode>Running in Server Mode</a></li><li><a href=#running-in-relayer-mode>Running in Relayer Mode</a></li></ul><h2 id=prerequisites>Prerequisites<a class=anchor href=#prerequisites>#</a></h2><h3 id=system-requirements>System Requirements<a class=anchor href=#system-requirements>#</a></h3><ul><li><strong>Operating System</strong>: Linux or macOS</li><li><strong>Go</strong>: Version 1.24 or higher</li></ul><h2 id=installation>Installation<a class=anchor href=#installation>#</a></h2><h3 id=building-from-source>Building from Source<a class=anchor href=#building-from-source>#</a></h3><p>UnisonDB requires CGO to be enabled for LMDB bindings.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Clone the repository</span>
-</span></span><span style=display:flex><span>git clone https://github.com/ankur-anand/unisondb.git
-</span></span><span style=display:flex><span>cd unisondb
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Enable CGO (required for LMDB)</span>
-</span></span><span style=display:flex><span>export CGO_ENABLED<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Build the binary</span>
-</span></span><span style=display:flex><span>go build -o unisondb ./cmd/unisondb
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Verify installation</span>
-</span></span><span style=display:flex><span>./unisondb --help</span></span></code></pre></div><p>Expected output:</p><pre tabindex=0><code>NAME:
+# Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:">
+  <meta itemprop="wordCount" content="1157">
+
+<title>Getting Started | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/getting-started/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js" integrity="sha256-&#43;G7k8kv2lsr6StYfL&#43;ZjBY&#43;6zH9Q5NnFD2bt0hHM1vI=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/getting-started/index.xml" title="UnisonDB" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="active">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Getting Started</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-started-with-unisondb">Getting Started with UnisonDB</a>
+      <ul>
+        <li><a href="#table-of-contents">Table of Contents</a></li>
+        <li><a href="#prerequisites">Prerequisites</a>
+          <ul>
+            <li><a href="#system-requirements">System Requirements</a></li>
+          </ul>
+        </li>
+        <li><a href="#installation">Installation</a>
+          <ul>
+            <li><a href="#building-from-source">Building from Source</a></li>
+            <li><a href="#building-with-fuzzer-support-optional">Building with Fuzzer Support (Optional)</a></li>
+            <li><a href="#installation-to-system-path-optional">Installation to System Path (Optional)</a></li>
+          </ul>
+        </li>
+        <li><a href="#running-in-server-mode">Running in Server Mode</a>
+          <ul>
+            <li><a href="#1-generate-tls-certificates-recommended">1. Generate TLS Certificates (Recommended)</a></li>
+            <li><a href="#2-create-server-configuration">2. Create Server Configuration</a></li>
+            <li><a href="#3-start-the-server">3. Start the Server</a></li>
+            <li><a href="#4-verify-server-is-running">4. Verify Server is Running</a></li>
+            <li><a href="#development-mode-insecure">Development Mode (Insecure)</a></li>
+          </ul>
+        </li>
+        <li><a href="#running-in-relayer-mode">Running in Relayer Mode</a>
+          <ul>
+            <li><a href="#1-create-relayer-configuration">1. Create Relayer Configuration</a></li>
+            <li><a href="#2-start-the-relayer">2. Start the Relayer</a></li>
+            <li><a href="#3-enable-grpc-server-on-relayer-multi-hop">3. Enable gRPC Server on Relayer (Multi-Hop)</a></li>
+            <li><a href="#development-mode-insecure-1">Development Mode (Insecure)</a></li>
+          </ul>
+        </li>
+        <li><a href="#basic-operations">Basic Operations</a>
+          <ul>
+            <li><a href="#writing-data">Writing Data</a></li>
+            <li><a href="#reading-data">Reading Data</a></li>
+            <li><a href="#subscribing-to-changes-zeromq">Subscribing to Changes (ZeroMQ)</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-deployment-patterns">Common Deployment Patterns</a>
+          <ul>
+            <li><a href="#1-single-server-development">1. Single Server (Development)</a></li>
+            <li><a href="#2-server--single-relayer-read-scaling">2. Server + Single Relayer (Read Scaling)</a></li>
+            <li><a href="#3-server--multiple-relayers-edge-computing">3. Server + Multiple Relayers (Edge Computing)</a></li>
+            <li><a href="#4-multi-hop-relayer--relayer">4. Multi-Hop (Relayer → Relayer)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="getting-started-with-unisondb">Getting Started with UnisonDB<a class="anchor" href="#getting-started-with-unisondb">#</a></h1>
+<p>This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.</p>
+<h2 id="table-of-contents">Table of Contents<a class="anchor" href="#table-of-contents">#</a></h2>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#running-in-server-mode">Running in Server Mode</a></li>
+<li><a href="#running-in-relayer-mode">Running in Relayer Mode</a></li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a class="anchor" href="#prerequisites">#</a></h2>
+<h3 id="system-requirements">System Requirements<a class="anchor" href="#system-requirements">#</a></h3>
+<ul>
+<li><strong>Operating System</strong>: Linux or macOS</li>
+<li><strong>Go</strong>: Version 1.24 or higher</li>
+</ul>
+<h2 id="installation">Installation<a class="anchor" href="#installation">#</a></h2>
+<h3 id="building-from-source">Building from Source<a class="anchor" href="#building-from-source">#</a></h3>
+<p>UnisonDB requires CGO to be enabled for LMDB bindings.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Clone the repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/ankur-anand/unisondb.git
+</span></span><span style="display:flex;"><span>cd unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable CGO (required for LMDB)</span>
+</span></span><span style="display:flex;"><span>export CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build the binary</span>
+</span></span><span style="display:flex;"><span>go build -o unisondb ./cmd/unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Verify installation</span>
+</span></span><span style="display:flex;"><span>./unisondb --help</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>NAME:
    unisondb - Run UnisonDB
 
 USAGE:
@@ -33,217 +337,422 @@ GLOBAL OPTIONS:
    --config value, -c value  Path to TOML config file (default: &#34;./config.toml&#34;) [$UNISON_CONFIG]
    --env value, -e value     Environment: dev, staging, prod (default: &#34;dev&#34;) [$UNISON_ENV]
    --grpc, -G                Enable gRPC server in Relayer Mode (default: false) [$UNISON_GRPC_ENABLED]
-   --help, -h                show help</code></pre><h3 id=building-with-fuzzer-support-optional>Building with Fuzzer Support (Optional)<a class=anchor href=#building-with-fuzzer-support-optional>#</a></h3><p>For testing and development, you can build with fuzzer support:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>CGO_ENABLED<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> go build -tags fuzz -o unisondb ./cmd/unisondb</span></span></code></pre></div><p><strong>Note</strong>: When built with <code>-tags fuzz</code>:</p><ul><li><code>fuzzer</code> command is available</li><li><code>replicator</code> command is <strong>disabled</strong> for safety</li></ul><p>To run fuzzer mode:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config config.toml fuzzer</span></span></code></pre></div><h3 id=installation-to-system-path-optional>Installation to System Path (Optional)<a class=anchor href=#installation-to-system-path-optional>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Move to system path</span>
-</span></span><span style=display:flex><span>sudo mv unisondb /usr/local/bin/
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Verify</span>
-</span></span><span style=display:flex><span>unisondb --help</span></span></code></pre></div><h2 id=running-in-server-mode>Running in Server Mode<a class=anchor href=#running-in-server-mode>#</a></h2><p>Server Mode runs UnisonDB as a <strong>primary instance</strong> that accepts writes and serves reads.</p><h3 id=1-generate-tls-certificates-recommended>1. Generate TLS Certificates (Recommended)<a class=anchor href=#1-generate-tls-certificates-recommended>#</a></h3><p>For production or multi-node setups, generate TLS certificates for gRPC:</p><p><strong>Using OpenSSL</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir -p certs <span style=color:#f92672>&amp;&amp;</span> cd certs
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Generate CA</span>
-</span></span><span style=display:flex><span>openssl genrsa -out ca.key <span style=color:#ae81ff>4096</span>
-</span></span><span style=display:flex><span>openssl req -new -x509 -key ca.key -sha256 -subj <span style=color:#e6db74>&#34;/CN=UnisonDB CA&#34;</span> -days <span style=color:#ae81ff>365</span> -out ca.crt
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Generate server certificate</span>
-</span></span><span style=display:flex><span>openssl genrsa -out server.key <span style=color:#ae81ff>4096</span>
-</span></span><span style=display:flex><span>openssl req -new -key server.key -out server.csr -subj <span style=color:#e6db74>&#34;/CN=localhost&#34;</span>
-</span></span><span style=display:flex><span>openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <span style=color:#ae81ff>365</span> -sha256
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Generate client certificate</span>
-</span></span><span style=display:flex><span>openssl genrsa -out client.key <span style=color:#ae81ff>4096</span>
-</span></span><span style=display:flex><span>openssl req -new -key client.key -out client.csr -subj <span style=color:#e6db74>&#34;/CN=client&#34;</span>
-</span></span><span style=display:flex><span>openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days <span style=color:#ae81ff>365</span> -sha256
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>cd ..</span></span></code></pre></div><h3 id=2-create-server-configuration>2. Create Server Configuration<a class=anchor href=#2-create-server-configuration>#</a></h3><p>Create a <code>server.toml</code> configuration file:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#75715e>## HTTP API port</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>4000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## gRPC configuration (for replication)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>4001</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;./certs/server.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;./certs/server.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;./certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For development only - allows insecure connections</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Storage configuration</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;./data/server&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;users&#34;</span>, <span style=color:#e6db74>&#34;products&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bytes_per_sync</span> = <span style=color:#e6db74>&#34;1MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>arena_size</span> = <span style=color:#e6db74>&#34;4MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>wal_fsync_interval</span> = <span style=color:#e6db74>&#34;1s&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## WAL cleanup (prevents disk exhaustion)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>.<span style=color:#a6e22e>wal_cleanup_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>interval</span> = <span style=color:#e6db74>&#34;5m&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_age</span> = <span style=color:#e6db74>&#34;1h&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>min_segments</span> = <span style=color:#ae81ff>5</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_segments</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Write notification coalescing</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>write_notify_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_delay</span> = <span style=color:#e6db74>&#34;20ms&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## ZeroMQ notifications (optional - for local apps)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>default</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5555</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>users</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5556</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Profiling endpoint</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>pprof_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>6060</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Logging</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>.<span style=color:#a6e22e>min_level_percents</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>debug</span> = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>info</span>  = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>warn</span>  = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>error</span> = <span style=color:#ae81ff>100.0</span></span></span></code></pre></div><h3 id=3-start-the-server>3. Start the Server<a class=anchor href=#3-start-the-server>#</a></h3><p><strong>Server Mode</strong> (using <code>replicator</code> command):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config server.toml replicator</span></span></code></pre></div><p>You can also put the command before flags:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb replicator --config server.toml</span></span></code></pre></div><h3 id=4-verify-server-is-running>4. Verify Server is Running<a class=anchor href=#4-verify-server-is-running>#</a></h3><p><strong>Check HTTP health endpoint</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/health</span></span></code></pre></div><h3 id=development-mode-insecure>Development Mode (Insecure)<a class=anchor href=#development-mode-insecure>#</a></h3><p>For quick local testing without TLS:</p><p><strong>server-dev.toml</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>4000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>4001</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>true</span>  <span style=color:#75715e># WARNING: Development only!</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;./data/server&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;debug&#34;</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config server-dev.toml replicator</span></span></code></pre></div><h2 id=running-in-relayer-mode>Running in Relayer Mode<a class=anchor href=#running-in-relayer-mode>#</a></h2><p>Relayer Mode runs UnisonDB as a <strong>replica</strong> that streams changes from an upstream server.</p><h3 id=1-create-relayer-configuration>1. Create Relayer Configuration<a class=anchor href=#1-create-relayer-configuration>#</a></h3><p>Create a <code>relayer.toml</code> configuration file:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#75715e>## HTTP API port (different from server)</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>5000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## gRPC config (can accept downstream relayers)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>5001</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;./certs/server.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;./certs/server.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;./certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Storage configuration</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;./data/relayer&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;users&#34;</span>, <span style=color:#e6db74>&#34;products&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bytes_per_sync</span> = <span style=color:#e6db74>&#34;1MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># IMPORTANT: segment_size MUST match upstream server!</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>arena_size</span> = <span style=color:#e6db74>&#34;4MB&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Relayer configuration - connects to upstream</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>.<span style=color:#a6e22e>primary</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;users&#34;</span>, <span style=color:#e6db74>&#34;products&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;./certs/client.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;./certs/client.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;./certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>upstream_address</span> = <span style=color:#e6db74>&#34;localhost:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_lag_threshold</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Optional: Connect to multiple upstreams</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># [relayer_config.secondary]</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># namespaces = [&#34;products&#34;]</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># upstream_address = &#34;other-server:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># cert_path = &#34;./certs/client.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># key_path = &#34;./certs/client.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># ca_path = &#34;./certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## ZeroMQ notifications (optional)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>default</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>6555</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Logging</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>.<span style=color:#a6e22e>min_level_percents</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>debug</span> = <span style=color:#ae81ff>1.0</span>   <span style=color:#75715e># Sample 1% of debug logs</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>info</span>  = <span style=color:#ae81ff>10.0</span>  <span style=color:#75715e># Sample 10% of info logs</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>warn</span>  = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>error</span> = <span style=color:#ae81ff>100.0</span></span></span></code></pre></div><h3 id=2-start-the-relayer>2. Start the Relayer<a class=anchor href=#2-start-the-relayer>#</a></h3><p><strong>Start relayer</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config relayer.toml relayer</span></span></code></pre></div><h3 id=3-enable-grpc-server-on-relayer-multi-hop>3. Enable gRPC Server on Relayer (Multi-Hop)<a class=anchor href=#3-enable-grpc-server-on-relayer-multi-hop>#</a></h3><p>To allow downstream relayers to connect to this relayer:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config relayer.toml --grpc relayer</span></span></code></pre></div><p>This enables the relayer to act as both a <strong>consumer</strong> (from upstream) and a <strong>producer</strong> (to downstream).</p><h3 id=development-mode-insecure-1>Development Mode (Insecure)<a class=anchor href=#development-mode-insecure-1>#</a></h3><p><strong>relayer-dev.toml</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>5000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>5001</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;./data/relayer&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>  <span style=color:#75715e># Must match server!</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>.<span style=color:#a6e22e>primary</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>upstream_address</span> = <span style=color:#e6db74>&#34;localhost:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>true</span>  <span style=color:#75715e># WARNING: Development only!</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_lag_threshold</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;debug&#34;</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>./unisondb --config relayer-dev.toml relayer</span></span></code></pre></div><h2 id=basic-operations>Basic Operations<a class=anchor href=#basic-operations>#</a></h2><h3 id=writing-data>Writing Data<a class=anchor href=#writing-data>#</a></h3><p><strong>Key-Value Write</strong> (via HTTP):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Put a key-value pair</span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/namespaces/default/kv <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -H <span style=color:#e6db74>&#34;Content-Type: application/json&#34;</span> <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;key&#34;: &#34;user:123&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;value&#34;: &#34;eyJuYW1lIjoiQWxpY2UiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUuY29tIn0=&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Batch Write</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/namespaces/default/kv/batch <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -H <span style=color:#e6db74>&#34;Content-Type: application/json&#34;</span> <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;operations&#34;: [
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      {&#34;key&#34;: &#34;user:1&#34;, &#34;value&#34;: &#34;...&#34;},
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      {&#34;key&#34;: &#34;user:2&#34;, &#34;value&#34;: &#34;...&#34;},
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      {&#34;key&#34;: &#34;user:3&#34;, &#34;value&#34;: &#34;...&#34;}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    ]
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><h3 id=reading-data>Reading Data<a class=anchor href=#reading-data>#</a></h3><p><strong>Read from Server</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/namespaces/default/kv/user:123</span></span></code></pre></div><p><strong>Read from Relayer</strong> (same API):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:5000/api/v1/namespaces/default/kv/user:123</span></span></code></pre></div><h3 id=subscribing-to-changes-zeromq>Subscribing to Changes (ZeroMQ)<a class=anchor href=#subscribing-to-changes-zeromq>#</a></h3><p><strong>Python example</strong> (install <code>pyzmq</code> first):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> zmq
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context <span style=color:#f92672>=</span> zmq<span style=color:#f92672>.</span>Context()
-</span></span><span style=display:flex><span>socket <span style=color:#f92672>=</span> context<span style=color:#f92672>.</span>socket(zmq<span style=color:#f92672>.</span>SUB)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Subscribe to &#39;default&#39; namespace</span>
-</span></span><span style=display:flex><span>socket<span style=color:#f92672>.</span>connect(<span style=color:#e6db74>&#34;tcp://localhost:5555&#34;</span>)
-</span></span><span style=display:flex><span>socket<span style=color:#f92672>.</span>setsockopt(zmq<span style=color:#f92672>.</span>SUBSCRIBE, <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;&#34;</span>)  <span style=color:#75715e># Subscribe to all messages</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#34;Listening for changes on namespace &#39;default&#39;...&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-</span></span><span style=display:flex><span>    message <span style=color:#f92672>=</span> socket<span style=color:#f92672>.</span>recv()
-</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Change notification: </span><span style=color:#e6db74>{</span>message<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)</span></span></code></pre></div><p><strong>Run the subscriber</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>python subscriber.py</span></span></code></pre></div><p>Now any writes to the <code>default</code> namespace will trigger notifications!</p><h2 id=common-deployment-patterns>Common Deployment Patterns<a class=anchor href=#common-deployment-patterns>#</a></h2><h3 id=1-single-server-development>1. Single Server (Development)<a class=anchor href=#1-single-server-development>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Terminal 1: Start server</span>
-</span></span><span style=display:flex><span>./unisondb --config server-dev.toml replicator</span></span></code></pre></div><h3 id=2-server--single-relayer-read-scaling>2. Server + Single Relayer (Read Scaling)<a class=anchor href=#2-server--single-relayer-read-scaling>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Terminal 1: Start server</span>
-</span></span><span style=display:flex><span>./unisondb --config server.toml replicator
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 2: Start relayer</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer.toml relayer</span></span></code></pre></div><h3 id=3-server--multiple-relayers-edge-computing>3. Server + Multiple Relayers (Edge Computing)<a class=anchor href=#3-server--multiple-relayers-edge-computing>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Terminal 1: Start server</span>
-</span></span><span style=display:flex><span>./unisondb --config server.toml replicator
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 2: Start relayer 1</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer1.toml relayer
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 3: Start relayer 2</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer2.toml relayer
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 4: Start relayer 3</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer3.toml relayer</span></span></code></pre></div><h3 id=4-multi-hop-relayer--relayer>4. Multi-Hop (Relayer → Relayer)<a class=anchor href=#4-multi-hop-relayer--relayer>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Terminal 1: Primary server</span>
-</span></span><span style=display:flex><span>./unisondb --config server.toml replicator
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 2: L1 relayer (with gRPC enabled for downstream)</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer-l1.toml --grpc relayer
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Terminal 3: L2 relayer (connects to L1)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Update relayer-l2.toml upstream_address to point to L1 (localhost:5001)</span>
-</span></span><span style=display:flex><span>./unisondb --config relayer-l2.toml relayer</span></span></code></pre></div><p>Happy building with UnisonDB!</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div><a class="flex align-center" href=https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/getting-started/_index.md target=_blank rel="noopener edit"><img src=/icons/edit.svg class=book-icon alt=Edit>
-<span>Edit this page</span></a></div></div><div class="flex flex-wrap justify-between"><span></span><span><a href=/docs/getting-started/configurations/ class="flex align-center"><span>Configuration</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#getting-started-with-unisondb>Getting Started with UnisonDB</a><ul><li><a href=#table-of-contents>Table of Contents</a></li><li><a href=#prerequisites>Prerequisites</a><ul><li><a href=#system-requirements>System Requirements</a></li></ul></li><li><a href=#installation>Installation</a><ul><li><a href=#building-from-source>Building from Source</a></li><li><a href=#building-with-fuzzer-support-optional>Building with Fuzzer Support (Optional)</a></li><li><a href=#installation-to-system-path-optional>Installation to System Path (Optional)</a></li></ul></li><li><a href=#running-in-server-mode>Running in Server Mode</a><ul><li><a href=#1-generate-tls-certificates-recommended>1. Generate TLS Certificates (Recommended)</a></li><li><a href=#2-create-server-configuration>2. Create Server Configuration</a></li><li><a href=#3-start-the-server>3. Start the Server</a></li><li><a href=#4-verify-server-is-running>4. Verify Server is Running</a></li><li><a href=#development-mode-insecure>Development Mode (Insecure)</a></li></ul></li><li><a href=#running-in-relayer-mode>Running in Relayer Mode</a><ul><li><a href=#1-create-relayer-configuration>1. Create Relayer Configuration</a></li><li><a href=#2-start-the-relayer>2. Start the Relayer</a></li><li><a href=#3-enable-grpc-server-on-relayer-multi-hop>3. Enable gRPC Server on Relayer (Multi-Hop)</a></li><li><a href=#development-mode-insecure-1>Development Mode (Insecure)</a></li></ul></li><li><a href=#basic-operations>Basic Operations</a><ul><li><a href=#writing-data>Writing Data</a></li><li><a href=#reading-data>Reading Data</a></li><li><a href=#subscribing-to-changes-zeromq>Subscribing to Changes (ZeroMQ)</a></li></ul></li><li><a href=#common-deployment-patterns>Common Deployment Patterns</a><ul><li><a href=#1-single-server-development>1. Single Server (Development)</a></li><li><a href=#2-server--single-relayer-read-scaling>2. Server + Single Relayer (Read Scaling)</a></li><li><a href=#3-server--multiple-relayers-edge-computing>3. Server + Multiple Relayers (Edge Computing)</a></li><li><a href=#4-multi-hop-relayer--relayer>4. Multi-Hop (Relayer → Relayer)</a></li></ul></li></ul></li></ul></nav></div></aside></main></body></html>
+   --help, -h                show help</code></pre><h3 id="building-with-fuzzer-support-optional">Building with Fuzzer Support (Optional)<a class="anchor" href="#building-with-fuzzer-support-optional">#</a></h3>
+<p>For testing and development, you can build with fuzzer support:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go build -tags fuzz -o unisondb ./cmd/unisondb</span></span></code></pre></div><p><strong>Note</strong>: When built with <code>-tags fuzz</code>:</p>
+<ul>
+<li><code>fuzzer</code> command is available</li>
+<li><code>replicator</code> command is <strong>disabled</strong> for safety</li>
+</ul>
+<p>To run fuzzer mode:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config config.toml fuzzer</span></span></code></pre></div><h3 id="installation-to-system-path-optional">Installation to System Path (Optional)<a class="anchor" href="#installation-to-system-path-optional">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Move to system path</span>
+</span></span><span style="display:flex;"><span>sudo mv unisondb /usr/local/bin/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Verify</span>
+</span></span><span style="display:flex;"><span>unisondb --help</span></span></code></pre></div><h2 id="running-in-server-mode">Running in Server Mode<a class="anchor" href="#running-in-server-mode">#</a></h2>
+<p>Server Mode runs UnisonDB as a <strong>primary instance</strong> that accepts writes and serves reads.</p>
+<h3 id="1-generate-tls-certificates-recommended">1. Generate TLS Certificates (Recommended)<a class="anchor" href="#1-generate-tls-certificates-recommended">#</a></h3>
+<p>For production or multi-node setups, generate TLS certificates for gRPC:</p>
+<p><strong>Using OpenSSL</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p certs <span style="color:#f92672">&amp;&amp;</span> cd certs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate CA</span>
+</span></span><span style="display:flex;"><span>openssl genrsa -out ca.key <span style="color:#ae81ff">4096</span>
+</span></span><span style="display:flex;"><span>openssl req -new -x509 -key ca.key -sha256 -subj <span style="color:#e6db74">&#34;/CN=UnisonDB CA&#34;</span> -days <span style="color:#ae81ff">365</span> -out ca.crt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate server certificate</span>
+</span></span><span style="display:flex;"><span>openssl genrsa -out server.key <span style="color:#ae81ff">4096</span>
+</span></span><span style="display:flex;"><span>openssl req -new -key server.key -out server.csr -subj <span style="color:#e6db74">&#34;/CN=localhost&#34;</span>
+</span></span><span style="display:flex;"><span>openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <span style="color:#ae81ff">365</span> -sha256
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate client certificate</span>
+</span></span><span style="display:flex;"><span>openssl genrsa -out client.key <span style="color:#ae81ff">4096</span>
+</span></span><span style="display:flex;"><span>openssl req -new -key client.key -out client.csr -subj <span style="color:#e6db74">&#34;/CN=client&#34;</span>
+</span></span><span style="display:flex;"><span>openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days <span style="color:#ae81ff">365</span> -sha256
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cd ..</span></span></code></pre></div><h3 id="2-create-server-configuration">2. Create Server Configuration<a class="anchor" href="#2-create-server-configuration">#</a></h3>
+<p>Create a <code>server.toml</code> configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## HTTP API port</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## gRPC configuration (for replication)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">4001</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;./certs/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;./certs/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;./certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For development only - allows insecure connections</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Storage configuration</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;./data/server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;users&#34;</span>, <span style="color:#e6db74">&#34;products&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">wal_fsync_interval</span> = <span style="color:#e6db74">&#34;1s&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## WAL cleanup (prevents disk exhaustion)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">wal_cleanup_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">interval</span> = <span style="color:#e6db74">&#34;5m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_age</span> = <span style="color:#e6db74">&#34;1h&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">min_segments</span> = <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_segments</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Write notification coalescing</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">write_notify_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_delay</span> = <span style="color:#e6db74">&#34;20ms&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## ZeroMQ notifications (optional - for local apps)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">default</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5555</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">users</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5556</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Profiling endpoint</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">pprof_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">6060</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Logging</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>.<span style="color:#a6e22e">min_level_percents</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">debug</span> = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">info</span>  = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warn</span>  = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error</span> = <span style="color:#ae81ff">100.0</span></span></span></code></pre></div><h3 id="3-start-the-server">3. Start the Server<a class="anchor" href="#3-start-the-server">#</a></h3>
+<p><strong>Server Mode</strong> (using <code>replicator</code> command):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config server.toml replicator</span></span></code></pre></div><p>You can also put the command before flags:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb replicator --config server.toml</span></span></code></pre></div><h3 id="4-verify-server-is-running">4. Verify Server is Running<a class="anchor" href="#4-verify-server-is-running">#</a></h3>
+<p><strong>Check HTTP health endpoint</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/health</span></span></code></pre></div><h3 id="development-mode-insecure">Development Mode (Insecure)<a class="anchor" href="#development-mode-insecure">#</a></h3>
+<p>For quick local testing without TLS:</p>
+<p><strong>server-dev.toml</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">4001</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">true</span>  <span style="color:#75715e"># WARNING: Development only!</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;./data/server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;debug&#34;</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config server-dev.toml replicator</span></span></code></pre></div><h2 id="running-in-relayer-mode">Running in Relayer Mode<a class="anchor" href="#running-in-relayer-mode">#</a></h2>
+<p>Relayer Mode runs UnisonDB as a <strong>replica</strong> that streams changes from an upstream server.</p>
+<h3 id="1-create-relayer-configuration">1. Create Relayer Configuration<a class="anchor" href="#1-create-relayer-configuration">#</a></h3>
+<p>Create a <code>relayer.toml</code> configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## HTTP API port (different from server)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">5000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## gRPC config (can accept downstream relayers)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">5001</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;./certs/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;./certs/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;./certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Storage configuration</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;./data/relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;users&#34;</span>, <span style="color:#e6db74">&#34;products&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IMPORTANT: segment_size MUST match upstream server!</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Relayer configuration - connects to upstream</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">primary</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;users&#34;</span>, <span style="color:#e6db74">&#34;products&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;./certs/client.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;./certs/client.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;./certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;localhost:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Optional: Connect to multiple upstreams</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [relayer_config.secondary]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># namespaces = [&#34;products&#34;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># upstream_address = &#34;other-server:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cert_path = &#34;./certs/client.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># key_path = &#34;./certs/client.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ca_path = &#34;./certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## ZeroMQ notifications (optional)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">default</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">6555</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Logging</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>.<span style="color:#a6e22e">min_level_percents</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">debug</span> = <span style="color:#ae81ff">1.0</span>   <span style="color:#75715e"># Sample 1% of debug logs</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">info</span>  = <span style="color:#ae81ff">10.0</span>  <span style="color:#75715e"># Sample 10% of info logs</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warn</span>  = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error</span> = <span style="color:#ae81ff">100.0</span></span></span></code></pre></div><h3 id="2-start-the-relayer">2. Start the Relayer<a class="anchor" href="#2-start-the-relayer">#</a></h3>
+<p><strong>Start relayer</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config relayer.toml relayer</span></span></code></pre></div><h3 id="3-enable-grpc-server-on-relayer-multi-hop">3. Enable gRPC Server on Relayer (Multi-Hop)<a class="anchor" href="#3-enable-grpc-server-on-relayer-multi-hop">#</a></h3>
+<p>To allow downstream relayers to connect to this relayer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config relayer.toml --grpc relayer</span></span></code></pre></div><p>This enables the relayer to act as both a <strong>consumer</strong> (from upstream) and a <strong>producer</strong> (to downstream).</p>
+<h3 id="development-mode-insecure-1">Development Mode (Insecure)<a class="anchor" href="#development-mode-insecure-1">#</a></h3>
+<p><strong>relayer-dev.toml</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">5000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">5001</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;./data/relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>  <span style="color:#75715e"># Must match server!</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">primary</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;localhost:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">true</span>  <span style="color:#75715e"># WARNING: Development only!</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;debug&#34;</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb --config relayer-dev.toml relayer</span></span></code></pre></div><h2 id="basic-operations">Basic Operations<a class="anchor" href="#basic-operations">#</a></h2>
+<h3 id="writing-data">Writing Data<a class="anchor" href="#writing-data">#</a></h3>
+<p><strong>Key-Value Write</strong> (via HTTP):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Put a key-value pair</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/namespaces/default/kv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: &#34;user:123&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;value&#34;: &#34;eyJuYW1lIjoiQWxpY2UiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUuY29tIn0=&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Batch Write</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/namespaces/default/kv/batch <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;operations&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {&#34;key&#34;: &#34;user:1&#34;, &#34;value&#34;: &#34;...&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {&#34;key&#34;: &#34;user:2&#34;, &#34;value&#34;: &#34;...&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {&#34;key&#34;: &#34;user:3&#34;, &#34;value&#34;: &#34;...&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><h3 id="reading-data">Reading Data<a class="anchor" href="#reading-data">#</a></h3>
+<p><strong>Read from Server</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/namespaces/default/kv/user:123</span></span></code></pre></div><p><strong>Read from Relayer</strong> (same API):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:5000/api/v1/namespaces/default/kv/user:123</span></span></code></pre></div><h3 id="subscribing-to-changes-zeromq">Subscribing to Changes (ZeroMQ)<a class="anchor" href="#subscribing-to-changes-zeromq">#</a></h3>
+<p><strong>Python example</strong> (install <code>pyzmq</code> first):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> zmq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context <span style="color:#f92672">=</span> zmq<span style="color:#f92672">.</span>Context()
+</span></span><span style="display:flex;"><span>socket <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span>socket(zmq<span style="color:#f92672">.</span>SUB)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Subscribe to &#39;default&#39; namespace</span>
+</span></span><span style="display:flex;"><span>socket<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#34;tcp://localhost:5555&#34;</span>)
+</span></span><span style="display:flex;"><span>socket<span style="color:#f92672">.</span>setsockopt(zmq<span style="color:#f92672">.</span>SUBSCRIBE, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>)  <span style="color:#75715e"># Subscribe to all messages</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Listening for changes on namespace &#39;default&#39;...&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Change notification: </span><span style="color:#e6db74">{</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div><p><strong>Run the subscriber</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python subscriber.py</span></span></code></pre></div><p>Now any writes to the <code>default</code> namespace will trigger notifications!</p>
+<h2 id="common-deployment-patterns">Common Deployment Patterns<a class="anchor" href="#common-deployment-patterns">#</a></h2>
+<h3 id="1-single-server-development">1. Single Server (Development)<a class="anchor" href="#1-single-server-development">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Terminal 1: Start server</span>
+</span></span><span style="display:flex;"><span>./unisondb --config server-dev.toml replicator</span></span></code></pre></div><h3 id="2-server--single-relayer-read-scaling">2. Server + Single Relayer (Read Scaling)<a class="anchor" href="#2-server--single-relayer-read-scaling">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Terminal 1: Start server</span>
+</span></span><span style="display:flex;"><span>./unisondb --config server.toml replicator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 2: Start relayer</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer.toml relayer</span></span></code></pre></div><h3 id="3-server--multiple-relayers-edge-computing">3. Server + Multiple Relayers (Edge Computing)<a class="anchor" href="#3-server--multiple-relayers-edge-computing">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Terminal 1: Start server</span>
+</span></span><span style="display:flex;"><span>./unisondb --config server.toml replicator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 2: Start relayer 1</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer1.toml relayer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 3: Start relayer 2</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer2.toml relayer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 4: Start relayer 3</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer3.toml relayer</span></span></code></pre></div><h3 id="4-multi-hop-relayer--relayer">4. Multi-Hop (Relayer → Relayer)<a class="anchor" href="#4-multi-hop-relayer--relayer">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Terminal 1: Primary server</span>
+</span></span><span style="display:flex;"><span>./unisondb --config server.toml replicator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 2: L1 relayer (with gRPC enabled for downstream)</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer-l1.toml --grpc relayer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Terminal 3: L2 relayer (connects to L1)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Update relayer-l2.toml upstream_address to point to L1 (localhost:5001)</span>
+</span></span><span style="display:flex;"><span>./unisondb --config relayer-l2.toml relayer</span></span></code></pre></div><p>Happy building with UnisonDB!</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/getting-started/_index.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/getting-started/configurations/" class="flex align-center">
+        <span>Configuration</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-started-with-unisondb">Getting Started with UnisonDB</a>
+      <ul>
+        <li><a href="#table-of-contents">Table of Contents</a></li>
+        <li><a href="#prerequisites">Prerequisites</a>
+          <ul>
+            <li><a href="#system-requirements">System Requirements</a></li>
+          </ul>
+        </li>
+        <li><a href="#installation">Installation</a>
+          <ul>
+            <li><a href="#building-from-source">Building from Source</a></li>
+            <li><a href="#building-with-fuzzer-support-optional">Building with Fuzzer Support (Optional)</a></li>
+            <li><a href="#installation-to-system-path-optional">Installation to System Path (Optional)</a></li>
+          </ul>
+        </li>
+        <li><a href="#running-in-server-mode">Running in Server Mode</a>
+          <ul>
+            <li><a href="#1-generate-tls-certificates-recommended">1. Generate TLS Certificates (Recommended)</a></li>
+            <li><a href="#2-create-server-configuration">2. Create Server Configuration</a></li>
+            <li><a href="#3-start-the-server">3. Start the Server</a></li>
+            <li><a href="#4-verify-server-is-running">4. Verify Server is Running</a></li>
+            <li><a href="#development-mode-insecure">Development Mode (Insecure)</a></li>
+          </ul>
+        </li>
+        <li><a href="#running-in-relayer-mode">Running in Relayer Mode</a>
+          <ul>
+            <li><a href="#1-create-relayer-configuration">1. Create Relayer Configuration</a></li>
+            <li><a href="#2-start-the-relayer">2. Start the Relayer</a></li>
+            <li><a href="#3-enable-grpc-server-on-relayer-multi-hop">3. Enable gRPC Server on Relayer (Multi-Hop)</a></li>
+            <li><a href="#development-mode-insecure-1">Development Mode (Insecure)</a></li>
+          </ul>
+        </li>
+        <li><a href="#basic-operations">Basic Operations</a>
+          <ul>
+            <li><a href="#writing-data">Writing Data</a></li>
+            <li><a href="#reading-data">Reading Data</a></li>
+            <li><a href="#subscribing-to-changes-zeromq">Subscribing to Changes (ZeroMQ)</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-deployment-patterns">Common Deployment Patterns</a>
+          <ul>
+            <li><a href="#1-single-server-development">1. Single Server (Development)</a></li>
+            <li><a href="#2-server--single-relayer-read-scaling">2. Server + Single Relayer (Read Scaling)</a></li>
+            <li><a href="#3-server--multiple-relayers-edge-computing">3. Server + Multiple Relayers (Edge Computing)</a></li>
+            <li><a href="#4-multi-hop-relayer--relayer">4. Multi-Hop (Relayer → Relayer)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

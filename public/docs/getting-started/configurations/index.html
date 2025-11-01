@@ -1,194 +1,925 @@
-<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
 Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = "0.0.0.0" ## grpc config for replication [grpc_config] listen_ip = "0.0.0.0" port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = "../../certs/server.crt" key_path = "../../certs/server.key" ca_path = "../../certs/ca.crt" # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = "/tmp/unisondb/server" # Base directory for storage namespaces = ["default", "tenant_1", "tenant_2", "tenant_3", "tenant_4"] bytes_per_sync = "1MB" segment_size = "16MB" arena_size = "4MB" wal_fsync_interval = "1s" ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = "5m" max_age = "1h" min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = "20ms" ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = "info" disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = "10s" enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://unisondb.io/docs/getting-started/configurations/"><meta property="og:site_name" content="UnisonDB"><meta property="og:title" content="Configuration"><meta property="og:description" content='Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
+## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/configurations/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="Configuration">
+  <meta property="og:description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
 Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = "0.0.0.0" ## grpc config for replication [grpc_config] listen_ip = "0.0.0.0" port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = "../../certs/server.crt" key_path = "../../certs/server.key" ca_path = "../../certs/ca.crt" # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = "/tmp/unisondb/server" # Base directory for storage namespaces = ["default", "tenant_1", "tenant_2", "tenant_3", "tenant_4"] bytes_per_sync = "1MB" segment_size = "16MB" arena_size = "4MB" wal_fsync_interval = "1s" ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = "5m" max_age = "1h" min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = "20ms" ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = "info" disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = "10s" enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.'><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="Configuration"><meta itemprop=description content='Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
+## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Configuration">
+  <meta itemprop="description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
 Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = "0.0.0.0" ## grpc config for replication [grpc_config] listen_ip = "0.0.0.0" port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = "../../certs/server.crt" key_path = "../../certs/server.key" ca_path = "../../certs/ca.crt" # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = "/tmp/unisondb/server" # Base directory for storage namespaces = ["default", "tenant_1", "tenant_2", "tenant_3", "tenant_4"] bytes_per_sync = "1MB" segment_size = "16MB" arena_size = "4MB" wal_fsync_interval = "1s" ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = "5m" max_age = "1h" min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = "20ms" ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = "info" disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = "10s" enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.'><meta itemprop=wordCount content="1599"><title>Configuration | UnisonDB</title><link rel=icon href=/images/logo.svg><link rel=manifest href=/manifest.json><link rel=canonical href=https://unisondb.io/docs/getting-started/configurations/><link rel=stylesheet href=/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj+RQ9XBXU=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js integrity="sha256-+G7k8kv2lsr6StYfL+ZjBY+6zH9Q5NnFD2bt0hHM1vI=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XXXXXXXXXX")</script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/images/logo.svg alt=Logo><span>UnisonDB</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/getting-started/>Getting Started</a><ul><li><a href=/docs/getting-started/configurations/ class=active>Configuration</a></li></ul></li><li><a href=/docs/architecture/>Architecture</a><ul></ul></li><li><a href=/docs/api/>API Reference</a><ul><li><a href=/docs/api/http-api/>HTTP API Reference</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>Configuration</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#configuration-guide>Configuration Guide</a><ul><li><a href=#table-of-contents>Table of Contents</a></li><li><a href=#server-mode>Server Mode</a></li><li><a href=#relayer-mode>Relayer Mode</a></li><li><a href=#configuration-reference>Configuration Reference</a><ul><li><a href=#server-configuration>Server Configuration</a></li><li><a href=#storage-configuration>Storage Configuration</a></li><li><a href=#write-notification-configuration>Write Notification Configuration</a></li><li><a href=#zeromq-notifier-configuration>ZeroMQ Notifier Configuration</a></li><li><a href=#relayer-configuration>Relayer Configuration</a></li><li><a href=#logging-configuration>Logging Configuration</a></li><li><a href=#pprof-configuration>PProf Configuration</a></li><li><a href=#fuzzer-configuration>Fuzzer Configuration</a></li></ul></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=configuration-guide>Configuration Guide<a class=anchor href=#configuration-guide>#</a></h1><p>UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.</p><h2 id=table-of-contents>Table of Contents<a class=anchor href=#table-of-contents>#</a></h2><ul><li><a href=#server-mode>Server Mode</a></li><li><a href=#relayer-mode>Relayer Mode</a></li><li><a href=#configuration-reference>Configuration Reference</a></li></ul><h2 id=server-mode>Server Mode<a class=anchor href=#server-mode>#</a></h2><p>Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#75715e>## Port of the http server</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>4000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## grpc config for replication</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>4001</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># SSL/TLS certificate paths for gRPC server</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;../../certs/server.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;../../certs/server.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;../../certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Allow insecure connections (no TLS) - ONLY for development!</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># StorageConfig stores all tunable parameters.</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;/tmp/unisondb/server&#34;</span>   <span style=color:#75715e># Base directory for storage</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;tenant_1&#34;</span>, <span style=color:#e6db74>&#34;tenant_2&#34;</span>, <span style=color:#e6db74>&#34;tenant_3&#34;</span>, <span style=color:#e6db74>&#34;tenant_4&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bytes_per_sync</span> = <span style=color:#e6db74>&#34;1MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>arena_size</span> = <span style=color:#e6db74>&#34;4MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>wal_fsync_interval</span> = <span style=color:#e6db74>&#34;1s&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## WAL cleanup configuration</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>.<span style=color:#a6e22e>wal_cleanup_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>interval</span> = <span style=color:#e6db74>&#34;5m&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_age</span> = <span style=color:#e6db74>&#34;1h&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>min_segments</span> = <span style=color:#ae81ff>5</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_segments</span> = <span style=color:#ae81ff>10</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Write notify config - coalesces notifications from WAL writers to readers</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>write_notify_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_delay</span> = <span style=color:#e6db74>&#34;20ms&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## ZeroMQ notifier configuration (per-namespace)</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Publishes change notifications for local application consumption</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>default</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5555</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>tenant_1</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5556</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>pprof_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>6060</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>disable_timestamp</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## This is for grpc logging only - controls sampling percentages per level</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>.<span style=color:#a6e22e>min_level_percents</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>debug</span> = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>info</span>  = <span style=color:#ae81ff>50.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>warn</span>  = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>error</span> = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Fuzzer configuration (for testing)</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>fuzz_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ops_per_namespace</span> = <span style=color:#ae81ff>400</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>workers_per_namespace</span> = <span style=color:#ae81ff>50</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>local_relayer_count</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>startup_delay</span> = <span style=color:#e6db74>&#34;10s&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enable_read_ops</span> = <span style=color:#66d9ef>false</span></span></span></code></pre></div><h2 id=relayer-mode>Relayer Mode<a class=anchor href=#relayer-mode>#</a></h2><p>Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#75715e>## Port of the http server</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>6000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>6001</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;../../certs/server.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;../../certs/server.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;../../certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;/tmp/unisondb/relayer&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;tenant_1&#34;</span>, <span style=color:#e6db74>&#34;tenant_2&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bytes_per_sync</span> = <span style=color:#e6db74>&#34;1MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## IMPORTANT: segment_size must match upstream server!</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>arena_size</span> = <span style=color:#e6db74>&#34;4MB&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Relayer configuration - can have multiple upstreams</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>.<span style=color:#a6e22e>relayer1</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;tenant_1&#34;</span>, <span style=color:#e6db74>&#34;tenant_2&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;../../certs/client.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;../../certs/client.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;../../certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>upstream_address</span> = <span style=color:#e6db74>&#34;localhost:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_lag_threshold</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Optional: custom gRPC service config JSON</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>grpc_service_config</span> = <span style=color:#e6db74>&#34;&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>## Optional: Add more relayers for different upstream sources</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>.<span style=color:#a6e22e>relayer2</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;tenant_3&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;../../certs/client2.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;../../certs/client2.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;../../certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>upstream_address</span> = <span style=color:#e6db74>&#34;remote-server:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_lag_threshold</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>.<span style=color:#a6e22e>min_level_percents</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>debug</span> = <span style=color:#ae81ff>0.01</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>info</span> = <span style=color:#ae81ff>1.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>warn</span> = <span style=color:#ae81ff>1.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>error</span> = <span style=color:#ae81ff>1.0</span></span></span></code></pre></div><hr><h2 id=configuration-reference>Configuration Reference<a class=anchor href=#configuration-reference>#</a></h2><h3 id=server-configuration>Server Configuration<a class=anchor href=#server-configuration>#</a></h3><h4 id=http-server>HTTP Server<a class=anchor href=#http-server>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#a6e22e>http_port</span> = <span style=color:#ae81ff>4000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span></span></span></code></pre></div><h5 id=http_port><code>http_port</code><a class=anchor href=#http_port>#</a></h5><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>4000</code></li><li><strong>Description</strong>: Port for the HTTP API server</li></ul><h5 id=listen_ip><code>listen_ip</code><a class=anchor href=#listen_ip>#</a></h5><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>"0.0.0.0"</code></li><li><strong>Description</strong>: IP address to bind HTTP server to</li><li><strong>Note</strong>: Use <code>"127.0.0.1"</code> for localhost-only access</li></ul><h4 id=grpc-configuration>gRPC Configuration<a class=anchor href=#grpc-configuration>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>grpc_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>listen_ip</span> = <span style=color:#e6db74>&#34;0.0.0.0&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>4001</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;/path/to/server.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;/path/to/server.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;/path/to/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span></span></span></code></pre></div><h5 id=listen_ip-1><code>listen_ip</code><a class=anchor href=#listen_ip-1>#</a></h5><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>"0.0.0.0"</code></li><li><strong>Description</strong>: IP address to bind gRPC server to</li></ul><h5 id=port><code>port</code><a class=anchor href=#port>#</a></h5><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>4001</code></li><li><strong>Description</strong>: Port for the gRPC server (used for replication)</li></ul><h5 id=cert_path><code>cert_path</code><a class=anchor href=#cert_path>#</a></h5><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>""</code></li><li><strong>Description</strong>: Path to TLS certificate file (PEM format)</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h5 id=key_path><code>key_path</code><a class=anchor href=#key_path>#</a></h5><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>""</code></li><li><strong>Description</strong>: Path to TLS private key file (PEM format)</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h5 id=ca_path><code>ca_path</code><a class=anchor href=#ca_path>#</a></h5><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>""</code></li><li><strong>Description</strong>: Path to CA certificate file for mTLS</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h5 id=allow_insecure><code>allow_insecure</code><a class=anchor href=#allow_insecure>#</a></h5><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Allow insecure connections without TLS</li><li><strong>Warning</strong>: ONLY use in development! Always enable TLS in production</li></ul><hr><h3 id=storage-configuration>Storage Configuration<a class=anchor href=#storage-configuration>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>base_dir</span> = <span style=color:#e6db74>&#34;./data&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;app&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bytes_per_sync</span> = <span style=color:#e6db74>&#34;1MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_size</span> = <span style=color:#e6db74>&#34;16MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>arena_size</span> = <span style=color:#e6db74>&#34;4MB&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>wal_fsync_interval</span> = <span style=color:#e6db74>&#34;1s&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>disable_entry_type_check</span> = <span style=color:#66d9ef>false</span></span></span></code></pre></div><h4 id=base_dir><code>base_dir</code><a class=anchor href=#base_dir>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Default</strong>: <code>"./data"</code></li><li><strong>Description</strong>: Base directory for all data files (WAL segments, LMDB)</li><li><strong>Note</strong>: Must have write permissions</li></ul><h4 id=namespaces><code>namespaces</code><a class=anchor href=#namespaces>#</a></h4><ul><li><strong>Type</strong>: Array of Strings</li><li><strong>Default</strong>: <code>["default"]</code></li><li><strong>Description</strong>: List of namespaces to create on startup</li><li><strong>Example</strong>: <code>["default", "users", "metrics", "logs"]</code></li><li><strong>Note</strong>: Each namespace is isolated with separate WAL and storage</li></ul><h4 id=bytes_per_sync><code>bytes_per_sync</code><a class=anchor href=#bytes_per_sync>#</a></h4><ul><li><strong>Type</strong>: String (with unit)</li><li><strong>Default</strong>: <code>"1MB"</code></li><li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li><li><strong>Description</strong>: Number of bytes to write before forcing fsync</li></ul><h4 id=segment_size><code>segment_size</code><a class=anchor href=#segment_size>#</a></h4><ul><li><strong>Type</strong>: String (with unit)</li><li><strong>Default</strong>: <code>"16MB"</code></li><li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li><li><strong>Range</strong>: <code>1MB</code> to <code>1GB</code></li><li><strong>Description</strong>: Size of each WAL segment file</li><li><strong>Important</strong>: Must match across server and relayer!</li></ul><h4 id=arena_size><code>arena_size</code><a class=anchor href=#arena_size>#</a></h4><ul><li><strong>Type</strong>: String (with unit)</li><li><strong>Default</strong>: <code>"4MB"</code></li><li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li><li><strong>Range</strong>: <code>1MB</code> to <code>64MB</code></li><li><strong>Description</strong>: Size of the write buffer (memtable)</li><li><strong>Performance</strong>: Larger = fewer flushes, more memory usage</li></ul><h4 id=wal_fsync_interval><code>wal_fsync_interval</code><a class=anchor href=#wal_fsync_interval>#</a></h4><ul><li><strong>Type</strong>: String (duration)</li><li><strong>Default</strong>: <code>"1s"</code></li><li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code>, <code>m</code></li><li><strong>Description</strong>: Interval for periodic WAL fsync</li><li><strong>Trade-off</strong>: Lower = better durability, higher = better performance</li></ul><h4 id=wal-cleanup-configuration>WAL Cleanup Configuration<a class=anchor href=#wal-cleanup-configuration>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>storage_config</span>.<span style=color:#a6e22e>wal_cleanup_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>interval</span> = <span style=color:#e6db74>&#34;5m&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_age</span> = <span style=color:#e6db74>&#34;1h&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>min_segments</span> = <span style=color:#ae81ff>5</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_segments</span> = <span style=color:#ae81ff>10</span></span></span></code></pre></div><h5 id=enabled><code>enabled</code><a class=anchor href=#enabled>#</a></h5><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Enable automatic WAL segment cleanup</li></ul><h5 id=interval><code>interval</code><a class=anchor href=#interval>#</a></h5><ul><li><strong>Type</strong>: String (duration)</li><li><strong>Default</strong>: <code>"5m"</code></li><li><strong>Description</strong>: How often to run cleanup</li></ul><h5 id=max_age><code>max_age</code><a class=anchor href=#max_age>#</a></h5><ul><li><strong>Type</strong>: String (duration)</li><li><strong>Default</strong>: <code>"1h"</code></li><li><strong>Description</strong>: Maximum age of segments before cleanup</li></ul><h5 id=min_segments><code>min_segments</code><a class=anchor href=#min_segments>#</a></h5><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>5</code></li><li><strong>Description</strong>: Minimum number of segments to keep</li></ul><h5 id=max_segments><code>max_segments</code><a class=anchor href=#max_segments>#</a></h5><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>10</code></li><li><strong>Description</strong>: Trigger cleanup when this many segments exist</li></ul><hr><h3 id=write-notification-configuration>Write Notification Configuration<a class=anchor href=#write-notification-configuration>#</a></h3><p>Write notifications coalesce updates from WAL writers to readers, reducing notification overhead.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>write_notify_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>max_delay</span> = <span style=color:#e6db74>&#34;20ms&#34;</span></span></span></code></pre></div><h4 id=enabled-1><code>enabled</code><a class=anchor href=#enabled-1>#</a></h4><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>true</code></li><li><strong>Description</strong>: Enable write notification coalescing</li></ul><h4 id=max_delay><code>max_delay</code><a class=anchor href=#max_delay>#</a></h4><ul><li><strong>Type</strong>: String (duration)</li><li><strong>Default</strong>: <code>"20ms"</code></li><li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code></li><li><strong>Description</strong>: Maximum delay before notifying readers</li><li><strong>Trade-off</strong>: Higher = better batching, higher latency for reads</li></ul><hr><h3 id=zeromq-notifier-configuration>ZeroMQ Notifier Configuration<a class=anchor href=#zeromq-notifier-configuration>#</a></h3><p>UnisonDB can publish change notifications via ZeroMQ PUB/SUB sockets. This allows <strong>local applications</strong> to subscribe to real-time change notifications for specific namespaces.</p><p><strong>Use Case</strong>: Applications running on the same machine can subscribe to a namespace&rsquo;s ZeroMQ socket and receive notifications whenever data changes, enabling reactive architectures.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#75715e>## Each namespace can have its own ZeroMQ notifier</span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>default</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5555</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>notifier_config</span>.<span style=color:#a6e22e>tenant_1</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>bind_port</span> = <span style=color:#ae81ff>5556</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>high_water_mark</span> = <span style=color:#ae81ff>2000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>linger_time</span> = <span style=color:#ae81ff>500</span></span></span></code></pre></div><h4 id=bind_port><code>bind_port</code><a class=anchor href=#bind_port>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Required</strong>: Yes</li><li><strong>Description</strong>: Port to bind ZeroMQ PUB socket to</li><li><strong>Format</strong>: Applications subscribe to <code>tcp://localhost:{bind_port}</code></li></ul><h4 id=high_water_mark><code>high_water_mark</code><a class=anchor href=#high_water_mark>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>1000</code></li><li><strong>Description</strong>: Maximum number of queued messages before blocking</li><li><strong>Note</strong>: Higher values use more memory but reduce message loss</li></ul><h4 id=linger_time><code>linger_time</code><a class=anchor href=#linger_time>#</a></h4><ul><li><strong>Type</strong>: Integer (milliseconds)</li><li><strong>Default</strong>: <code>1000</code></li><li><strong>Description</strong>: How long to wait for pending messages on shutdown</li><li><strong>Range</strong>: <code>0</code> to <code>5000</code> ms</li></ul><p><strong>Example Application Subscription</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> zmq
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context <span style=color:#f92672>=</span> zmq<span style=color:#f92672>.</span>Context()
-</span></span><span style=display:flex><span>socket <span style=color:#f92672>=</span> context<span style=color:#f92672>.</span>socket(zmq<span style=color:#f92672>.</span>SUB)
-</span></span><span style=display:flex><span>socket<span style=color:#f92672>.</span>connect(<span style=color:#e6db74>&#34;tcp://localhost:5555&#34;</span>)  <span style=color:#75715e># Connect to default namespace</span>
-</span></span><span style=display:flex><span>socket<span style=color:#f92672>.</span>setsockopt(zmq<span style=color:#f92672>.</span>SUBSCRIBE, <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;&#34;</span>)   <span style=color:#75715e># Subscribe to all messages</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-</span></span><span style=display:flex><span>    message <span style=color:#f92672>=</span> socket<span style=color:#f92672>.</span>recv()
-</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Received change notification: </span><span style=color:#e6db74>{</span>message<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)</span></span></code></pre></div><hr><h3 id=relayer-configuration>Relayer Configuration<a class=anchor href=#relayer-configuration>#</a></h3><p>Relayer configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:</p><ul><li><strong>Read scaling</strong>: Run multiple read replicas</li><li><strong>Data locality</strong>: Keep data close to consumers in different regions</li><li><strong>Backup</strong>: Maintain hot standbys</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>relayer_config</span>.<span style=color:#a6e22e>relayer1</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>namespaces</span> = [<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;tenant_1&#34;</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>cert_path</span> = <span style=color:#e6db74>&#34;../../certs/client.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>key_path</span> = <span style=color:#e6db74>&#34;../../certs/client.key&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ca_path</span> = <span style=color:#e6db74>&#34;../../certs/ca.crt&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>upstream_address</span> = <span style=color:#e6db74>&#34;primary-server:4001&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>segment_lag_threshold</span> = <span style=color:#ae81ff>100</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>allow_insecure</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>grpc_service_config</span> = <span style=color:#e6db74>&#34;&#34;</span></span></span></code></pre></div><h4 id=map-key-eg-relayer1>Map Key (e.g., <code>relayer1</code>)<a class=anchor href=#map-key-eg-relayer1>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Description</strong>: Unique identifier for this relayer connection</li><li><strong>Note</strong>: Multiple relayers can be configured with different keys</li></ul><h4 id=namespaces-1><code>namespaces</code><a class=anchor href=#namespaces-1>#</a></h4><ul><li><strong>Type</strong>: Array of Strings</li><li><strong>Required</strong>: Yes</li><li><strong>Description</strong>: List of namespaces to replicate from this upstream</li><li><strong>Note</strong>: Namespaces must exist on both upstream and local instance</li></ul><h4 id=cert_path-1><code>cert_path</code><a class=anchor href=#cert_path-1>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Description</strong>: Path to client TLS certificate for mTLS</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h4 id=key_path-1><code>key_path</code><a class=anchor href=#key_path-1>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Description</strong>: Path to client private key for mTLS</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h4 id=ca_path-1><code>ca_path</code><a class=anchor href=#ca_path-1>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Description</strong>: Path to CA certificate to verify upstream server</li><li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li></ul><h4 id=upstream_address><code>upstream_address</code><a class=anchor href=#upstream_address>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Required</strong>: Yes</li><li><strong>Description</strong>: Address of upstream gRPC server</li><li><strong>Format</strong>: <code>host:port</code> (e.g., <code>"localhost:4001"</code>, <code>"10.0.1.5:4001"</code>)</li></ul><h4 id=segment_lag_threshold><code>segment_lag_threshold</code><a class=anchor href=#segment_lag_threshold>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>100</code></li><li><strong>Description</strong>: Maximum segment lag before logging warnings</li><li><strong>Note</strong>: Helps monitor replication health</li></ul><h4 id=allow_insecure-1><code>allow_insecure</code><a class=anchor href=#allow_insecure-1>#</a></h4><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Allow insecure connection to upstream (no TLS)</li><li><strong>Warning</strong>: Only for development!</li></ul><h4 id=grpc_service_config><code>grpc_service_config</code><a class=anchor href=#grpc_service_config>#</a></h4><ul><li><strong>Type</strong>: String (JSON)</li><li><strong>Default</strong>: <code>""</code> (uses built-in defaults)</li><li><strong>Description</strong>: Custom gRPC service configuration JSON</li><li><strong>Advanced</strong>: See gRPC documentation for format</li></ul><hr><h3 id=logging-configuration>Logging Configuration<a class=anchor href=#logging-configuration>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>log_level</span> = <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>disable_timestamp</span> = <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>[<span style=color:#a6e22e>log_config</span>.<span style=color:#a6e22e>min_level_percents</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>debug</span> = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>info</span>  = <span style=color:#ae81ff>50.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>warn</span>  = <span style=color:#ae81ff>100.0</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>error</span> = <span style=color:#ae81ff>100.0</span></span></span></code></pre></div><h4 id=log_level><code>log_level</code><a class=anchor href=#log_level>#</a></h4><ul><li><strong>Type</strong>: String</li><li><strong>Valid Values</strong>: <code>"debug"</code>, <code>"info"</code>, <code>"warn"</code>, <code>"error"</code></li><li><strong>Default</strong>: <code>"info"</code></li><li><strong>Description</strong>: Minimum log level to output</li></ul><h4 id=disable_timestamp><code>disable_timestamp</code><a class=anchor href=#disable_timestamp>#</a></h4><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Disable timestamps in log output</li><li><strong>Use Case</strong>: When running under systemd/journal (timestamps added automatically)</li></ul><h4 id=min_level_percents><code>min_level_percents</code><a class=anchor href=#min_level_percents>#</a></h4><ul><li><strong>Type</strong>: Map of String to Float</li><li><strong>Description</strong>: Sampling percentages for gRPC logging per level</li><li><strong>Range</strong>: <code>0.0</code> to <code>100.0</code></li><li><strong>Purpose</strong>: Reduce log volume in high-traffic scenarios</li><li><strong>Example</strong>: <code>info = 1.0</code> means sample 1% of info logs</li></ul><p><strong>Log Levels</strong>:</p><ul><li><code>debug</code>: <code>100.0</code> = log all debug messages</li><li><code>info</code>: <code>50.0</code> = log 50% of info messages (randomly sampled)</li><li><code>warn</code>: <code>100.0</code> = log all warnings</li><li><code>error</code>: <code>100.0</code> = log all errors</li></ul><hr><h3 id=pprof-configuration>PProf Configuration<a class=anchor href=#pprof-configuration>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>pprof_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enabled</span> = <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>port</span> = <span style=color:#ae81ff>6060</span></span></span></code></pre></div><h4 id=enabled-2><code>enabled</code><a class=anchor href=#enabled-2>#</a></h4><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Enable pprof HTTP server for profiling</li></ul><h4 id=port-1><code>port</code><a class=anchor href=#port-1>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>6060</code></li><li><strong>Description</strong>: Port for pprof HTTP server</li><li><strong>Access</strong>: <code>http://localhost:6060/debug/pprof/</code></li></ul><p><strong>Available Profiles</strong>:</p><ul><li><code>/debug/pprof/heap</code> - Memory allocation</li><li><code>/debug/pprof/goroutine</code> - Goroutine stack traces</li><li><code>/debug/pprof/profile</code> - CPU profile</li><li><code>/debug/pprof/trace</code> - Execution trace</li></ul><hr><h3 id=fuzzer-configuration>Fuzzer Configuration<a class=anchor href=#fuzzer-configuration>#</a></h3><p>Built-in fuzzer for testing and stress testing UnisonDB.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[<span style=color:#a6e22e>fuzz_config</span>]
-</span></span><span style=display:flex><span><span style=color:#a6e22e>ops_per_namespace</span> = <span style=color:#ae81ff>400</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>workers_per_namespace</span> = <span style=color:#ae81ff>50</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>local_relayer_count</span> = <span style=color:#ae81ff>1000</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>startup_delay</span> = <span style=color:#e6db74>&#34;10s&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>enable_read_ops</span> = <span style=color:#66d9ef>false</span></span></span></code></pre></div><h4 id=ops_per_namespace><code>ops_per_namespace</code><a class=anchor href=#ops_per_namespace>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>400</code></li><li><strong>Description</strong>: Number of operations to perform per namespace</li></ul><h4 id=workers_per_namespace><code>workers_per_namespace</code><a class=anchor href=#workers_per_namespace>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>50</code></li><li><strong>Description</strong>: Number of concurrent workers per namespace</li></ul><h4 id=local_relayer_count><code>local_relayer_count</code><a class=anchor href=#local_relayer_count>#</a></h4><ul><li><strong>Type</strong>: Integer</li><li><strong>Default</strong>: <code>1000</code></li><li><strong>Description</strong>: Number of local relayer goroutines to simulate</li></ul><h4 id=startup_delay><code>startup_delay</code><a class=anchor href=#startup_delay>#</a></h4><ul><li><strong>Type</strong>: String (duration)</li><li><strong>Default</strong>: <code>"10s"</code></li><li><strong>Description</strong>: Delay before starting fuzzer</li><li><strong>Purpose</strong>: Allow infrastructure to fully initialize</li></ul><h4 id=enable_read_ops><code>enable_read_ops</code><a class=anchor href=#enable_read_ops>#</a></h4><ul><li><strong>Type</strong>: Boolean</li><li><strong>Default</strong>: <code>false</code></li><li><strong>Description</strong>: Include read operations in fuzzing</li><li><strong>Note</strong>: Generates mixed read/write workload when enabled</li></ul><hr></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div><a class="flex align-center" href=https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/getting-started/configurations.md target=_blank rel="noopener edit"><img src=/icons/edit.svg class=book-icon alt=Edit>
-<span>Edit this page</span></a></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/getting-started/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>Getting Started</span>
-</a></span><span><a href=/docs/architecture/ class="flex align-center"><span>Architecture</span>
-<img src=/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#configuration-guide>Configuration Guide</a><ul><li><a href=#table-of-contents>Table of Contents</a></li><li><a href=#server-mode>Server Mode</a></li><li><a href=#relayer-mode>Relayer Mode</a></li><li><a href=#configuration-reference>Configuration Reference</a><ul><li><a href=#server-configuration>Server Configuration</a></li><li><a href=#storage-configuration>Storage Configuration</a></li><li><a href=#write-notification-configuration>Write Notification Configuration</a></li><li><a href=#zeromq-notifier-configuration>ZeroMQ Notifier Configuration</a></li><li><a href=#relayer-configuration>Relayer Configuration</a></li><li><a href=#logging-configuration>Logging Configuration</a></li><li><a href=#pprof-configuration>PProf Configuration</a></li><li><a href=#fuzzer-configuration>Fuzzer Configuration</a></li></ul></li></ul></li></ul></nav></div></aside></main></body></html>
+## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
+  <meta itemprop="wordCount" content="1599">
+
+<title>Configuration | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/getting-started/configurations/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js" integrity="sha256-&#43;G7k8kv2lsr6StYfL&#43;ZjBY&#43;6zH9Q5NnFD2bt0hHM1vI=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="active">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Configuration</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#configuration-guide">Configuration Guide</a>
+      <ul>
+        <li><a href="#table-of-contents">Table of Contents</a></li>
+        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#relayer-mode">Relayer Mode</a></li>
+        <li><a href="#configuration-reference">Configuration Reference</a>
+          <ul>
+            <li><a href="#server-configuration">Server Configuration</a></li>
+            <li><a href="#storage-configuration">Storage Configuration</a></li>
+            <li><a href="#write-notification-configuration">Write Notification Configuration</a></li>
+            <li><a href="#zeromq-notifier-configuration">ZeroMQ Notifier Configuration</a></li>
+            <li><a href="#relayer-configuration">Relayer Configuration</a></li>
+            <li><a href="#logging-configuration">Logging Configuration</a></li>
+            <li><a href="#pprof-configuration">PProf Configuration</a></li>
+            <li><a href="#fuzzer-configuration">Fuzzer Configuration</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="configuration-guide">Configuration Guide<a class="anchor" href="#configuration-guide">#</a></h1>
+<p>UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.</p>
+<h2 id="table-of-contents">Table of Contents<a class="anchor" href="#table-of-contents">#</a></h2>
+<ul>
+<li><a href="#server-mode">Server Mode</a></li>
+<li><a href="#relayer-mode">Relayer Mode</a></li>
+<li><a href="#configuration-reference">Configuration Reference</a></li>
+</ul>
+<h2 id="server-mode">Server Mode<a class="anchor" href="#server-mode">#</a></h2>
+<p>Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Port of the http server</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## grpc config for replication</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">4001</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SSL/TLS certificate paths for gRPC server</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Allow insecure connections (no TLS) - ONLY for development!</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># StorageConfig stores all tunable parameters.</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;/tmp/unisondb/server&#34;</span>   <span style="color:#75715e"># Base directory for storage</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>, <span style="color:#e6db74">&#34;tenant_2&#34;</span>, <span style="color:#e6db74">&#34;tenant_3&#34;</span>, <span style="color:#e6db74">&#34;tenant_4&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">wal_fsync_interval</span> = <span style="color:#e6db74">&#34;1s&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## WAL cleanup configuration</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">wal_cleanup_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">interval</span> = <span style="color:#e6db74">&#34;5m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_age</span> = <span style="color:#e6db74">&#34;1h&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">min_segments</span> = <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_segments</span> = <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Write notify config - coalesces notifications from WAL writers to readers</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">write_notify_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_delay</span> = <span style="color:#e6db74">&#34;20ms&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## ZeroMQ notifier configuration (per-namespace)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Publishes change notifications for local application consumption</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">default</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5555</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">tenant_1</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5556</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">pprof_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">6060</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">disable_timestamp</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## This is for grpc logging only - controls sampling percentages per level</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>.<span style="color:#a6e22e">min_level_percents</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">debug</span> = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">info</span>  = <span style="color:#ae81ff">50.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warn</span>  = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error</span> = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Fuzzer configuration (for testing)</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">fuzz_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ops_per_namespace</span> = <span style="color:#ae81ff">400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">workers_per_namespace</span> = <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">local_relayer_count</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">startup_delay</span> = <span style="color:#e6db74">&#34;10s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_read_ops</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h2 id="relayer-mode">Relayer Mode<a class="anchor" href="#relayer-mode">#</a></h2>
+<p>Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Port of the http server</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">6000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">6001</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;/tmp/unisondb/relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>, <span style="color:#e6db74">&#34;tenant_2&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## IMPORTANT: segment_size must match upstream server!</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Relayer configuration - can have multiple upstreams</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer1</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>, <span style="color:#e6db74">&#34;tenant_2&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;localhost:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Optional: custom gRPC service config JSON</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_service_config</span> = <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Optional: Add more relayers for different upstream sources</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer2</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;tenant_3&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client2.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client2.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;remote-server:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>.<span style="color:#a6e22e">min_level_percents</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">debug</span> = <span style="color:#ae81ff">0.01</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">info</span> = <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warn</span> = <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error</span> = <span style="color:#ae81ff">1.0</span></span></span></code></pre></div><hr>
+<h2 id="configuration-reference">Configuration Reference<a class="anchor" href="#configuration-reference">#</a></h2>
+<h3 id="server-configuration">Server Configuration<a class="anchor" href="#server-configuration">#</a></h3>
+<h4 id="http-server">HTTP Server<a class="anchor" href="#http-server">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span></span></span></code></pre></div><h5 id="http_port"><code>http_port</code><a class="anchor" href="#http_port">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>4000</code></li>
+<li><strong>Description</strong>: Port for the HTTP API server</li>
+</ul>
+<h5 id="listen_ip"><code>listen_ip</code><a class="anchor" href="#listen_ip">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;0.0.0.0&quot;</code></li>
+<li><strong>Description</strong>: IP address to bind HTTP server to</li>
+<li><strong>Note</strong>: Use <code>&quot;127.0.0.1&quot;</code> for localhost-only access</li>
+</ul>
+<h4 id="grpc-configuration">gRPC Configuration<a class="anchor" href="#grpc-configuration">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">grpc_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">4001</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;/path/to/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;/path/to/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;/path/to/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h5 id="listen_ip-1"><code>listen_ip</code><a class="anchor" href="#listen_ip-1">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;0.0.0.0&quot;</code></li>
+<li><strong>Description</strong>: IP address to bind gRPC server to</li>
+</ul>
+<h5 id="port"><code>port</code><a class="anchor" href="#port">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>4001</code></li>
+<li><strong>Description</strong>: Port for the gRPC server (used for replication)</li>
+</ul>
+<h5 id="cert_path"><code>cert_path</code><a class="anchor" href="#cert_path">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;&quot;</code></li>
+<li><strong>Description</strong>: Path to TLS certificate file (PEM format)</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h5 id="key_path"><code>key_path</code><a class="anchor" href="#key_path">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;&quot;</code></li>
+<li><strong>Description</strong>: Path to TLS private key file (PEM format)</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h5 id="ca_path"><code>ca_path</code><a class="anchor" href="#ca_path">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;&quot;</code></li>
+<li><strong>Description</strong>: Path to CA certificate file for mTLS</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h5 id="allow_insecure"><code>allow_insecure</code><a class="anchor" href="#allow_insecure">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Allow insecure connections without TLS</li>
+<li><strong>Warning</strong>: ONLY use in development! Always enable TLS in production</li>
+</ul>
+<hr>
+<h3 id="storage-configuration">Storage Configuration<a class="anchor" href="#storage-configuration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;./data&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;app&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">wal_fsync_interval</span> = <span style="color:#e6db74">&#34;1s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">disable_entry_type_check</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h4 id="base_dir"><code>base_dir</code><a class="anchor" href="#base_dir">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;./data&quot;</code></li>
+<li><strong>Description</strong>: Base directory for all data files (WAL segments, LMDB)</li>
+<li><strong>Note</strong>: Must have write permissions</li>
+</ul>
+<h4 id="namespaces"><code>namespaces</code><a class="anchor" href="#namespaces">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Array of Strings</li>
+<li><strong>Default</strong>: <code>[&quot;default&quot;]</code></li>
+<li><strong>Description</strong>: List of namespaces to create on startup</li>
+<li><strong>Example</strong>: <code>[&quot;default&quot;, &quot;users&quot;, &quot;metrics&quot;, &quot;logs&quot;]</code></li>
+<li><strong>Note</strong>: Each namespace is isolated with separate WAL and storage</li>
+</ul>
+<h4 id="bytes_per_sync"><code>bytes_per_sync</code><a class="anchor" href="#bytes_per_sync">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (with unit)</li>
+<li><strong>Default</strong>: <code>&quot;1MB&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li>
+<li><strong>Description</strong>: Number of bytes to write before forcing fsync</li>
+</ul>
+<h4 id="segment_size"><code>segment_size</code><a class="anchor" href="#segment_size">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (with unit)</li>
+<li><strong>Default</strong>: <code>&quot;16MB&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li>
+<li><strong>Range</strong>: <code>1MB</code> to <code>1GB</code></li>
+<li><strong>Description</strong>: Size of each WAL segment file</li>
+<li><strong>Important</strong>: Must match across server and relayer!</li>
+</ul>
+<h4 id="arena_size"><code>arena_size</code><a class="anchor" href="#arena_size">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (with unit)</li>
+<li><strong>Default</strong>: <code>&quot;4MB&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li>
+<li><strong>Range</strong>: <code>1MB</code> to <code>64MB</code></li>
+<li><strong>Description</strong>: Size of the write buffer (memtable)</li>
+<li><strong>Performance</strong>: Larger = fewer flushes, more memory usage</li>
+</ul>
+<h4 id="wal_fsync_interval"><code>wal_fsync_interval</code><a class="anchor" href="#wal_fsync_interval">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;1s&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code>, <code>m</code></li>
+<li><strong>Description</strong>: Interval for periodic WAL fsync</li>
+<li><strong>Trade-off</strong>: Lower = better durability, higher = better performance</li>
+</ul>
+<h4 id="wal-cleanup-configuration">WAL Cleanup Configuration<a class="anchor" href="#wal-cleanup-configuration">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">wal_cleanup_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">interval</span> = <span style="color:#e6db74">&#34;5m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_age</span> = <span style="color:#e6db74">&#34;1h&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">min_segments</span> = <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_segments</span> = <span style="color:#ae81ff">10</span></span></span></code></pre></div><h5 id="enabled"><code>enabled</code><a class="anchor" href="#enabled">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Enable automatic WAL segment cleanup</li>
+</ul>
+<h5 id="interval"><code>interval</code><a class="anchor" href="#interval">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;5m&quot;</code></li>
+<li><strong>Description</strong>: How often to run cleanup</li>
+</ul>
+<h5 id="max_age"><code>max_age</code><a class="anchor" href="#max_age">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;1h&quot;</code></li>
+<li><strong>Description</strong>: Maximum age of segments before cleanup</li>
+</ul>
+<h5 id="min_segments"><code>min_segments</code><a class="anchor" href="#min_segments">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>5</code></li>
+<li><strong>Description</strong>: Minimum number of segments to keep</li>
+</ul>
+<h5 id="max_segments"><code>max_segments</code><a class="anchor" href="#max_segments">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>10</code></li>
+<li><strong>Description</strong>: Trigger cleanup when this many segments exist</li>
+</ul>
+<hr>
+<h3 id="write-notification-configuration">Write Notification Configuration<a class="anchor" href="#write-notification-configuration">#</a></h3>
+<p>Write notifications coalesce updates from WAL writers to readers, reducing notification overhead.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">write_notify_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_delay</span> = <span style="color:#e6db74">&#34;20ms&#34;</span></span></span></code></pre></div><h4 id="enabled-1"><code>enabled</code><a class="anchor" href="#enabled-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>true</code></li>
+<li><strong>Description</strong>: Enable write notification coalescing</li>
+</ul>
+<h4 id="max_delay"><code>max_delay</code><a class="anchor" href="#max_delay">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;20ms&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code></li>
+<li><strong>Description</strong>: Maximum delay before notifying readers</li>
+<li><strong>Trade-off</strong>: Higher = better batching, higher latency for reads</li>
+</ul>
+<hr>
+<h3 id="zeromq-notifier-configuration">ZeroMQ Notifier Configuration<a class="anchor" href="#zeromq-notifier-configuration">#</a></h3>
+<p>UnisonDB can publish change notifications via ZeroMQ PUB/SUB sockets. This allows <strong>local applications</strong> to subscribe to real-time change notifications for specific namespaces.</p>
+<p><strong>Use Case</strong>: Applications running on the same machine can subscribe to a namespace&rsquo;s ZeroMQ socket and receive notifications whenever data changes, enabling reactive architectures.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Each namespace can have its own ZeroMQ notifier</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">default</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5555</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">notifier_config</span>.<span style="color:#a6e22e">tenant_1</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_port</span> = <span style="color:#ae81ff">5556</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">high_water_mark</span> = <span style="color:#ae81ff">2000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">linger_time</span> = <span style="color:#ae81ff">500</span></span></span></code></pre></div><h4 id="bind_port"><code>bind_port</code><a class="anchor" href="#bind_port">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Required</strong>: Yes</li>
+<li><strong>Description</strong>: Port to bind ZeroMQ PUB socket to</li>
+<li><strong>Format</strong>: Applications subscribe to <code>tcp://localhost:{bind_port}</code></li>
+</ul>
+<h4 id="high_water_mark"><code>high_water_mark</code><a class="anchor" href="#high_water_mark">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>1000</code></li>
+<li><strong>Description</strong>: Maximum number of queued messages before blocking</li>
+<li><strong>Note</strong>: Higher values use more memory but reduce message loss</li>
+</ul>
+<h4 id="linger_time"><code>linger_time</code><a class="anchor" href="#linger_time">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer (milliseconds)</li>
+<li><strong>Default</strong>: <code>1000</code></li>
+<li><strong>Description</strong>: How long to wait for pending messages on shutdown</li>
+<li><strong>Range</strong>: <code>0</code> to <code>5000</code> ms</li>
+</ul>
+<p><strong>Example Application Subscription</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> zmq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context <span style="color:#f92672">=</span> zmq<span style="color:#f92672">.</span>Context()
+</span></span><span style="display:flex;"><span>socket <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span>socket(zmq<span style="color:#f92672">.</span>SUB)
+</span></span><span style="display:flex;"><span>socket<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#34;tcp://localhost:5555&#34;</span>)  <span style="color:#75715e"># Connect to default namespace</span>
+</span></span><span style="display:flex;"><span>socket<span style="color:#f92672">.</span>setsockopt(zmq<span style="color:#f92672">.</span>SUBSCRIBE, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>)   <span style="color:#75715e"># Subscribe to all messages</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Received change notification: </span><span style="color:#e6db74">{</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div><hr>
+<h3 id="relayer-configuration">Relayer Configuration<a class="anchor" href="#relayer-configuration">#</a></h3>
+<p>Relayer configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:</p>
+<ul>
+<li><strong>Read scaling</strong>: Run multiple read replicas</li>
+<li><strong>Data locality</strong>: Keep data close to consumers in different regions</li>
+<li><strong>Backup</strong>: Maintain hot standbys</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer1</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;primary-server:4001&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_service_config</span> = <span style="color:#e6db74">&#34;&#34;</span></span></span></code></pre></div><h4 id="map-key-eg-relayer1">Map Key (e.g., <code>relayer1</code>)<a class="anchor" href="#map-key-eg-relayer1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Description</strong>: Unique identifier for this relayer connection</li>
+<li><strong>Note</strong>: Multiple relayers can be configured with different keys</li>
+</ul>
+<h4 id="namespaces-1"><code>namespaces</code><a class="anchor" href="#namespaces-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Array of Strings</li>
+<li><strong>Required</strong>: Yes</li>
+<li><strong>Description</strong>: List of namespaces to replicate from this upstream</li>
+<li><strong>Note</strong>: Namespaces must exist on both upstream and local instance</li>
+</ul>
+<h4 id="cert_path-1"><code>cert_path</code><a class="anchor" href="#cert_path-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Description</strong>: Path to client TLS certificate for mTLS</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h4 id="key_path-1"><code>key_path</code><a class="anchor" href="#key_path-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Description</strong>: Path to client private key for mTLS</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h4 id="ca_path-1"><code>ca_path</code><a class="anchor" href="#ca_path-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Description</strong>: Path to CA certificate to verify upstream server</li>
+<li><strong>Required</strong>: Yes (unless <code>allow_insecure = true</code>)</li>
+</ul>
+<h4 id="upstream_address"><code>upstream_address</code><a class="anchor" href="#upstream_address">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Required</strong>: Yes</li>
+<li><strong>Description</strong>: Address of upstream gRPC server</li>
+<li><strong>Format</strong>: <code>host:port</code> (e.g., <code>&quot;localhost:4001&quot;</code>, <code>&quot;10.0.1.5:4001&quot;</code>)</li>
+</ul>
+<h4 id="segment_lag_threshold"><code>segment_lag_threshold</code><a class="anchor" href="#segment_lag_threshold">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>100</code></li>
+<li><strong>Description</strong>: Maximum segment lag before logging warnings</li>
+<li><strong>Note</strong>: Helps monitor replication health</li>
+</ul>
+<h4 id="allow_insecure-1"><code>allow_insecure</code><a class="anchor" href="#allow_insecure-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Allow insecure connection to upstream (no TLS)</li>
+<li><strong>Warning</strong>: Only for development!</li>
+</ul>
+<h4 id="grpc_service_config"><code>grpc_service_config</code><a class="anchor" href="#grpc_service_config">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (JSON)</li>
+<li><strong>Default</strong>: <code>&quot;&quot;</code> (uses built-in defaults)</li>
+<li><strong>Description</strong>: Custom gRPC service configuration JSON</li>
+<li><strong>Advanced</strong>: See gRPC documentation for format</li>
+</ul>
+<hr>
+<h3 id="logging-configuration">Logging Configuration<a class="anchor" href="#logging-configuration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_level</span> = <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">disable_timestamp</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">log_config</span>.<span style="color:#a6e22e">min_level_percents</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">debug</span> = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">info</span>  = <span style="color:#ae81ff">50.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warn</span>  = <span style="color:#ae81ff">100.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error</span> = <span style="color:#ae81ff">100.0</span></span></span></code></pre></div><h4 id="log_level"><code>log_level</code><a class="anchor" href="#log_level">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Valid Values</strong>: <code>&quot;debug&quot;</code>, <code>&quot;info&quot;</code>, <code>&quot;warn&quot;</code>, <code>&quot;error&quot;</code></li>
+<li><strong>Default</strong>: <code>&quot;info&quot;</code></li>
+<li><strong>Description</strong>: Minimum log level to output</li>
+</ul>
+<h4 id="disable_timestamp"><code>disable_timestamp</code><a class="anchor" href="#disable_timestamp">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Disable timestamps in log output</li>
+<li><strong>Use Case</strong>: When running under systemd/journal (timestamps added automatically)</li>
+</ul>
+<h4 id="min_level_percents"><code>min_level_percents</code><a class="anchor" href="#min_level_percents">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Map of String to Float</li>
+<li><strong>Description</strong>: Sampling percentages for gRPC logging per level</li>
+<li><strong>Range</strong>: <code>0.0</code> to <code>100.0</code></li>
+<li><strong>Purpose</strong>: Reduce log volume in high-traffic scenarios</li>
+<li><strong>Example</strong>: <code>info = 1.0</code> means sample 1% of info logs</li>
+</ul>
+<p><strong>Log Levels</strong>:</p>
+<ul>
+<li><code>debug</code>: <code>100.0</code> = log all debug messages</li>
+<li><code>info</code>: <code>50.0</code> = log 50% of info messages (randomly sampled)</li>
+<li><code>warn</code>: <code>100.0</code> = log all warnings</li>
+<li><code>error</code>: <code>100.0</code> = log all errors</li>
+</ul>
+<hr>
+<h3 id="pprof-configuration">PProf Configuration<a class="anchor" href="#pprof-configuration">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">pprof_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">6060</span></span></span></code></pre></div><h4 id="enabled-2"><code>enabled</code><a class="anchor" href="#enabled-2">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Enable pprof HTTP server for profiling</li>
+</ul>
+<h4 id="port-1"><code>port</code><a class="anchor" href="#port-1">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>6060</code></li>
+<li><strong>Description</strong>: Port for pprof HTTP server</li>
+<li><strong>Access</strong>: <code>http://localhost:6060/debug/pprof/</code></li>
+</ul>
+<p><strong>Available Profiles</strong>:</p>
+<ul>
+<li><code>/debug/pprof/heap</code> - Memory allocation</li>
+<li><code>/debug/pprof/goroutine</code> - Goroutine stack traces</li>
+<li><code>/debug/pprof/profile</code> - CPU profile</li>
+<li><code>/debug/pprof/trace</code> - Execution trace</li>
+</ul>
+<hr>
+<h3 id="fuzzer-configuration">Fuzzer Configuration<a class="anchor" href="#fuzzer-configuration">#</a></h3>
+<p>Built-in fuzzer for testing and stress testing UnisonDB.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">fuzz_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ops_per_namespace</span> = <span style="color:#ae81ff">400</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">workers_per_namespace</span> = <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">local_relayer_count</span> = <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">startup_delay</span> = <span style="color:#e6db74">&#34;10s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_read_ops</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h4 id="ops_per_namespace"><code>ops_per_namespace</code><a class="anchor" href="#ops_per_namespace">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>400</code></li>
+<li><strong>Description</strong>: Number of operations to perform per namespace</li>
+</ul>
+<h4 id="workers_per_namespace"><code>workers_per_namespace</code><a class="anchor" href="#workers_per_namespace">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>50</code></li>
+<li><strong>Description</strong>: Number of concurrent workers per namespace</li>
+</ul>
+<h4 id="local_relayer_count"><code>local_relayer_count</code><a class="anchor" href="#local_relayer_count">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Integer</li>
+<li><strong>Default</strong>: <code>1000</code></li>
+<li><strong>Description</strong>: Number of local relayer goroutines to simulate</li>
+</ul>
+<h4 id="startup_delay"><code>startup_delay</code><a class="anchor" href="#startup_delay">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;10s&quot;</code></li>
+<li><strong>Description</strong>: Delay before starting fuzzer</li>
+<li><strong>Purpose</strong>: Allow infrastructure to fully initialize</li>
+</ul>
+<h4 id="enable_read_ops"><code>enable_read_ops</code><a class="anchor" href="#enable_read_ops">#</a></h4>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li><strong>Description</strong>: Include read operations in fuzzing</li>
+<li><strong>Note</strong>: Generates mixed read/write workload when enabled</li>
+</ul>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/getting-started/configurations.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/getting-started/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Getting Started</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/architecture/" class="flex align-center">
+        <span>Architecture</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#configuration-guide">Configuration Guide</a>
+      <ul>
+        <li><a href="#table-of-contents">Table of Contents</a></li>
+        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#relayer-mode">Relayer Mode</a></li>
+        <li><a href="#configuration-reference">Configuration Reference</a>
+          <ul>
+            <li><a href="#server-configuration">Server Configuration</a></li>
+            <li><a href="#storage-configuration">Storage Configuration</a></li>
+            <li><a href="#write-notification-configuration">Write Notification Configuration</a></li>
+            <li><a href="#zeromq-notifier-configuration">ZeroMQ Notifier Configuration</a></li>
+            <li><a href="#relayer-configuration">Relayer Configuration</a></li>
+            <li><a href="#logging-configuration">Logging Configuration</a></li>
+            <li><a href="#pprof-configuration">PProf Configuration</a></li>
+            <li><a href="#fuzzer-configuration">Fuzzer Configuration</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

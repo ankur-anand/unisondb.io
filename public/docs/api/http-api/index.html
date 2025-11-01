@@ -1,269 +1,934 @@
-<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
 Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n "hello world" | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{"value":"aGVsbG8gd29ybGQ="}&#39;Key-Value Operations# Put KV# Store a key-value pair.
+# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
 Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { "value": "base64-encoded-value" }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H "Content-Type: application/json" \ -d &#39;{ "value": "eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9" }&#39;Response (200 OK):
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://unisondb.io/docs/api/http-api/"><meta property="og:site_name" content="UnisonDB"><meta property="og:title" content="HTTP API Reference"><meta property="og:description" content='HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
+PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
+curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/api/http-api/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="HTTP API Reference">
+  <meta property="og:description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
 Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n "hello world" | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{"value":"aGVsbG8gd29ybGQ="}&#39;Key-Value Operations# Put KV# Store a key-value pair.
+# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
 Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { "value": "base64-encoded-value" }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H "Content-Type: application/json" \ -d &#39;{ "value": "eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9" }&#39;Response (200 OK):'><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="HTTP API Reference"><meta itemprop=description content='HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
+PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
+curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="HTTP API Reference">
+  <meta itemprop="description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
 Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n "hello world" | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{"value":"aGVsbG8gd29ybGQ="}&#39;Key-Value Operations# Put KV# Store a key-value pair.
+# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
 Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { "value": "base64-encoded-value" }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H "Content-Type: application/json" \ -d &#39;{ "value": "eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9" }&#39;Response (200 OK):'><meta itemprop=wordCount content="1066"><title>HTTP API Reference | UnisonDB</title><link rel=icon href=/images/logo.svg><link rel=manifest href=/manifest.json><link rel=canonical href=https://unisondb.io/docs/api/http-api/><link rel=stylesheet href=/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj+RQ9XBXU=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js integrity="sha256-+G7k8kv2lsr6StYfL+ZjBY+6zH9Q5NnFD2bt0hHM1vI=" crossorigin=anonymous></script><script defer src=/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js integrity="sha256-b2+Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC+NdcPIvZhzk=" crossorigin=anonymous></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XXXXXXXXXX")</script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><img src=/images/logo.svg alt=Logo><span>UnisonDB</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/getting-started/>Getting Started</a><ul><li><a href=/docs/getting-started/configurations/>Configuration</a></li></ul></li><li><a href=/docs/architecture/>Architecture</a><ul></ul></li><li><a href=/docs/api/>API Reference</a><ul><li><a href=/docs/api/http-api/ class=active>HTTP API Reference</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>HTTP API Reference</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#http-api-reference>HTTP API Reference</a><ul><li><a href=#base-url>Base URL</a></li><li><a href=#data-encoding>Data Encoding</a></li><li><a href=#key-value-operations>Key-Value Operations</a><ul><li><a href=#put-kv>Put KV</a></li><li><a href=#get-kv>Get KV</a></li><li><a href=#delete-kv>Delete KV</a></li><li><a href=#batch-kv-operations>Batch KV Operations</a></li></ul></li><li><a href=#wide-column-operations>Wide-Column Operations</a><ul><li><a href=#put-row>Put Row</a></li><li><a href=#get-row>Get Row</a></li><li><a href=#get-row-columns>Get Row Columns</a></li><li><a href=#delete-row>Delete Row</a></li><li><a href=#delete-row-columns>Delete Row Columns</a></li><li><a href=#batch-row-operations>Batch Row Operations</a></li></ul></li><li><a href=#large-object-lob-operations>Large Object (LOB) Operations</a><ul><li><a href=#put-lob>Put LOB</a></li><li><a href=#get-lob>Get LOB</a></li></ul></li><li><a href=#transaction-operations>Transaction Operations</a><ul><li><a href=#transaction-lifecycle>Transaction Lifecycle</a></li><li><a href=#begin-transaction>Begin Transaction</a></li><li><a href=#append-kv-to-transaction>Append KV to Transaction</a></li><li><a href=#append-row-to-transaction>Append Row to Transaction</a></li><li><a href=#append-lob-to-transaction>Append LOB to Transaction</a></li><li><a href=#commit-transaction>Commit Transaction</a></li><li><a href=#abort-transaction>Abort Transaction</a></li></ul></li><li><a href=#metadata-operations>Metadata Operations</a><ul><li><a href=#get-current-offset>Get Current Offset</a></li><li><a href=#get-engine-statistics>Get Engine Statistics</a></li><li><a href=#get-checkpoint>Get Checkpoint</a></li></ul></li><li><a href=#error-responses>Error Responses</a><ul><li><a href=#http-status-codes>HTTP Status Codes</a></li><li><a href=#common-errors>Common Errors</a></li></ul></li><li><a href=#complete-transaction-example>Complete Transaction Example</a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=http-api-reference>HTTP API Reference<a class=anchor href=#http-api-reference>#</a></h1><p>Complete reference for UnisonDB&rsquo;s HTTP REST API.</p><h2 id=base-url>Base URL<a class=anchor href=#base-url>#</a></h2><pre tabindex=0><code>http://localhost:4000/api/v1/{namespace}</code></pre><h2 id=data-encoding>Data Encoding<a class=anchor href=#data-encoding>#</a></h2><p>All binary values must be base64-encoded:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Encode a value</span>
-</span></span><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;hello world&#34;</span> | base64
-</span></span><span style=display:flex><span><span style=color:#75715e># Output: aGVsbG8gd29ybGQ=</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Use in request</span>
-</span></span><span style=display:flex><span>curl -X PUT http://localhost:4000/api/v1/default/kv/greeting <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;</span></span></span></code></pre></div><h2 id=key-value-operations>Key-Value Operations<a class=anchor href=#key-value-operations>#</a></h2><h3 id=put-kv>Put KV<a class=anchor href=#put-kv>#</a></h3><p>Store a key-value pair.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>PUT /api/v1/{namespace}/kv/{key}
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;value&#34;: &#34;base64-encoded-value&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -H <span style=color:#e6db74>&#34;Content-Type: application/json&#34;</span> <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p><strong>Errors</strong>:</p><ul><li><code>400 Bad Request</code>: Invalid base64 encoding</li><li><code>404 Not Found</code>: Namespace not found</li><li><code>500 Internal Server Error</code>: Engine error</li></ul><hr><h3 id=get-kv>Get KV<a class=anchor href=#get-kv>#</a></h3><p>Retrieve a value by key.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;value&#34;</span>: <span style=color:#e6db74>&#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p><strong>Response</strong> (404 Not Found):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;value&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=delete-kv>Delete KV<a class=anchor href=#delete-kv>#</a></h3><p>Delete a key.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>DELETE /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X DELETE http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=batch-kv-operations>Batch KV Operations<a class=anchor href=#batch-kv-operations>#</a></h3><p>Perform multiple operations in one request.</p><h4 id=batch-put>Batch Put<a class=anchor href=#batch-put>#</a></h4><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;items&#34;: [
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    {&#34;key&#34;: &#34;key1&#34;, &#34;value&#34;: &#34;dmFsdWUx&#34;},
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    {&#34;key&#34;: &#34;key2&#34;, &#34;value&#34;: &#34;dmFsdWUy&#34;}
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  ]
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/kv/batch <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;items&#34;: [
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      {&#34;key&#34;: &#34;user:1&#34;, &#34;value&#34;: &#34;dXNlcjE=&#34;},
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      {&#34;key&#34;: &#34;user:2&#34;, &#34;value&#34;: &#34;dXNlcjI=&#34;}
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    ]
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;processed&#34;</span>: <span style=color:#ae81ff>2</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h4 id=batch-get>Batch Get<a class=anchor href=#batch-get>#</a></h4><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;get&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;items&#34;</span>: [
-</span></span><span style=display:flex><span>    {<span style=color:#f92672>&#34;key&#34;</span>: <span style=color:#e6db74>&#34;key1&#34;</span>, <span style=color:#f92672>&#34;value&#34;</span>: <span style=color:#e6db74>&#34;dmFsdWUx&#34;</span>, <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>true</span>},
-</span></span><span style=display:flex><span>    {<span style=color:#f92672>&#34;key&#34;</span>: <span style=color:#e6db74>&#34;key2&#34;</span>, <span style=color:#f92672>&#34;value&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>false</span>}
-</span></span><span style=display:flex><span>  ]
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h4 id=batch-delete>Batch Delete<a class=anchor href=#batch-delete>#</a></h4><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;delete&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;processed&#34;</span>: <span style=color:#ae81ff>2</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h2 id=wide-column-operations>Wide-Column Operations<a class=anchor href=#wide-column-operations>#</a></h2><h3 id=put-row>Put Row<a class=anchor href=#put-row>#</a></h3><p>Store a row with multiple columns.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>PUT /api/v1/{namespace}/row/{rowKey}
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;columns&#34;: {
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    &#34;column1&#34;: &#34;base64-value1&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    &#34;column2&#34;: &#34;base64-value2&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  }
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X PUT http://localhost:4000/api/v1/default/row/user:john <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;columns&#34;: {
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;name&#34;: &#34;Sm9obiBEb2U=&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;email&#34;: &#34;am9obkBleGFtcGxlLmNvbQ==&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;age&#34;: &#34;MzA=&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=get-row>Get Row<a class=anchor href=#get-row>#</a></h3><p>Retrieve all columns for a row.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;rowKey&#34;</span>: <span style=color:#e6db74>&#34;user:john&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;columns&#34;</span>: {
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Sm9obiBEb2U=&#34;</span>,
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;email&#34;</span>: <span style=color:#e6db74>&#34;am9obkBleGFtcGxlLmNvbQ==&#34;</span>,
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;age&#34;</span>: <span style=color:#e6db74>&#34;MzA=&#34;</span>
-</span></span><span style=display:flex><span>  },
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=get-row-columns>Get Row Columns<a class=anchor href=#get-row-columns>#</a></h3><p>Retrieve specific columns only.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/row/{rowKey}?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl <span style=color:#e6db74>&#34;http://localhost:4000/api/v1/default/row/user:john?columns=name,email&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;rowKey&#34;</span>: <span style=color:#e6db74>&#34;user:john&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;columns&#34;</span>: {
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Sm9obiBEb2U=&#34;</span>,
-</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;email&#34;</span>: <span style=color:#e6db74>&#34;am9obkBleGFtcGxlLmNvbQ==&#34;</span>
-</span></span><span style=display:flex><span>  },
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=delete-row>Delete Row<a class=anchor href=#delete-row>#</a></h3><p>Delete an entire row.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>DELETE /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X DELETE http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=delete-row-columns>Delete Row Columns<a class=anchor href=#delete-row-columns>#</a></h3><p>Delete specific columns from a row.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>DELETE /api/v1/{namespace}/row/{rowKey}/columns?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X DELETE <span style=color:#e6db74>&#34;http://localhost:4000/api/v1/default/row/user:john/columns?columns=age,city&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=batch-row-operations>Batch Row Operations<a class=anchor href=#batch-row-operations>#</a></h3><h4 id=batch-put-rows>Batch Put Rows<a class=anchor href=#batch-put-rows>#</a></h4><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/row/batch
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;rows&#34;: [
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    {
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>      &#34;rowKey&#34;: &#34;user:1&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>      &#34;columns&#34;: {
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>        &#34;name&#34;: &#34;QWxpY2U=&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>        &#34;email&#34;: &#34;YWxpY2VAZXhhbXBsZS5jb20=&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>      }
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    }
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  ]
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;processed&#34;</span>: <span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h4 id=batch-get-rows>Batch Get Rows<a class=anchor href=#batch-get-rows>#</a></h4><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/row/batch
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;get&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;rowKeys&#34;: [&#34;user:1&#34;, &#34;user:2&#34;]
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;rows&#34;</span>: [
-</span></span><span style=display:flex><span>    {
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;rowKey&#34;</span>: <span style=color:#e6db74>&#34;user:1&#34;</span>,
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;columns&#34;</span>: {<span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;QWxpY2U=&#34;</span>},
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>    },
-</span></span><span style=display:flex><span>    {
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;rowKey&#34;</span>: <span style=color:#e6db74>&#34;user:2&#34;</span>,
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;columns&#34;</span>: {},
-</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;found&#34;</span>: <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  ]
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h2 id=large-object-lob-operations>Large Object (LOB) Operations<a class=anchor href=#large-object-lob-operations>#</a></h2><h3 id=put-lob>Put LOB<a class=anchor href=#put-lob>#</a></h3><p>Upload a large binary object. Check Transaction API.</p><hr><h3 id=get-lob>Get LOB<a class=anchor href=#get-lob>#</a></h3><p>Download a large binary object.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/lob?key={key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl <span style=color:#e6db74>&#34;http://localhost:4000/api/v1/default/lob?key=file:doc.pdf&#34;</span> <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --output document.pdf</span></span></code></pre></div><p><strong>Response</strong>: Binary data stream</p><hr><h2 id=transaction-operations>Transaction Operations<a class=anchor href=#transaction-operations>#</a></h2><p>Transactions allow atomic operations across multiple keys.</p><h3 id=transaction-lifecycle>Transaction Lifecycle<a class=anchor href=#transaction-lifecycle>#</a></h3><pre tabindex=0><code>1. BEGIN    → Get transaction ID
+PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
+curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):">
+  <meta itemprop="wordCount" content="1066">
+
+<title>HTTP API Reference | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/api/http-api/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.f86ee4f24bf696cafa4ad61f2fe663058fbacc7f50e4d9c50f66edd211ccd6f2.js" integrity="sha256-&#43;G7k8kv2lsr6StYfL&#43;ZjBY&#43;6zH9Q5NnFD2bt0hHM1vI=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="active">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>HTTP API Reference</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#http-api-reference">HTTP API Reference</a>
+      <ul>
+        <li><a href="#base-url">Base URL</a></li>
+        <li><a href="#data-encoding">Data Encoding</a></li>
+        <li><a href="#key-value-operations">Key-Value Operations</a>
+          <ul>
+            <li><a href="#put-kv">Put KV</a></li>
+            <li><a href="#get-kv">Get KV</a></li>
+            <li><a href="#delete-kv">Delete KV</a></li>
+            <li><a href="#batch-kv-operations">Batch KV Operations</a></li>
+          </ul>
+        </li>
+        <li><a href="#wide-column-operations">Wide-Column Operations</a>
+          <ul>
+            <li><a href="#put-row">Put Row</a></li>
+            <li><a href="#get-row">Get Row</a></li>
+            <li><a href="#get-row-columns">Get Row Columns</a></li>
+            <li><a href="#delete-row">Delete Row</a></li>
+            <li><a href="#delete-row-columns">Delete Row Columns</a></li>
+            <li><a href="#batch-row-operations">Batch Row Operations</a></li>
+          </ul>
+        </li>
+        <li><a href="#large-object-lob-operations">Large Object (LOB) Operations</a>
+          <ul>
+            <li><a href="#put-lob">Put LOB</a></li>
+            <li><a href="#get-lob">Get LOB</a></li>
+          </ul>
+        </li>
+        <li><a href="#transaction-operations">Transaction Operations</a>
+          <ul>
+            <li><a href="#transaction-lifecycle">Transaction Lifecycle</a></li>
+            <li><a href="#begin-transaction">Begin Transaction</a></li>
+            <li><a href="#append-kv-to-transaction">Append KV to Transaction</a></li>
+            <li><a href="#append-row-to-transaction">Append Row to Transaction</a></li>
+            <li><a href="#append-lob-to-transaction">Append LOB to Transaction</a></li>
+            <li><a href="#commit-transaction">Commit Transaction</a></li>
+            <li><a href="#abort-transaction">Abort Transaction</a></li>
+          </ul>
+        </li>
+        <li><a href="#metadata-operations">Metadata Operations</a>
+          <ul>
+            <li><a href="#get-current-offset">Get Current Offset</a></li>
+            <li><a href="#get-engine-statistics">Get Engine Statistics</a></li>
+            <li><a href="#get-checkpoint">Get Checkpoint</a></li>
+          </ul>
+        </li>
+        <li><a href="#error-responses">Error Responses</a>
+          <ul>
+            <li><a href="#http-status-codes">HTTP Status Codes</a></li>
+            <li><a href="#common-errors">Common Errors</a></li>
+          </ul>
+        </li>
+        <li><a href="#complete-transaction-example">Complete Transaction Example</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="http-api-reference">HTTP API Reference<a class="anchor" href="#http-api-reference">#</a></h1>
+<p>Complete reference for UnisonDB&rsquo;s HTTP REST API.</p>
+<h2 id="base-url">Base URL<a class="anchor" href="#base-url">#</a></h2>
+<pre tabindex="0"><code>http://localhost:4000/api/v1/{namespace}</code></pre><h2 id="data-encoding">Data Encoding<a class="anchor" href="#data-encoding">#</a></h2>
+<p>All binary values must be base64-encoded:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Encode a value</span>
+</span></span><span style="display:flex;"><span>echo -n <span style="color:#e6db74">&#34;hello world&#34;</span> | base64
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Output: aGVsbG8gd29ybGQ=</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use in request</span>
+</span></span><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/greeting <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;</span></span></span></code></pre></div><h2 id="key-value-operations">Key-Value Operations<a class="anchor" href="#key-value-operations">#</a></h2>
+<h3 id="put-kv">Put KV<a class="anchor" href="#put-kv">#</a></h3>
+<p>Store a key-value pair.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT /api/v1/{namespace}/kv/{key}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;value&#34;: &#34;base64-encoded-value&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Errors</strong>:</p>
+<ul>
+<li><code>400 Bad Request</code>: Invalid base64 encoding</li>
+<li><code>404 Not Found</code>: Namespace not found</li>
+<li><code>500 Internal Server Error</code>: Engine error</li>
+</ul>
+<hr>
+<h3 id="get-kv">Get KV<a class="anchor" href="#get-kv">#</a></h3>
+<p>Retrieve a value by key.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Response</strong> (404 Not Found):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="delete-kv">Delete KV<a class="anchor" href="#delete-kv">#</a></h3>
+<p>Delete a key.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="batch-kv-operations">Batch KV Operations<a class="anchor" href="#batch-kv-operations">#</a></h3>
+<p>Perform multiple operations in one request.</p>
+<h4 id="batch-put">Batch Put<a class="anchor" href="#batch-put">#</a></h4>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;items&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {&#34;key&#34;: &#34;key1&#34;, &#34;value&#34;: &#34;dmFsdWUx&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {&#34;key&#34;: &#34;key2&#34;, &#34;value&#34;: &#34;dmFsdWUy&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  ]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/kv/batch <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;operation&#34;: &#34;put&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;items&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {&#34;key&#34;: &#34;user:1&#34;, &#34;value&#34;: &#34;dXNlcjE=&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {&#34;key&#34;: &#34;user:2&#34;, &#34;value&#34;: &#34;dXNlcjI=&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-get">Batch Get<a class="anchor" href="#batch-get">#</a></h4>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;get&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;items&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {<span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key1&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;dmFsdWUx&#34;</span>, <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key2&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">false</span>}
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-delete">Batch Delete<a class="anchor" href="#batch-delete">#</a></h4>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;delete&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h2 id="wide-column-operations">Wide-Column Operations<a class="anchor" href="#wide-column-operations">#</a></h2>
+<h3 id="put-row">Put Row<a class="anchor" href="#put-row">#</a></h3>
+<p>Store a row with multiple columns.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT /api/v1/{namespace}/row/{rowKey}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;columns&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;column1&#34;: &#34;base64-value1&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;column2&#34;: &#34;base64-value2&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/row/user:john <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;columns&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;name&#34;: &#34;Sm9obiBEb2U=&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;email&#34;: &#34;am9obkBleGFtcGxlLmNvbQ==&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;age&#34;: &#34;MzA=&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="get-row">Get Row<a class="anchor" href="#get-row">#</a></h3>
+<p>Retrieve all columns for a row.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:john&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;columns&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Sm9obiBEb2U=&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;am9obkBleGFtcGxlLmNvbQ==&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;age&#34;</span>: <span style="color:#e6db74">&#34;MzA=&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="get-row-columns">Get Row Columns<a class="anchor" href="#get-row-columns">#</a></h3>
+<p>Retrieve specific columns only.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/row/{rowKey}?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/row/user:john?columns=name,email&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:john&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;columns&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Sm9obiBEb2U=&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;am9obkBleGFtcGxlLmNvbQ==&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="delete-row">Delete Row<a class="anchor" href="#delete-row">#</a></h3>
+<p>Delete an entire row.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="delete-row-columns">Delete Row Columns<a class="anchor" href="#delete-row-columns">#</a></h3>
+<p>Delete specific columns from a row.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/row/{rowKey}/columns?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/row/user:john/columns?columns=age,city&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="batch-row-operations">Batch Row Operations<a class="anchor" href="#batch-row-operations">#</a></h3>
+<h4 id="batch-put-rows">Batch Put Rows<a class="anchor" href="#batch-put-rows">#</a></h4>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/row/batch
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rows&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      &#34;rowKey&#34;: &#34;user:1&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      &#34;columns&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &#34;name&#34;: &#34;QWxpY2U=&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &#34;email&#34;: &#34;YWxpY2VAZXhhbXBsZS5jb20=&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  ]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-get-rows">Batch Get Rows<a class="anchor" href="#batch-get-rows">#</a></h4>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/row/batch
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;get&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rowKeys&#34;: [&#34;user:1&#34;, &#34;user:2&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rows&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:1&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;columns&#34;</span>: {<span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;QWxpY2U=&#34;</span>},
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:2&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;columns&#34;</span>: {},
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h2 id="large-object-lob-operations">Large Object (LOB) Operations<a class="anchor" href="#large-object-lob-operations">#</a></h2>
+<h3 id="put-lob">Put LOB<a class="anchor" href="#put-lob">#</a></h3>
+<p>Upload a large binary object. Check Transaction API.</p>
+<hr>
+<h3 id="get-lob">Get LOB<a class="anchor" href="#get-lob">#</a></h3>
+<p>Download a large binary object.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/lob?key={key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/lob?key=file:doc.pdf&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output document.pdf</span></span></code></pre></div><p><strong>Response</strong>: Binary data stream</p>
+<hr>
+<h2 id="transaction-operations">Transaction Operations<a class="anchor" href="#transaction-operations">#</a></h2>
+<p>Transactions allow atomic operations across multiple keys.</p>
+<h3 id="transaction-lifecycle">Transaction Lifecycle<a class="anchor" href="#transaction-lifecycle">#</a></h3>
+<pre tabindex="0"><code>1. BEGIN    → Get transaction ID
 2. APPEND   → Add operations (multiple times)
 3. COMMIT   → Apply atomically
    OR
-3. ABORT    → Cancel transaction</code></pre><h3 id=begin-transaction>Begin Transaction<a class=anchor href=#begin-transaction>#</a></h3><p>Start a new transaction.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/begin
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;entryType&#34;: &#34;kv&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p><ul><li><code>operation</code>: <code>"put"</code>, <code>"update"</code>, or <code>"delete"</code></li><li><code>entryType</code>: <code>"kv"</code>, <code>"row"</code>, or <code>"lob"</code></li></ul><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/begin <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;entryType&#34;: &#34;kv&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;txnId&#34;</span>: <span style=color:#e6db74>&#34;2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p><strong>Save the <code>txnId</code></strong> - you&rsquo;ll need it for subsequent requests!</p><hr><h3 id=append-kv-to-transaction>Append KV to Transaction<a class=anchor href=#append-kv-to-transaction>#</a></h3><p>Add a key-value operation to the transaction.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/{txnId}/kv
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;key&#34;: &#34;mykey&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;value&#34;: &#34;bXl2YWx1ZQ==&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Use the txnId from BEGIN response</span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../kv <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;key&#34;: &#34;account:alice&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;value&#34;: &#34;MTAwMA==&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p><strong>Call this endpoint multiple times</strong> to add multiple operations to the same transaction.</p><hr><h3 id=append-row-to-transaction>Append Row to Transaction<a class=anchor href=#append-row-to-transaction>#</a></h3><p>Add a row operation to the transaction.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/{txnId}/row
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/json
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>{
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;rowKey&#34;: &#34;user:1&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  &#34;columns&#34;: {
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    &#34;name&#34;: &#34;QWxpY2U=&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>    &#34;status&#34;: &#34;YWN0aXZl&#34;
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>  }
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/<span style=color:#f92672>{</span>txnId<span style=color:#f92672>}</span>/row <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;rowKey&#34;: &#34;user:charlie&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;columns&#34;: {
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;name&#34;: &#34;Q2hhcmxpZQ==&#34;,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;email&#34;: &#34;Y2hhcmxpZUBleGFtcGxlLmNvbQ==&#34;
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=append-lob-to-transaction>Append LOB to Transaction<a class=anchor href=#append-lob-to-transaction>#</a></h3><p>Add a large object to the transaction.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/{txnId}/lob?key={key}
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>Content-Type: application/octet-stream
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
-</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>&lt;binary data&gt;</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST <span style=color:#e6db74>&#34;http://localhost:4000/api/v1/default/tx/{txnId}/lob?key=file:backup.tar.gz&#34;</span> <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --data-binary @backup.tar.gz</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=commit-transaction>Commit Transaction<a class=anchor href=#commit-transaction>#</a></h3><p>Apply all operations atomically.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/{txnId}/commit</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../commit</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>After commit:</p><ul><li>All operations are applied atomically</li><li>Transaction ID is no longer valid</li><li>Data is durable and replicated</li></ul><hr><h3 id=abort-transaction>Abort Transaction<a class=anchor href=#abort-transaction>#</a></h3><p>Cancel the transaction without applying changes.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>POST /api/v1/{namespace}/tx/{txnId}/abort</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../abort</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>After abort:</p><ul><li>No operations are applied</li><li>Transaction ID is no longer valid</li><li>All buffered changes are discarded</li></ul><hr><h2 id=metadata-operations>Metadata Operations<a class=anchor href=#metadata-operations>#</a></h2><h3 id=get-current-offset>Get Current Offset<a class=anchor href=#get-current-offset>#</a></h3><p>Get the current WAL position.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/offset</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/default/offset</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;namespace&#34;</span>: <span style=color:#e6db74>&#34;default&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;segmentId&#34;</span>: <span style=color:#ae81ff>5</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;offset&#34;</span>: <span style=color:#ae81ff>12345</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=get-engine-statistics>Get Engine Statistics<a class=anchor href=#get-engine-statistics>#</a></h3><p>Get engine performance statistics.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/stats</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/default/stats</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;namespace&#34;</span>: <span style=color:#e6db74>&#34;default&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;opsReceived&#34;</span>: <span style=color:#ae81ff>15234</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;opsFlushed&#34;</span>: <span style=color:#ae81ff>15100</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;currentSegment&#34;</span>: <span style=color:#ae81ff>5</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;currentOffset&#34;</span>: <span style=color:#ae81ff>12345</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;lastFlushTime&#34;</span>: <span style=color:#e6db74>&#34;2024-01-15T10:30:45Z&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h3 id=get-checkpoint>Get Checkpoint<a class=anchor href=#get-checkpoint>#</a></h3><p>Get the last checkpoint position.</p><p><strong>Request</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>GET /api/v1/{namespace}/checkpoint</span></span></span></code></pre></div><p><strong>Example</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl http://localhost:4000/api/v1/default/checkpoint</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;namespace&#34;</span>: <span style=color:#e6db74>&#34;default&#34;</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;recordProcessed&#34;</span>: <span style=color:#ae81ff>15000</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;segmentId&#34;</span>: <span style=color:#ae81ff>5</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;offset&#34;</span>: <span style=color:#ae81ff>12000</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><hr><h2 id=error-responses>Error Responses<a class=anchor href=#error-responses>#</a></h2><p>All errors follow this format:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;error message description&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><h3 id=http-status-codes>HTTP Status Codes<a class=anchor href=#http-status-codes>#</a></h3><table><thead><tr><th>Code</th><th>Meaning</th><th>Example</th></tr></thead><tbody><tr><td>200</td><td>Success</td><td>Operation completed</td></tr><tr><td>400</td><td>Bad Request</td><td>Invalid base64, malformed JSON</td></tr><tr><td>404</td><td>Not Found</td><td>Namespace not found, key not found, transaction not found</td></tr><tr><td>500</td><td>Internal Server Error</td><td>Engine error, disk full, WAL error</td></tr></tbody></table><h3 id=common-errors>Common Errors<a class=anchor href=#common-errors>#</a></h3><p><strong>Namespace not found</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;namespace not found: invalid-ns&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>Status: <code>404 Not Found</code></p><p><strong>Transaction not found</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;transaction not found: 2a3b4c5d...&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>Status: <code>404 Not Found</code></p><p><strong>Invalid base64</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;invalid base64 encoding&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>Status: <code>400 Bad Request</code></p><p><strong>Engine error</strong>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;failed to write: disk full&#34;</span>
-</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>Status: <code>500 Internal Server Error</code></p><hr><h2 id=complete-transaction-example>Complete Transaction Example<a class=anchor href=#complete-transaction-example>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 1. Begin transaction</span>
-</span></span><span style=display:flex><span>RESPONSE<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>curl -s -X POST http://localhost:4000/api/v1/default/tx/begin <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{&#34;operation&#34;:&#34;put&#34;,&#34;entryType&#34;:&#34;kv&#34;}&#39;</span><span style=color:#66d9ef>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>TXN_ID<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>echo $RESPONSE | jq -r <span style=color:#e6db74>&#39;.txnId&#39;</span><span style=color:#66d9ef>)</span>
-</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;Transaction ID: </span>$TXN_ID<span style=color:#e6db74>&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 2. Append multiple operations</span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{&#34;key&#34;:&#34;account:alice:balance&#34;,&#34;value&#34;:&#34;MTAwMA==&#34;}&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{&#34;key&#34;:&#34;account:bob:balance&#34;,&#34;value&#34;:&#34;MjAwMA==&#34;}&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style=color:#ae81ff>\
-</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -d <span style=color:#e6db74>&#39;{&#34;key&#34;:&#34;transfer:log:123&#34;,&#34;value&#34;:&#34;YWxpY2UgLT4gYm9iOiAxMDA=&#34;}&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 3. Commit</span>
-</span></span><span style=display:flex><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/commit
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;Transaction committed!&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 4. Verify</span>
-</span></span><span style=display:flex><span>curl http://localhost:4000/api/v1/default/kv/account:alice:balance</span></span></code></pre></div><hr></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div><a class="flex align-center" href=https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/api/http-api.md target=_blank rel="noopener edit"><img src=/icons/edit.svg class=book-icon alt=Edit>
-<span>Edit this page</span></a></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/api/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
-<span>API Reference</span>
-</a></span><span></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#http-api-reference>HTTP API Reference</a><ul><li><a href=#base-url>Base URL</a></li><li><a href=#data-encoding>Data Encoding</a></li><li><a href=#key-value-operations>Key-Value Operations</a><ul><li><a href=#put-kv>Put KV</a></li><li><a href=#get-kv>Get KV</a></li><li><a href=#delete-kv>Delete KV</a></li><li><a href=#batch-kv-operations>Batch KV Operations</a></li></ul></li><li><a href=#wide-column-operations>Wide-Column Operations</a><ul><li><a href=#put-row>Put Row</a></li><li><a href=#get-row>Get Row</a></li><li><a href=#get-row-columns>Get Row Columns</a></li><li><a href=#delete-row>Delete Row</a></li><li><a href=#delete-row-columns>Delete Row Columns</a></li><li><a href=#batch-row-operations>Batch Row Operations</a></li></ul></li><li><a href=#large-object-lob-operations>Large Object (LOB) Operations</a><ul><li><a href=#put-lob>Put LOB</a></li><li><a href=#get-lob>Get LOB</a></li></ul></li><li><a href=#transaction-operations>Transaction Operations</a><ul><li><a href=#transaction-lifecycle>Transaction Lifecycle</a></li><li><a href=#begin-transaction>Begin Transaction</a></li><li><a href=#append-kv-to-transaction>Append KV to Transaction</a></li><li><a href=#append-row-to-transaction>Append Row to Transaction</a></li><li><a href=#append-lob-to-transaction>Append LOB to Transaction</a></li><li><a href=#commit-transaction>Commit Transaction</a></li><li><a href=#abort-transaction>Abort Transaction</a></li></ul></li><li><a href=#metadata-operations>Metadata Operations</a><ul><li><a href=#get-current-offset>Get Current Offset</a></li><li><a href=#get-engine-statistics>Get Engine Statistics</a></li><li><a href=#get-checkpoint>Get Checkpoint</a></li></ul></li><li><a href=#error-responses>Error Responses</a><ul><li><a href=#http-status-codes>HTTP Status Codes</a></li><li><a href=#common-errors>Common Errors</a></li></ul></li><li><a href=#complete-transaction-example>Complete Transaction Example</a></li></ul></li></ul></nav></div></aside></main></body></html>
+3. ABORT    → Cancel transaction</code></pre><h3 id="begin-transaction">Begin Transaction<a class="anchor" href="#begin-transaction">#</a></h3>
+<p>Start a new transaction.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/begin
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;entryType&#34;: &#34;kv&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>operation</code>: <code>&quot;put&quot;</code>, <code>&quot;update&quot;</code>, or <code>&quot;delete&quot;</code></li>
+<li><code>entryType</code>: <code>&quot;kv&quot;</code>, <code>&quot;row&quot;</code>, or <code>&quot;lob&quot;</code></li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/begin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;operation&#34;: &#34;put&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;entryType&#34;: &#34;kv&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;txnId&#34;</span>: <span style="color:#e6db74">&#34;2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Save the <code>txnId</code></strong> - you&rsquo;ll need it for subsequent requests!</p>
+<hr>
+<h3 id="append-kv-to-transaction">Append KV to Transaction<a class="anchor" href="#append-kv-to-transaction">#</a></h3>
+<p>Add a key-value operation to the transaction.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/kv
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;key&#34;: &#34;mykey&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;value&#34;: &#34;bXl2YWx1ZQ==&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Use the txnId from BEGIN response</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../kv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: &#34;account:alice&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;value&#34;: &#34;MTAwMA==&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Call this endpoint multiple times</strong> to add multiple operations to the same transaction.</p>
+<hr>
+<h3 id="append-row-to-transaction">Append Row to Transaction<a class="anchor" href="#append-row-to-transaction">#</a></h3>
+<p>Add a row operation to the transaction.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/row
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rowKey&#34;: &#34;user:1&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;columns&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;name&#34;: &#34;QWxpY2U=&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;status&#34;: &#34;YWN0aXZl&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/row <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;rowKey&#34;: &#34;user:charlie&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;columns&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;name&#34;: &#34;Q2hhcmxpZQ==&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;email&#34;: &#34;Y2hhcmxpZUBleGFtcGxlLmNvbQ==&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="append-lob-to-transaction">Append LOB to Transaction<a class="anchor" href="#append-lob-to-transaction">#</a></h3>
+<p>Add a large object to the transaction.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/lob?key={key}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/octet-stream
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;binary data&gt;</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/tx/{txnId}/lob?key=file:backup.tar.gz&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --data-binary @backup.tar.gz</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="commit-transaction">Commit Transaction<a class="anchor" href="#commit-transaction">#</a></h3>
+<p>Apply all operations atomically.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/commit</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../commit</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>After commit:</p>
+<ul>
+<li>All operations are applied atomically</li>
+<li>Transaction ID is no longer valid</li>
+<li>Data is durable and replicated</li>
+</ul>
+<hr>
+<h3 id="abort-transaction">Abort Transaction<a class="anchor" href="#abort-transaction">#</a></h3>
+<p>Cancel the transaction without applying changes.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/abort</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../abort</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>After abort:</p>
+<ul>
+<li>No operations are applied</li>
+<li>Transaction ID is no longer valid</li>
+<li>All buffered changes are discarded</li>
+</ul>
+<hr>
+<h2 id="metadata-operations">Metadata Operations<a class="anchor" href="#metadata-operations">#</a></h2>
+<h3 id="get-current-offset">Get Current Offset<a class="anchor" href="#get-current-offset">#</a></h3>
+<p>Get the current WAL position.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/offset</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/offset</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;offset&#34;</span>: <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="get-engine-statistics">Get Engine Statistics<a class="anchor" href="#get-engine-statistics">#</a></h3>
+<p>Get engine performance statistics.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/stats</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/stats</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;opsReceived&#34;</span>: <span style="color:#ae81ff">15234</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;opsFlushed&#34;</span>: <span style="color:#ae81ff">15100</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;currentSegment&#34;</span>: <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;currentOffset&#34;</span>: <span style="color:#ae81ff">12345</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;lastFlushTime&#34;</span>: <span style="color:#e6db74">&#34;2024-01-15T10:30:45Z&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h3 id="get-checkpoint">Get Checkpoint<a class="anchor" href="#get-checkpoint">#</a></h3>
+<p>Get the last checkpoint position.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/checkpoint</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/checkpoint</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;recordProcessed&#34;</span>: <span style="color:#ae81ff">15000</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;offset&#34;</span>: <span style="color:#ae81ff">12000</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h2 id="error-responses">Error Responses<a class="anchor" href="#error-responses">#</a></h2>
+<p>All errors follow this format:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;error message description&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h3 id="http-status-codes">HTTP Status Codes<a class="anchor" href="#http-status-codes">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Code</th>
+          <th>Meaning</th>
+          <th>Example</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>200</td>
+          <td>Success</td>
+          <td>Operation completed</td>
+      </tr>
+      <tr>
+          <td>400</td>
+          <td>Bad Request</td>
+          <td>Invalid base64, malformed JSON</td>
+      </tr>
+      <tr>
+          <td>404</td>
+          <td>Not Found</td>
+          <td>Namespace not found, key not found, transaction not found</td>
+      </tr>
+      <tr>
+          <td>500</td>
+          <td>Internal Server Error</td>
+          <td>Engine error, disk full, WAL error</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="common-errors">Common Errors<a class="anchor" href="#common-errors">#</a></h3>
+<p><strong>Namespace not found</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;namespace not found: invalid-ns&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Status: <code>404 Not Found</code></p>
+<p><strong>Transaction not found</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;transaction not found: 2a3b4c5d...&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Status: <code>404 Not Found</code></p>
+<p><strong>Invalid base64</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;invalid base64 encoding&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Status: <code>400 Bad Request</code></p>
+<p><strong>Engine error</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;failed to write: disk full&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Status: <code>500 Internal Server Error</code></p>
+<hr>
+<h2 id="complete-transaction-example">Complete Transaction Example<a class="anchor" href="#complete-transaction-example">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Begin transaction</span>
+</span></span><span style="display:flex;"><span>RESPONSE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s -X POST http://localhost:4000/api/v1/default/tx/begin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;operation&#34;:&#34;put&#34;,&#34;entryType&#34;:&#34;kv&#34;}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TXN_ID<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $RESPONSE | jq -r <span style="color:#e6db74">&#39;.txnId&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Transaction ID: </span>$TXN_ID<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Append multiple operations</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;key&#34;:&#34;account:alice:balance&#34;,&#34;value&#34;:&#34;MTAwMA==&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;key&#34;:&#34;account:bob:balance&#34;,&#34;value&#34;:&#34;MjAwMA==&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/kv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;key&#34;:&#34;transfer:log:123&#34;,&#34;value&#34;:&#34;YWxpY2UgLT4gYm9iOiAxMDA=&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Commit</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/commit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Transaction committed!&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Verify</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/kv/account:alice:balance</span></span></code></pre></div><hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/api/http-api.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/api/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>API Reference</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#http-api-reference">HTTP API Reference</a>
+      <ul>
+        <li><a href="#base-url">Base URL</a></li>
+        <li><a href="#data-encoding">Data Encoding</a></li>
+        <li><a href="#key-value-operations">Key-Value Operations</a>
+          <ul>
+            <li><a href="#put-kv">Put KV</a></li>
+            <li><a href="#get-kv">Get KV</a></li>
+            <li><a href="#delete-kv">Delete KV</a></li>
+            <li><a href="#batch-kv-operations">Batch KV Operations</a></li>
+          </ul>
+        </li>
+        <li><a href="#wide-column-operations">Wide-Column Operations</a>
+          <ul>
+            <li><a href="#put-row">Put Row</a></li>
+            <li><a href="#get-row">Get Row</a></li>
+            <li><a href="#get-row-columns">Get Row Columns</a></li>
+            <li><a href="#delete-row">Delete Row</a></li>
+            <li><a href="#delete-row-columns">Delete Row Columns</a></li>
+            <li><a href="#batch-row-operations">Batch Row Operations</a></li>
+          </ul>
+        </li>
+        <li><a href="#large-object-lob-operations">Large Object (LOB) Operations</a>
+          <ul>
+            <li><a href="#put-lob">Put LOB</a></li>
+            <li><a href="#get-lob">Get LOB</a></li>
+          </ul>
+        </li>
+        <li><a href="#transaction-operations">Transaction Operations</a>
+          <ul>
+            <li><a href="#transaction-lifecycle">Transaction Lifecycle</a></li>
+            <li><a href="#begin-transaction">Begin Transaction</a></li>
+            <li><a href="#append-kv-to-transaction">Append KV to Transaction</a></li>
+            <li><a href="#append-row-to-transaction">Append Row to Transaction</a></li>
+            <li><a href="#append-lob-to-transaction">Append LOB to Transaction</a></li>
+            <li><a href="#commit-transaction">Commit Transaction</a></li>
+            <li><a href="#abort-transaction">Abort Transaction</a></li>
+          </ul>
+        </li>
+        <li><a href="#metadata-operations">Metadata Operations</a>
+          <ul>
+            <li><a href="#get-current-offset">Get Current Offset</a></li>
+            <li><a href="#get-engine-statistics">Get Engine Statistics</a></li>
+            <li><a href="#get-checkpoint">Get Checkpoint</a></li>
+          </ul>
+        </li>
+        <li><a href="#error-responses">Error Responses</a>
+          <ul>
+            <li><a href="#http-status-codes">HTTP Status Codes</a></li>
+            <li><a href="#common-errors">Common Errors</a></li>
+          </ul>
+        </li>
+        <li><a href="#complete-transaction-example">Complete Transaction Example</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
