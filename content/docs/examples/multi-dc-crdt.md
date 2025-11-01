@@ -523,4 +523,4 @@ Have questions or want to contribute? Open an issue on GitHub or join our commun
 
 ---
 
-*Built with UnisonDB - A distributed log-structured storage engine with CRDT support, gRPC replication, and ZeroMQ notifications.*
+*Built with UnisonDB.*
