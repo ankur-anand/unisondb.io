@@ -5,7 +5,7 @@ theme = 'book'
 
 [services]
 [services.googleAnalytics]
-  ID = 'G-XXXXXXXXXX'
+  ID = 'G-GXZKSVMHYJ'
 
 [module]
 [module.hugoVersion]
