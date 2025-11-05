@@ -7,6 +7,8 @@
 {{- $seoTitle := cond .IsHome "UnisonDB – Reactive, Log-Native, Edge Database in Go" (printf "%s | %s" .Title .Site.Title) -}}
 {{- $seoDescription := .Description | default .Site.Params.seo.description | default .Site.Params.description | default "UnisonDB is a reactive, log-native, multi-model database that replicates like a message bus — built in Go for real-time, local-first, edge applications." -}}
 
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "images/apple-touch-icon.png" | absURL }}">
+
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
 

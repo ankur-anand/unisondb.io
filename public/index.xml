@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>UnisonDB – Reactive, Log-Native, Multi-Model Database for the Edge on UnisonDB</title>
+    <title>UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge on UnisonDB</title>
     <link>https://unisondb.io:1313/</link>
-    <description>Recent content in UnisonDB – Reactive, Log-Native, Multi-Model Database for the Edge on UnisonDB</description>
+    <description>Recent content in UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge on UnisonDB</description>
     <generator>Hugo</generator>
     <language>en-US</language>
     <atom:link href="https://unisondb.io:1313/index.xml" rel="self" type="application/rss+xml" />

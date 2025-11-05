@@ -1,17 +1,16 @@
 ---
-title: "UnisonDB – Reactive, Log-Native, Multi-Model Database for the Edge"
-description: "UnisonDB is a reactive, log-native database built in Go — combining B+Tree storage and WAL-based streaming replication for real-time edge apps."
+title: "UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge"
+description: "UnisonDB is a reactive, log-native database built in Go — combining B+Tree storage with WAL-based streaming replication to power real-time, local-first, and edge-scale applications."
 summary: "Reactive, log-native, multi-model database built in Go — with WAL-based streaming replication and B+Tree storage powering real-time, local-first systems at the edge."
 image: "/images/unison_overview.png"
 ---
 
-# UnisonDB
-
+# UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge
 > **Replicates like a message bus. Acts like a database.**
 
 <img src="images/logo.svg" alt="UnisonDB" width="300" />
 
-# What is Unisondb ?
+## What is Unisondb ?
 
 **UnisonDB** is a **reactive, log-native, multi-model database** built for **real-time and edge-scale applications**.  
 It combines **B+Tree storage** with **WAL-based streaming replication**, enabling **near-instant fan-out** across hundreds of replicas — all while preserving **strong consistency and durability**.  
@@ -65,28 +64,28 @@ Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (
 UnisonDB is designed for systems where data and computation must live close together — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
 By co-locating data with the services that use it, UnisonDB eliminates the traditional separation between database and stream processor, allowing applications to react instantly to local changes while staying in sync globally.
 
-### Event-Driven Microservices
+**Event-Driven Microservices**
 
 Use UnisonDB as a reactive state store that behaves like both a database and a message bus. Services can subscribe to change streams to react instantly to updates without an external queue.
 
-### Globaly Synced Cached
+**Globaly Synced Cached**
 
 Deploy UnisonDB near your application servers as a fast, persistent local cache. Unlike Redis or Memcached, UnisonDB provides WAL-backed durability and asynchronous replication, ensuring that cached state can survive restarts and sync globally.
 
 
-### Real-Time Personalization
+**Real-Time Personalization**
 
 Keep user context and recommendation data local to the edge where requests occur. Updates replicate asynchronously to regional hubs — enabling fast, context-aware responses without waiting for a central database.
 
-### Multi-Region Replication
+**Multi-Region Replication**
 
 Replicate data across geographic regions with configurable consistency.
 
-### Ad Delivery & Bidding Systems
+**Ad Delivery & Bidding Systems**
 
 Run bidding logic or campaign evaluation next to local user data. Each region holds its own copy of targeting indexes, ensuring low-latency ad decisions while maintaining eventual global consistency.
 
-### Real-Time Analytics at the Edge
+**Real-Time Analytics at the Edge**
 
 Perform in-situ aggregation, filtering, and anomaly detection close to where data is produced. UnisonDB’s WAL-based replication lets you stream computed insights upward to central clusters without heavy data movement.
 
@@ -114,7 +113,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \
 
 ## Deployment Topologies
 
-### 1. Single Server
+1. **Single Server**
 
 ```
 ┌─────────────────┐
@@ -128,7 +127,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \
 
 Simple deployment for small workloads.
 
-### 2. Primary + Replicas (Read Scaling)
+2. **Primary + Replicas (Read Scaling)**
 
 ```
        ┌─────────────────┐
@@ -146,7 +145,7 @@ Simple deployment for small workloads.
 
 Primary handles all writes, relayers provide read scalability.
 
-### 3. Hub-and-Spoke (Edge Computing)
+3. **Hub-and-Spoke (Edge Computing)**
 
 ```
            ┌──────────────────┐
@@ -169,7 +168,7 @@ Primary handles all writes, relayers provide read scalability.
 
 Central hub replicates to many edge nodes. Each edge serves local apps via ZeroMQ.
 
-### 4. Multi-Hub (Geographic Distribution)
+4. **Multi-Hub (Geographic Distribution)**
 
 ```
 ┌──────────────┐           ┌──────────────┐
@@ -187,7 +186,7 @@ Central hub replicates to many edge nodes. Each edge serves local apps via ZeroM
 
 Multiple hubs for geographic distribution. Each hub can be a server accepting local writes.
 
-### 5. Multi-Hop Relay (Deep Edge)
+5. **Multi-Hop Relay (Deep Edge)**
 
 ```
     ┌─────────┐
@@ -212,7 +211,7 @@ Multiple hubs for geographic distribution. Each hub can be a server accepting lo
 
 Multi-hop replication for deep edge deployments.
 
-### 6. Hybrid: Replication + Local Notifications
+6. **Hybrid: Replication + Local Notifications**
 
 ```
 ┌─────────────────────────────────────┐
@@ -239,10 +238,10 @@ Same instance uses gRPC for replication AND ZeroMQ for local notifications.
 
 ## Documentation
 
-- **[Getting Started](/docs/getting-started/)** - Installation, configuration, and quick start
-- **[Architecture](/docs/architecture/)** - Deep dive into UnisonDB internals
-- **[HTTP API](/docs/api/http-api/)** - REST API reference with examples
-- **[Examples](/docs/examples/)** - Various Use Case Examples
+- **[Start with the Quick Install Guide](/docs/getting-started/)** - Installation, configuration, and quick start
+- **[Explore UnisonDB’s Internal Architecture](/docs/architecture/)** - Deep dive into UnisonDB internals
+- **[Browse the HTTP API Reference](/docs/api/http-api/)** - REST API reference with examples
+- **[Use Cases and Examples](/docs/examples/)** - Various Use Case Examples
 
 ## Community & Support
 
