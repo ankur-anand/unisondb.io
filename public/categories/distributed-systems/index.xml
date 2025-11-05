@@ -2,18 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Distributed Systems on UnisonDB</title>
-    <link>http://localhost:1313/categories/distributed-systems/</link>
+    <link>https://unisondb.io:1313/categories/distributed-systems/</link>
     <description>Recent content in Distributed Systems on UnisonDB</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 01 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/distributed-systems/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-US</language>
+    <atom:link href="https://unisondb.io:1313/categories/distributed-systems/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</title>
-      <link>http://localhost:1313/docs/examples/multi-dc-crdts/</link>
-      <pubDate>Sat, 01 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/examples/multi-dc-crdts/</guid>
-      <description>&lt;p&gt;Hi There&lt;/p&gt;</description>
+      <title>Building Conflict-Free Multi-Datacenter Systems with CRDTs in UnisonDB</title>
+      <link>https://unisondb.io:1313/docs/examples/multi-dc-crdts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://unisondb.io:1313/docs/examples/multi-dc-crdts/</guid>
+      <description>&lt;h1 id=&#34;building-real-time-multi-datacenter-applications-with-crdts-and-edge-notifications-in-unisondb&#34;&gt;Building Real-Time Multi-Datacenter Applications with CRDTs and Edge Notifications in UnisonDB&lt;a class=&#34;anchor&#34; href=&#34;#building-real-time-multi-datacenter-applications-with-crdts-and-edge-notifications-in-unisondb&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;h2 id=&#34;introduction-the-challenge-of-distributed-state-management&#34;&gt;Introduction: The Challenge of Distributed State Management&lt;a class=&#34;anchor&#34; href=&#34;#introduction-the-challenge-of-distributed-state-management&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Imagine you&amp;rsquo;re building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Conflict-free Replicated Data Types (CRDTs)&lt;/strong&gt; offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with &lt;strong&gt;edge notifications&lt;/strong&gt;, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en-US" dir="ltr">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <!--
 Made with Book Theme
@@ -14,13 +14,13 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/configurations/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://unisondb.io:1313/docs/getting-started/configurations/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="Configuration">
   <meta property="og:description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
 Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
 ## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
-  <meta property="og:locale" content="en_us">
+  <meta property="og:locale" content="en_US">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
@@ -34,12 +34,12 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 <title>Configuration | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/getting-started/configurations/">
+<link rel="canonical" href="https://unisondb.io:1313/docs/getting-started/configurations/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.f6283b1a3f4fb9a8729b4faa733ef110303d310414f226d46d89fc9e17eca893.js" integrity="sha256-9ig7Gj9Puahym0&#43;qcz7xEDA9MQQU8ibUbYn8nhfsqJM=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.946abd8f0352f92fbe7509b13988c1efbb149fb0cb29ded13e9a033e8878e4c2.js" integrity="sha256-lGq9jwNS&#43;S&#43;&#43;dQmxOYjB77sUn7DLKd7RPpoDPoh45MI=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -52,7 +52,58 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 </script>
 
 
-  
+  <meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="description" content="A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.">
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="unisondb, unison database, reactive database, log-native database, local-first database, edge database, multi-model database, multimodal database, distributed database, embedded distributed database, streaming replication, write ahead log, WAL, b&#43;tree storage engine, zero-copy replication, real-time sync database, edge computing, golang database, go storage engine, distributed kv store">
+
+
+
+<meta property="og:image" content="https://unisondb.io:1313/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Configuration">
+<meta name="twitter:description" content="A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.">
+<meta name="twitter:image" content="https://unisondb.io:1313/images/og-image.png">
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB – Reactive, Log-Native, Edge Database in Go",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "UnisonDB",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+
 </head>
 <body dir="ltr" class="book-kind-page book-type-docs">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
@@ -201,7 +252,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 
   
     <a href="/docs/examples/multi-dc-crdts/" class="">
-      Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a>
+      Multi-DC CRDT Replication</a>
   
 
         </li>

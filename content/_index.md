@@ -1,21 +1,23 @@
 ---
-title: "UnisonDB"
-type: docs
+title: "UnisonDB – Reactive, Log-Native, Multi-Model Database for the Edge"
+description: "UnisonDB is a reactive, log-native, multi-model database built in Go. It replicates like a message bus, combining B+Tree storage and WAL-based streaming replication for real-time, local-first, and edge-scale applications."
+summary: "Reactive, log-native, multi-model database built in Go — with WAL-based streaming replication and B+Tree storage powering real-time, local-first systems at the edge."
+image: "/images/unison_overview.png"
 ---
 
 # UnisonDB
 
-**A reactive, multi-modal database built on B+Trees and WAL-based streaming replication, designed for local-first, edge-scale applications.**
+> **Replicates like a message bus. Acts like a database.**
 
 <img src="images/logo.svg" alt="UnisonDB" width="300" />
 
+# What is Unisondb ?
 
-> [!NOTE]
-> **What is UnisonDB?**
-> UnisonDB is a log-native database that replicates like a message bus. It combines database semantics with streaming mechanics to provide a powerful foundation for reactive architectures and local-first systems.
+**UnisonDB** is a **reactive, log-native, multi-model database** built for **real-time and edge-scale applications**.  
+It combines **B+Tree storage** with **WAL-based streaming replication**, enabling **near-instant fan-out** across hundreds of replicas — all while preserving **strong consistency and durability**.  
+
 
 ## Key Features
-
 - **Multi-Modal Storage**: Key-Value, Wide-Column, and Large Objects (LOB)
 - **Streaming Replication**: WAL-based replication with sub-second fan-out to 100+ edge replicas
 - **Real-Time Notifications**: ZeroMQ-based change notifications with sub-millisecond latency
@@ -23,72 +25,73 @@ type: docs
 - **Edge-First Design**: Optimized for edge computing and local-first architectures
 - **Namespace Isolation**: Multi-tenancy support with namespace-based isolation
 
-<style>
-.architecture-section { margin: 1rem 0 2rem; }
-
-.architecture-section .architecture-diagram {
-  font-family: "JetBrains Mono","Fira Code", ui-monospace, Menlo, monospace;
-  font-size: 14px;
-  line-height: 1.35;
-  letter-spacing: 0.2px;
-  background: #0b1021;                
-  color: #e6ecff;                     
-  border: 1px solid #4c63ff;          
-  border-radius: 10px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 4px 22px rgba(0,0,0,.18);
-  overflow-x: auto;
-  white-space: pre;
-  opacity: 1 !important;               
-  filter: none !important;           
-}
-
-@media (prefers-color-scheme: light) {
-  .architecture-section .architecture-diagram {
-    background: #0b1021;
-    color: #f4f7ff;
-    border-color: #5b72ff;
-  }
-}
-</style>
-
 <section class="architecture-section">
   <h2>Architecture Highlights</h2>
-  <pre class="architecture-diagram">
-                         ┌───────────────────────────────────────────────┐
-                         │                   UnisonDB                    │
-                         ├───────────────────────────────────────────────┤
-Clients & Systems  ────▶ │           HTTP API (REST / Txn)               │
-                         │       (Reads, Writes, Transactions)           │
-                         ├───────────────────────────────────────────────┤
-                         │                Storage Engine                 │
-                         │   ┌──────────┐  ┌──────────┐  ┌────────┐      │
-                         │   │   KV     │  │   Row    │  │  LOB   │      │
-                         │   └──────────┘  └──────────┘  └────────┘      │
-                         ├───────────────────────────────────────────────┤
-                         │     Log-Native Core: WAL + MemTable +         │
-                         │             B+Tree (LMDB/BoltDB)              │
-                         ├───────────────────────────────────────────────┤
-                         │             Streaming Replication             │
-                         │         (Hub-and-Spoke / Peer-to-Peer)        │
-                         └───────┬───────────────────────────┬───────────┘
-                                 │                           │
-                                 ▼                           ▼
-                        ┌─────────────────┐         ┌─────────────────┐
-                        │   Edge Replica  │  ...    │   Edge Replica  │
-                        │  Local Queries  │         │  Local Queries  │
-                        └────────┬────────┘         └────────┬────────┘
-                                 │                           │
-                                 │  (Post-Commit)            │  (Post-Commit)
-                                 ▼                           ▼
-                       ┌────────────────────────────┐   ┌────────────────────────────┐
-                       │   ZeroMQ PUB/SUB Sidecar   │   │   ZeroMQ PUB/SUB Sidecar   │
-                       │   • Local change feed      │   │   • Local change feed      │
-                       │   • Runs on primary/edge   │   │   • Runs on primary/edge   │
-                       └────────────────────────────┘   └────────────────────────────┘
-  </pre>
 </section>
 
+<img src="images/unison_overview.png"  alt="UnisonDB Overview" />
+
+
+> A **reactive, log-native database** that unifies **storage, streaming, and sync** —  
+> powering the next generation of **edge and real-time systems**.
+
+## Namespace
+
+A single UnisonDB instance can host many namespaces — each namespace is a fully isolated database with its own:
+
+* Write-Ahead Log (WAL)
+* MemTable (in-memory write buffer)
+* B+Tree store (persistent)
+* Each namespace emits its own WAL stream, enabling selective replication and low coupling.
+
+All namespaces are exposed through one unified API and one process — making UnisonDB both multi-tenant and operationally simple.
+
+<img src="images/unisondb_overview_namespace.png"  alt="UnisonDB namespace Overview" />
+
+## Data Model
+
+UnisonDB’s multi-model architecture lets you design data the way your application thinks.
+Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (LOB) storage models — all backed by the same WAL and B+Tree engine — without managing multiple systems.
+
+* **Key-Value**: Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
+<img src="images/kv.png"  alt="kv" width="300"/>
+* **Wide-Column**: Organizes data into rows with multiple named columns — great for structured, evolving entities.
+<img src="images/wide_column.png"  alt="Wide Column" />
+* **Large Object (LOB)**: Manages large binary or text data in chunks — perfect for files, media, or backups.
+<img src="images/chunk_kv.png"  alt="lob" />
+
+## Use Cases
+
+UnisonDB is designed for systems where data and computation must live close together — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
+By co-locating data with the services that use it, UnisonDB eliminates the traditional separation between database and stream processor, allowing applications to react instantly to local changes while staying in sync globally.
+
+### Event-Driven Microservices
+
+Use UnisonDB as a reactive state store that behaves like both a database and a message bus. Services can subscribe to change streams to react instantly to updates without an external queue.
+
+### Globaly Synced Cached
+
+Deploy UnisonDB near your application servers as a fast, persistent local cache. Unlike Redis or Memcached, UnisonDB provides WAL-backed durability and asynchronous replication, ensuring that cached state can survive restarts and sync globally.
+
+
+### Real-Time Personalization
+
+Keep user context and recommendation data local to the edge where requests occur. Updates replicate asynchronously to regional hubs — enabling fast, context-aware responses without waiting for a central database.
+
+### Multi-Region Replication
+
+Replicate data across geographic regions with configurable consistency.
+
+### Ad Delivery & Bidding Systems
+
+Run bidding logic or campaign evaluation next to local user data. Each region holds its own copy of targeting indexes, ensuring low-latency ad decisions while maintaining eventual global consistency.
+
+### Real-Time Analytics at the Edge
+
+Perform in-situ aggregation, filtering, and anomaly detection close to where data is produced. UnisonDB’s WAL-based replication lets you stream computed insights upward to central clusters without heavy data movement.
+
+
+> In essence: UnisonDB is ideal for systems that demand reactivity, locality, and reliability — anywhere you need your data and compute to move together instead of apart.
 
 ## Quick Start
 
@@ -234,25 +237,7 @@ Multi-hop replication for deep edge deployments.
 
 Same instance uses gRPC for replication AND ZeroMQ for local notifications.
 
-## Use Cases
-
-### Edge Computing
-
-Deploy UnisonDB at the edge for low-latency data access with automatic replication to central hubs.
-
-### Local-First Applications
-
-Build responsive applications that work offline and sync when connected.
-
-### Real-Time Analytics
-
-Stream data changes to analytics systems with sub-second latency.
-
-### Multi-Region Replication
-
-Replicate data across geographic regions with configurable consistency.
-
-## Documentation Structure
+## Documentation
 
 - **[Getting Started](/docs/getting-started/)** - Installation, configuration, and quick start
 - **[Architecture](/docs/architecture/)** - Deep dive into UnisonDB internals

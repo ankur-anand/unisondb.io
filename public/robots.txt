@@ -1,0 +1,8 @@
+# Robots.txt for UnisonDB
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://unisondb.io:1313/sitemap.xml

@@ -1,0 +1,30 @@
+{{- $desc := .Description | default .Site.Params.seo.description | default .Site.Params.description -}}
+{{- $title := .Title | default .Site.Title -}}
+{{- $ogImage := .Params.image | default "/images/og-image.png" -}}
+{{- $ogAbs := $ogImage | absURL -}}
+{{- $keywords := .Params.keywords | default .Site.Params.seo.keywords -}}
+{{- $canonical := .Permalink -}}
+{{- $seoTitle := cond .IsHome "UnisonDB – Reactive, Log-Native, Edge Database in Go" (printf "%s | %s" .Title .Site.Title) -}}
+{{- $seoDescription := .Description | default .Site.Params.seo.description | default .Site.Params.description | default "UnisonDB is a reactive, log-native, multi-model database that replicates like a message bus — built in Go for real-time, local-first, edge applications." -}}
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="description" content="{{ $seoDescription }}">
+<meta name="author" content="{{ .Site.Params.seo.author | default "UnisonDB" }}">
+{{- if $keywords }}
+<meta name="keywords" content="{{ delimit $keywords ", " }}">
+{{- end }}
+
+
+{{/* Social images */}}
+<meta property="og:image" content="{{ $ogAbs }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $desc }}">
+<meta name="twitter:image" content="{{ $ogAbs }}">
+{{ with .Site.Params.seo.twitter_site }}<meta name="twitter:site" content="{{ . }}">{{ end }}
+{{ with .Site.Params.seo.twitter_creator }}<meta name="twitter:creator" content="{{ . }}">{{ end }}
+
+{{ partial "seo/ldjson.html" . }}
+
