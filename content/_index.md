@@ -1,6 +1,6 @@
 ---
 title: "UnisonDB – Reactive, Log-Native, Multi-Model Database for the Edge"
-description: "UnisonDB is a reactive, log-native, multi-model database built in Go. It replicates like a message bus, combining B+Tree storage and WAL-based streaming replication for real-time, local-first, and edge-scale applications."
+description: "UnisonDB is a reactive, log-native database built in Go — combining B+Tree storage and WAL-based streaming replication for real-time edge apps."
 summary: "Reactive, log-native, multi-model database built in Go — with WAL-based streaming replication and B+Tree storage powering real-time, local-first systems at the edge."
 image: "/images/unison_overview.png"
 ---
