@@ -61,8 +61,10 @@ Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (
 
 ## Use Cases
 
-UnisonDB is designed for systems where data and computation must live close together — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
-By co-locating data with the services that use it, UnisonDB eliminates the traditional separation between database and stream processor, allowing applications to react instantly to local changes while staying in sync globally.
+UnisonDB is built for **distributed edge-first architectures** systems where **data and computation must live close together** — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
+
+By **co-locating data with the services that use it**, UnisonDB removes the traditional boundary between the database and the application layer.
+Applications can react to local changes instantly, while UnisonDB’s WAL-based replication ensures eventual consistency across all replicas globally.
 
 **Event-Driven Microservices**
 
@@ -111,9 +113,14 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \
   -d '{"value":"bXl2YWx1ZQ=="}'
 ```
 
-## Deployment Topologies
+## Replication Topologies 
 
-1. **Single Server**
+UnisonDB supports multiple replication topologies to match any deployment model — from lightweight single-node setups to globally distributed, multi-region clusters.
+Each topology defines how WAL streams flow between nodes, enabling efficient fan-out, failover, and edge synchronization while preserving durability and consistency.
+
+> Whether scaling reads, syncing remote edges, or maintaining cross-region consistency — UnisonDB’s log-native replication adapts seamlessly to your architecture.
+
+1. **Single Server** Simple deployment for small workloads.
 
 ```
 ┌─────────────────┐
@@ -125,9 +132,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \
 └─────────────────┘
 ```
 
-Simple deployment for small workloads.
-
-2. **Primary + Replicas (Read Scaling)**
+2. **Primary + Replicas (Read Scaling)** Primary handles all writes, relayers provide read scalability.
 
 ```
        ┌─────────────────┐
@@ -143,9 +148,8 @@ Simple deployment for small workloads.
 └─────────────┘   └─────────────┘
 ```
 
-Primary handles all writes, relayers provide read scalability.
 
-3. **Hub-and-Spoke (Edge Computing)**
+3. **Hub-and-Spoke (Edge Computing)** Central hub replicates to many edge nodes. Each edge serves local apps.
 
 ```
            ┌──────────────────┐
@@ -166,9 +170,9 @@ Primary handles all writes, relayers provide read scalability.
     Apps       Apps       Apps
 ```
 
-Central hub replicates to many edge nodes. Each edge serves local apps via ZeroMQ.
 
-4. **Multi-Hub (Geographic Distribution)**
+
+4. **Multi-Hub (Geographic Distribution)** Multiple hubs for geographic distribution. Each hub can be a server accepting local writes.
 
 ```
 ┌──────────────┐           ┌──────────────┐
@@ -184,9 +188,8 @@ Central hub replicates to many edge nodes. Each edge serves local apps via ZeroM
   └────────┘                 └────────┘
 ```
 
-Multiple hubs for geographic distribution. Each hub can be a server accepting local writes.
 
-5. **Multi-Hop Relay (Deep Edge)**
+5. **Multi-Hop Relay (Deep Edge)** Multi-hop replication for deep edge deployments.
 
 ```
     ┌─────────┐
@@ -209,9 +212,9 @@ Multiple hubs for geographic distribution. Each hub can be a server accepting lo
   Apps        Apps
 ```
 
-Multi-hop replication for deep edge deployments.
 
-6. **Hybrid: Replication + Local Notifications**
+
+6. **Hybrid: Replication + Local Notifications** Same instance uses gRPC for replication AND ZeroMQ for local notifications.
 
 ```
 ┌─────────────────────────────────────┐
@@ -233,8 +236,6 @@ Multi-hop replication for deep edge deployments.
     ↓
   Relayers (other machines)
 ```
-
-Same instance uses gRPC for replication AND ZeroMQ for local notifications.
 
 ## Documentation
 
