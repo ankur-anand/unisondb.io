@@ -60,7 +60,7 @@ UnisonDB’s architecture is built around a log-native core that unifies storage
 
 UnisonDB is designed to push intelligence and data closer to where it’s needed — enabling real-time AI and analytics at the edge without sacrificing consistency or durability.
 
-# Multi-Tenancy Architecture
+## Multi-Tenancy Architecture
 
 UnisonDB is designed from the ground up for **multi-tenant environments**, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.
 
