@@ -17,5 +17,8 @@ Learn how to install, configure, and start using UnisonDB.
 ### [Architecture](architecture/)
 Understand the internal design and components of UnisonDB.
 
+### [Deployment](deployment/)
+Deployment topologies, configurations, and operational best practices.
+
 ### [API Reference](api/)
 Complete reference for HTTP and gRPC APIs.

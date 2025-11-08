@@ -30,7 +30,6 @@ keywords: [
 
 ## What is UnisonDB?
 
-
 UnisonDB is an open-source database designed specifically for [**Edge AI**](https://www.ibm.com/think/topics/edge-ai) and [**Edge Computing**](https://en.wikipedia.org/wiki/Edge_computing).  
 
 It is a **reactive**, [**log-native**](https://www.unisondb.io/docs/architecture/) and [**multi-model database**](https://en.wikipedia.org/wiki/Multi-model_database) built for real-time and edge-scale applications.  UnisonDB combines a [**B+Tree storage engine**](https://en.wikipedia.org/wiki/B%2B_tree) with WAL-based ([**Write-Ahead Logging**](https://en.wikipedia.org/wiki/Write-ahead_logging)) streaming replication, enabling near-instant fan-out replication across hundreds of nodes — all while preserving strong consistency and durability.
@@ -88,7 +87,7 @@ UnisonDB’s multi-model architecture lets you design data the way your applicat
 Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (LOB) storage models — all backed by the same WAL and B+Tree engine — without managing multiple systems.
 
 * [**Key-Value**](https://en.wikipedia.org/wiki/Key%E2%80%93value_database): Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
-<img src="images/kv.png"  alt="kv model" width="300"  />
+<img src="images/kv.png"  alt="kv model"  />
 * [**Wide-Column**](https://en.wikipedia.org/wiki/Wide-column_store): Organizes data into rows with multiple named columns — great for structured, evolving entities.
 <img src="images/wide_column.png"  alt="Wide Column model" />
 * **Large Object (LOB)**: Manages large binary or text data in chunks — perfect for files, media, or backups.
@@ -148,7 +147,7 @@ cd unisondb
 go build -o unisondb ./cmd/unisondb
 
 # Run in replicator mode (primary)
-./unisondb server --mode replicator --config config.toml
+./unisondb --config config.toml replicator
 
 # Use the HTTP API
 curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \

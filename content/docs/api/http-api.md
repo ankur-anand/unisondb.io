@@ -1,11 +1,27 @@
 ---
-title: "HTTP API Reference"
-weight: 1
+title: "UnisonDB HTTP API Reference – REST Endpoints and Usage Guide"
+description: "Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments."
+images: ['/images/http_api_overview.png']
+linkTitle: "HTTP API Reference"
+keywords: [
+  "UnisonDB API",
+  "UnisonDB HTTP API",
+  "UnisonDB REST API",
+  "log-native database API",
+  "edge computing API",
+  "AI database API",
+  "database replication API",
+  "namespace management API",
+  "real-time database API",
+  "Go database REST API"
+]
 ---
 
 # HTTP API Reference
 
-Complete reference for UnisonDB's HTTP REST API.
+<img src="/images/http_api_overview.svg" alt="UnisonDB HTTP API" style="max-width: 100%; height: auto;" />
+
+Complete reference for UnisonDB's [HTTP](https://en.wikipedia.org/wiki/HTTP) [REST](https://en.wikipedia.org/wiki/REST) API.
 
 ## Base URL
 
@@ -15,7 +31,7 @@ http://localhost:4000/api/v1/{namespace}
 
 ## Data Encoding
 
-All binary values must be base64-encoded:
+All binary values must be [base64-encoded](https://en.wikipedia.org/wiki/Base64):
 
 ```bash
 # Encode a value
@@ -34,7 +50,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \
 Store a key-value pair.
 
 **Request**:
-```http
+```bash
 PUT /api/v1/{namespace}/kv/{key}
 Content-Type: application/json
 
@@ -71,7 +87,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \
 Retrieve a value by key.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/kv/{key}
 ```
 
@@ -103,7 +119,7 @@ curl http://localhost:4000/api/v1/default/kv/user:123
 Delete a key.
 
 **Request**:
-```http
+```bash
 DELETE /api/v1/{namespace}/kv/{key}
 ```
 
@@ -128,7 +144,7 @@ Perform multiple operations in one request.
 #### Batch Put
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/kv/batch
 Content-Type: application/json
 
@@ -161,34 +177,10 @@ curl -X POST http://localhost:4000/api/v1/default/kv/batch \
 }
 ```
 
-#### Batch Get
-
-**Request**:
-```http
-POST /api/v1/{namespace}/kv/batch
-Content-Type: application/json
-
-{
-  "operation": "get",
-  "keys": ["key1", "key2"]
-}
-```
-
-**Response** (200 OK):
-```json
-{
-  "success": true,
-  "items": [
-    {"key": "key1", "value": "dmFsdWUx", "found": true},
-    {"key": "key2", "value": "", "found": false}
-  ]
-}
-```
-
 #### Batch Delete
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/kv/batch
 Content-Type: application/json
 
@@ -215,7 +207,7 @@ Content-Type: application/json
 Store a row with multiple columns.
 
 **Request**:
-```http
+```bash
 PUT /api/v1/{namespace}/row/{rowKey}
 Content-Type: application/json
 
@@ -253,7 +245,7 @@ curl -X PUT http://localhost:4000/api/v1/default/row/user:john \
 Retrieve all columns for a row.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/row/{rowKey}
 ```
 
@@ -282,7 +274,7 @@ curl http://localhost:4000/api/v1/default/row/user:john
 Retrieve specific columns only.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/row/{rowKey}?columns=col1,col2
 ```
 
@@ -310,7 +302,7 @@ curl "http://localhost:4000/api/v1/default/row/user:john?columns=name,email"
 Delete an entire row.
 
 **Request**:
-```http
+```bash
 DELETE /api/v1/{namespace}/row/{rowKey}
 ```
 
@@ -333,7 +325,7 @@ curl -X DELETE http://localhost:4000/api/v1/default/row/user:john
 Delete specific columns from a row.
 
 **Request**:
-```http
+```bash
 DELETE /api/v1/{namespace}/row/{rowKey}/columns?columns=col1,col2
 ```
 
@@ -356,7 +348,7 @@ curl -X DELETE "http://localhost:4000/api/v1/default/row/user:john/columns?colum
 #### Batch Put Rows
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/row/batch
 Content-Type: application/json
 
@@ -382,38 +374,6 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Get Rows
-
-**Request**:
-```http
-POST /api/v1/{namespace}/row/batch
-Content-Type: application/json
-
-{
-  "operation": "get",
-  "rowKeys": ["user:1", "user:2"]
-}
-```
-
-**Response** (200 OK):
-```json
-{
-  "success": true,
-  "rows": [
-    {
-      "rowKey": "user:1",
-      "columns": {"name": "QWxpY2U="},
-      "found": true
-    },
-    {
-      "rowKey": "user:2",
-      "columns": {},
-      "found": false
-    }
-  ]
-}
-```
-
 ---
 
 ## Large Object (LOB) Operations
@@ -429,7 +389,7 @@ Upload a large binary object. Check Transaction API.
 Download a large binary object.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/lob?key={key}
 ```
 
@@ -462,7 +422,7 @@ Transactions allow atomic operations across multiple keys.
 Start a new transaction.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/begin
 Content-Type: application/json
 
@@ -502,7 +462,7 @@ curl -X POST http://localhost:4000/api/v1/default/tx/begin \
 Add a key-value operation to the transaction.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/{txnId}/kv
 Content-Type: application/json
 
@@ -538,7 +498,7 @@ curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../kv \
 Add a row operation to the transaction.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/{txnId}/row
 Content-Type: application/json
 
@@ -577,7 +537,7 @@ curl -X POST http://localhost:4000/api/v1/default/tx/{txnId}/row \
 Add a large object to the transaction.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/{txnId}/lob?key={key}
 Content-Type: application/octet-stream
 
@@ -604,7 +564,7 @@ curl -X POST "http://localhost:4000/api/v1/default/tx/{txnId}/lob?key=file:backu
 Apply all operations atomically.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/{txnId}/commit
 ```
 
@@ -632,7 +592,7 @@ After commit:
 Cancel the transaction without applying changes.
 
 **Request**:
-```http
+```bash
 POST /api/v1/{namespace}/tx/{txnId}/abort
 ```
 
@@ -651,7 +611,6 @@ curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../abort
 After abort:
 - No operations are applied
 - Transaction ID is no longer valid
-- All buffered changes are discarded
 
 ---
 
@@ -662,7 +621,7 @@ After abort:
 Get the current WAL position.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/offset
 ```
 
@@ -687,7 +646,7 @@ curl http://localhost:4000/api/v1/default/offset
 Get engine performance statistics.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/stats
 ```
 
@@ -715,7 +674,7 @@ curl http://localhost:4000/api/v1/default/stats
 Get the last checkpoint position.
 
 **Request**:
-```http
+```bash
 GET /api/v1/{namespace}/checkpoint
 ```
 
@@ -733,6 +692,159 @@ curl http://localhost:4000/api/v1/default/checkpoint
   "offset": 12000
 }
 ```
+
+---
+
+## Backup Operations
+
+UnisonDB provides APIs for creating durable backups of both WAL segments and B-Tree snapshots. All backup paths must be **relative** to the server's backup root (`<dataDir>/backups/{namespace}`).
+
+### WAL Segment Backup
+
+Create an incremental backup by copying sealed WAL segments.
+
+**Request**:
+```bash
+POST /api/v1/{namespace}/wal/backup
+Content-Type: application/json
+
+{
+  "afterSegmentId": 42,
+  "backupDir": "wal/customer-a"
+}
+```
+
+**Parameters**:
+- `afterSegmentId` (optional): Only copy segments with IDs greater than this value. Omit or set to `0` to copy all sealed segments.
+- `backupDir` (required): **Relative path** within the backup root. Absolute paths or `..` traversal are rejected.
+
+**Example**:
+```bash
+# Backup all segments after segment 100
+curl -X POST http://localhost:4000/api/v1/default/wal/backup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "afterSegmentId": 100,
+    "backupDir": "wal/daily"
+  }'
+```
+
+**Response** (200 OK):
+```json
+{
+  "backups": [
+    {
+      "segmentId": 101,
+      "path": "/var/unison/data/backups/default/wal/daily/000000101.wal"
+    },
+    {
+      "segmentId": 102,
+      "path": "/var/unison/data/backups/default/wal/daily/000000102.wal"
+    }
+  ]
+}
+```
+
+**Use Cases**:
+- Incremental backups for point-in-time recovery
+- Compliance archival of transaction logs
+- Shipping WAL segments to remote storage
+
+**Errors**:
+- `400 Bad Request`: Invalid path (absolute or contains `..`)
+- `404 Not Found`: Namespace not found
+- `500 Internal Server Error`: Filesystem error, permission denied
+
+---
+
+### B-Tree Snapshot Backup
+
+Create a full snapshot of the B-Tree store.
+
+**Request**:
+```bash
+POST /api/v1/{namespace}/btree/backup
+Content-Type: application/json
+
+{
+  "path": "snapshots/users-20250108.snapshot"
+}
+```
+
+**Parameters**:
+- `path` (required): **Relative path** within the backup root. The server writes to `{path}.tmp`, fsyncs, then atomically renames.
+
+**Example**:
+```bash
+# Create a snapshot with today's date
+curl -X POST http://localhost:4000/api/v1/default/btree/backup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "path": "snapshots/backup-'$(date +%Y%m%d)'.db"
+  }'
+```
+
+**Response** (200 OK):
+```json
+{
+  "path": "/var/unison/data/backups/default/snapshots/backup-20250108.db",
+  "bytes": 73400320
+}
+```
+
+**Use Cases**:
+- Full database backups for disaster recovery
+- Creating read-only replicas for analytics
+- Migrating data to new servers
+
+**Errors**:
+- `400 Bad Request`: Invalid path (absolute or contains `..`)
+- `404 Not Found`: Namespace not found
+- `500 Internal Server Error`: Filesystem error, disk full
+
+---
+
+### Backup Workflow Example
+
+Complete backup automation script:
+
+```bash
+#!/bin/bash
+# Daily backup script
+
+NAMESPACE="users"
+DATE=$(date +%Y%m%d)
+STATE_FILE="/var/lib/unison/wal-state.json"
+
+# 1. B-Tree snapshot (daily)
+echo "Creating B-Tree snapshot..."
+curl -X POST http://localhost:4000/api/v1/$NAMESPACE/btree/backup \
+  -H "Content-Type: application/json" \
+  -d "{\"path\": \"snapshots/btree-$DATE.db\"}"
+
+# 2. WAL incremental
+echo "Backing up WAL segments..."
+LAST_SEGMENT=$(jq -r '.lastSegmentId // 0' "$STATE_FILE" 2>/dev/null || echo 0)
+
+RESPONSE=$(curl -s -X POST http://localhost:4000/api/v1/$NAMESPACE/wal/backup \
+  -H "Content-Type: application/json" \
+  -d "{\"afterSegmentId\": $LAST_SEGMENT, \"backupDir\": \"wal/$DATE\"}")
+
+# 3. Update state
+NEW_LAST=$(echo "$RESPONSE" | jq -r '.backups[-1].segmentId // 0')
+if [ "$NEW_LAST" != "0" ]; then
+  echo "{\"lastSegmentId\": $NEW_LAST, \"timestamp\": \"$(date -Iseconds)\"}" > "$STATE_FILE"
+fi
+
+# 4. Compress and upload to S3 (optional)
+BACKUP_ROOT="/var/unison/data/backups/$NAMESPACE"
+tar -czf "/tmp/backup-$DATE.tar.gz" -C "$BACKUP_ROOT" .
+aws s3 cp "/tmp/backup-$DATE.tar.gz" "s3://backups/unison/$NAMESPACE/"
+
+echo "Backup completed successfully"
+```
+
+For detailed backup strategies, automation, and restore procedures, see the [Backup and Restore Guide](../../operations/backup-restore/).
 
 ---
 
