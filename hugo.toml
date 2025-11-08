@@ -7,29 +7,7 @@ theme = 'book'
 enableRobotsTXT = true
 
 [params.seo]
-  description = "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge."
-  keywords = [
-  "unisondb",
-  "unison database",
-  "reactive database",
-  "log-native database",
-  "local-first database",
-  "edge database",
-  "multi-model database",
-  "multimodal database",
-  "distributed database",
-  "embedded distributed database",
-  "streaming replication",
-  "write ahead log",
-  "WAL",
-  "b+tree storage engine",
-  "zero-copy replication",
-  "real-time sync database",
-  "edge computing",
-  "golang database",
-  "go storage engine",
-  "distributed kv store"
-]
+  description = "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale."
   author = "Ankur Anand"
   image = "/images/og-image.png"
   twitter_site = "@in_aanand"
@@ -45,6 +23,8 @@ enableRobotsTXT = true
   min = "0.146.0"
 
 [params]
+  description = "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale."
+  images = ['/images/og-image.png']
   BookTheme = 'light'
   BookLogo = '/images/logo.svg'
   BookFavicon = '/images/logo.svg'

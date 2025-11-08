@@ -9,30 +9,33 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="UnisonDB is a reactive, log-native database built in Go — combining B&#43;Tree storage with WAL-based streaming replication to power real-time, local-first, and edge-scale applications.">
+<meta name="description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://unisondb.io:1313/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge">
-  <meta property="og:description" content="UnisonDB is a reactive, log-native database built in Go — combining B&#43;Tree storage with WAL-based streaming replication to power real-time, local-first, and edge-scale applications.">
+  <meta property="og:title" content="UnisonDB – Log-Native Database For AI And Edge Computing">
+  <meta property="og:description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
-  <meta itemprop="name" content="UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge">
-  <meta itemprop="description" content="UnisonDB is a reactive, log-native database built in Go — combining B&#43;Tree storage with WAL-based streaming replication to power real-time, local-first, and edge-scale applications.">
-  <meta itemprop="wordCount" content="1067">
+  <meta itemprop="name" content="UnisonDB – Log-Native Database For AI And Edge Computing">
+  <meta itemprop="description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
+  <meta itemprop="wordCount" content="1019">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB,unison db,log-native database,reactive database,real-time database,AI database,AI agents,edge AI,edge computing,local-first database,distributed database,streaming replication,Go database,real-time replication,event-driven database,multimodal data storage">
 
-<title>UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge | UnisonDB</title>
+<title>UnisonDB – Log-Native Database For AI And Edge Computing</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="https://unisondb.io:1313/">
+<link rel="canonical" href="http://localhost:1313/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e9bb863a7a1344cad4442db7b4de6ac9e92efff766a3b290b80c12ef4de5e126.js" integrity="sha256-6buGOnoTRMrURC23tN5qyeku//dmo7KQuAwS703l4SY=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -44,23 +47,25 @@ https://github.com/alex-shpak/hugo-book
   gtag('config', 'G-GXZKSVMHYJ');
 </script>
 
-<link rel="alternate" type="application/rss+xml" href="https://unisondb.io:1313/index.xml" title="UnisonDB" />
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="UnisonDB" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="https://unisondb.io:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
-<meta name="keywords" content="unisondb, unison database, reactive database, log-native database, local-first database, edge database, multi-model database, multimodal database, distributed database, embedded distributed database, streaming replication, write ahead log, WAL, b&#43;tree storage engine, zero-copy replication, real-time sync database, edge computing, golang database, go storage engine, distributed kv store">
+<meta name="keywords" content="UnisonDB, unison db, log-native database, reactive database, real-time database, AI database, AI agents, edge AI, edge computing, local-first database, distributed database, streaming replication, Go database, real-time replication, event-driven database, multimodal data storage">
 
 
 
-<meta property="og:image" content="https://unisondb.io:1313/images/unison_overview.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge">
-<meta name="twitter:description" content="UnisonDB is a reactive, log-native database built in Go — combining B&#43;Tree storage with WAL-based streaming replication to power real-time, local-first, and edge-scale applications.">
-<meta name="twitter:image" content="https://unisondb.io:1313/images/unison_overview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="UnisonDB – Log-Native Database For AI And Edge Computing">
+  <meta name="twitter:description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
+
+
+
 <meta name="twitter:site" content="@in_aanand">
 <meta name="twitter:creator" content="@in_aanand">
 
@@ -70,14 +75,14 @@ https://github.com/alex-shpak/hugo-book
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://unisondb.io/#website",
-  "name": "UnisonDB – Reactive, Log-Native, Edge Database in Go",
+  "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "description": "Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
-    "name": "UnisonDB",
+    "name": "The UnisonDB Authors",
     "url": "https://unisondb.io/",
     "logo": {
       "@type": "ImageObject",
@@ -105,23 +110,32 @@ https://github.com/alex-shpak/hugo-book
   "name": "UnisonDB",
   "applicationCategory": "DatabaseApplication",
   "operatingSystem": "Linux, macOS, Windows",
-  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "description": "Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "softwareVersion": "1.0",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
-  "author": { "@type": "Organization", "name": "UnisonDB Team", "@id": "https://unisondb.io/#organization" },
-  "publisher": { "@type": "Organization", "name": "UnisonDB", "@id": "https://unisondb.io/#organization" },
+  "author": {
+    "@type": "Organization",
+    "name": "The UnisonDB Authors",
+    "@id": "https://unisondb.io/#organization"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The UnisonDB Authors",
+    "@id": "https://unisondb.io/#organization"
+  },
   "codeRepository": "https://github.com/ankur-anand/unisondb",
   "programmingLanguage": "Go",
+  "image": {
+    "@type": "ImageObject",
+    "url": "\"http://localhost:1313/images/og-image.png\""
+  },
   "sameAs": [
     "https://github.com/ankur-anand/unisondb",
     "https://x.com/in_aanand"
   ]
 }
 </script>
-
 
 
 
@@ -319,7 +333,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge</h3>
+  <h3>UnisonDB – Log-Native Database For AI And Edge Computing</h3>
 
   <label for="toc-control">
     
@@ -335,16 +349,27 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#unisondb--built-for-seamless-message-bus-style-replication-at-the-edge">UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge</a>
+    <li><a href="#unisondb--log-native-real-time-database-for-ai-and-edge-computing">UnisonDB – Log-Native, Real-Time Database for AI and Edge Computing</a>
       <ul>
-        <li><a href="#what-is-unisondb-">What is Unisondb ?</a></li>
+        <li><a href="#what-is-unisondb">What is UnisonDB?</a></li>
         <li><a href="#key-features">Key Features</a></li>
-        <li><a href="#namespace">Namespace</a></li>
+      </ul>
+    </li>
+    <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design</a></li>
+          </ul>
+        </li>
         <li><a href="#data-model">Data Model</a></li>
-        <li><a href="#use-cases">Use Cases</a></li>
+        <li><a href="#use-cases">Use Cases</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
         <li><a href="#quick-start">Quick Start</a></li>
-        <li><a href="#replication-topologies">Replication Topologies</a></li>
-        <li><a href="#documentation">Documentation</a></li>
+        <li><a href="#learn-more">Learn More</a></li>
         <li><a href="#community--support">Community &amp; Support</a></li>
         <li><a href="#license">License</a></li>
       </ul>
@@ -361,46 +386,64 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="unisondb--built-for-seamless-message-bus-style-replication-at-the-edge">UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge<a class="anchor" href="#unisondb--built-for-seamless-message-bus-style-replication-at-the-edge">#</a></h1>
+  <article class="markdown book-article"><h1 id="unisondb--log-native-real-time-database-for-ai-and-edge-computing">UnisonDB – Log-Native, Real-Time Database for AI and Edge Computing<a class="anchor" href="#unisondb--log-native-real-time-database-for-ai-and-edge-computing">#</a></h1>
 <blockquote class='book-hint '>
-<p><strong>Replicates like a message bus. Acts like a database.</strong></p>
+<p><strong>Replicates like a message bus. Acts like a database. Powers AI at the edge.</strong></p>
 </blockquote><img src="images/logo.svg" alt="UnisonDB" width="300" />
-<h2 id="what-is-unisondb-">What is Unisondb ?<a class="anchor" href="#what-is-unisondb-">#</a></h2>
-<p><strong>UnisonDB</strong> is a <strong>reactive, log-native, multi-model database</strong> built for <strong>real-time and edge-scale applications</strong>.<br>
-It combines <strong>B+Tree storage</strong> with <strong>WAL-based streaming replication</strong>, enabling <strong>near-instant fan-out</strong> across hundreds of replicas — all while preserving <strong>strong consistency and durability</strong>.</p>
+<h2 id="what-is-unisondb">What is UnisonDB?<a class="anchor" href="#what-is-unisondb">#</a></h2>
+<p>UnisonDB is an open-source database designed specifically for <a href="https://www.ibm.com/think/topics/edge-ai" target="_blank" rel="noopener noreferrer"><strong>Edge AI</strong></a>
+ and <a href="https://en.wikipedia.org/wiki/Edge_computing" target="_blank" rel="noopener noreferrer"><strong>Edge Computing</strong></a>
+.</p>
+<p>It is a <strong>reactive</strong>, <a href="https://www.unisondb.io/docs/architecture/" target="_blank" rel="noopener noreferrer"><strong>log-native</strong></a>
+ and <a href="https://en.wikipedia.org/wiki/Multi-model_database" target="_blank" rel="noopener noreferrer"><strong>multi-model database</strong></a>
+ built for real-time and edge-scale applications.  UnisonDB combines a <a href="https://en.wikipedia.org/wiki/B%2B_tree" target="_blank" rel="noopener noreferrer"><strong>B+Tree storage engine</strong></a>
+ with WAL-based (<a href="https://en.wikipedia.org/wiki/Write-ahead_logging" target="_blank" rel="noopener noreferrer"><strong>Write-Ahead Logging</strong></a>
+) streaming replication, enabling near-instant fan-out replication across hundreds of nodes — all while preserving strong consistency and durability.</p>
 <h2 id="key-features">Key Features<a class="anchor" href="#key-features">#</a></h2>
+<p>UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.</p>
 <ul>
-<li><strong>Multi-Modal Storage</strong>: Key-Value, Wide-Column, and Large Objects (LOB)</li>
-<li><strong>Streaming Replication</strong>: WAL-based replication with sub-second fan-out to 100+ edge replicas</li>
-<li><strong>Real-Time Notifications</strong>: ZeroMQ-based change notifications with sub-millisecond latency</li>
-<li><strong>Durable &amp; Fast</strong>: B+Tree storage with Write-Ahead Logging</li>
-<li><strong>Edge-First Design</strong>: Optimized for edge computing and local-first architectures</li>
-<li><strong>Namespace Isolation</strong>: Multi-tenancy support with namespace-based isolation</li>
+<li><strong>Multi-Model Storage</strong> – Supports <a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer"><strong>Key-Value</strong></a>
+, <a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer"><strong>Wide-Column</strong></a>
+, and <a href="https://en.wikipedia.org/wiki/Binary_large_object" target="_blank" rel="noopener noreferrer"><strong>Large Object (LOB)</strong></a>
+ data models — allowing flexible schema design for AI agents and edge systems.</li>
+<li><strong>Streaming Replication</strong> – WAL-based replication with sub-second fan-out to 100+ edge replicas ensures real-time data synchronization across distributed nodes.</li>
+<li><strong>Durable &amp; Fast</strong> – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.</li>
+<li><strong>Edge-First Architecture</strong> – Purpose-built for Edge Computing and local-first applications, ensuring near-device computation and reduced cloud dependency.</li>
+<li><strong>Namespace Isolation</strong> – Designed for multi-tenant environments, each namespace operates as an isolated database with independent replication streams and data consistency guarantees.</li>
 </ul>
 <section class="architecture-section">
   <h2>Architecture Highlights</h2>
+<p>UnisonDB’s architecture is built around a log-native core that unifies storage, streaming, and synchronization — eliminating the need for external message buses or CDC pipelines.</p>
 </section>
-<img src="images/unison_overview.png"  alt="UnisonDB Overview" />
-<blockquote class='book-hint '>
-<p>A <strong>reactive, log-native database</strong> that unifies <strong>storage, streaming, and sync</strong> —<br>
-powering the next generation of <strong>edge and real-time systems</strong>.</p>
-</blockquote><h2 id="namespace">Namespace<a class="anchor" href="#namespace">#</a></h2>
-<p>A single UnisonDB instance can host many namespaces — each namespace is a fully isolated database with its own:</p>
+<img src="images/unison_overview.png"  alt="UnisonDB Architecture Overview" />
+<p>UnisonDB is designed to push intelligence and data closer to where it’s needed — enabling real-time AI and analytics at the edge without sacrificing consistency or durability.</p>
+<h1 id="multi-tenancy-architecture">Multi-Tenancy Architecture<a class="anchor" href="#multi-tenancy-architecture">#</a></h1>
+<p>UnisonDB is designed from the ground up for <strong>multi-tenant environments</strong>, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.</p>
+<p>Each tenant is represented by a <strong>namespace</strong> — an isolated logical database that includes:</p>
 <ul>
-<li>Write-Ahead Log (WAL)</li>
-<li>MemTable (in-memory write buffer)</li>
-<li>B+Tree store (persistent)</li>
-<li>Each namespace emits its own WAL stream, enabling selective replication and low coupling.</li>
+<li>Its own Write-Ahead Log (WAL)</li>
+<li>A dedicated MemTable (in-memory write buffer)</li>
+<li>A persistent B+Tree storage tree</li>
+<li>An independent replication stream</li>
 </ul>
-<p>All namespaces are exposed through one unified API and one process — making UnisonDB both multi-tenant and operationally simple.</p>
-<img src="images/unisondb_overview_namespace.png"  alt="UnisonDB namespace Overview" />
+<p>This design allows a single UnisonDB instance to host <strong>hundreds of tenants</strong> efficiently, without resource contention or operational complexity.</p>
+<img src="images/unisondb_overview_namespace.png" alt="UnisonDB Multi-Tenancy Architecture" width="800" />
+<h3 id="key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design<a class="anchor" href="#key-advantages-of-unisondbs-multi-tenant-design">#</a></h3>
+<ul>
+<li><strong>Complete Data Isolation</strong> – Each namespace is a fully independent database, ensuring strong security and fault isolation across tenants.</li>
+<li><strong>Selective Replication</strong> – Tenants can choose which namespaces replicate to which edge nodes or hubs — perfect for geographically distributed workloads.</li>
+<li><strong>Scalable Management</strong> – Run many tenants within a single UnisonDB process, simplifying configuration, monitoring, and updates.</li>
+<li><strong>Edge-Aware Deployment</strong> – Deploy specific namespaces to particular regions or edge clusters, co-locating data with the AI agents or applications that need it.</li>
+</ul>
 <h2 id="data-model">Data Model<a class="anchor" href="#data-model">#</a></h2>
 <p>UnisonDB’s multi-model architecture lets you design data the way your application thinks.
 Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (LOB) storage models — all backed by the same WAL and B+Tree engine — without managing multiple systems.</p>
 <ul>
-<li><strong>Key-Value</strong>: Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
+<li><a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer"><strong>Key-Value</strong></a>
+: Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
 <img src="images/kv.png"  alt="kv" width="300"/></li>
-<li><strong>Wide-Column</strong>: Organizes data into rows with multiple named columns — great for structured, evolving entities.
+<li><a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer"><strong>Wide-Column</strong></a>
+: Organizes data into rows with multiple named columns — great for structured, evolving entities.
 <img src="images/wide_column.png"  alt="Wide Column" /></li>
 <li><strong>Large Object (LOB)</strong>: Manages large binary or text data in chunks — perfect for files, media, or backups.
 <img src="images/chunk_kv.png"  alt="lob" /></li>
@@ -409,17 +452,23 @@ Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (
 <p>UnisonDB is built for <strong>distributed edge-first architectures</strong> systems where <strong>data and computation must live close together</strong> — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.</p>
 <p>By <strong>co-locating data with the services that use it</strong>, UnisonDB removes the traditional boundary between the database and the application layer.
 Applications can react to local changes instantly, while UnisonDB’s WAL-based replication ensures eventual consistency across all replicas globally.</p>
-<p><strong>Event-Driven Microservices</strong></p>
+<h4 id="edge-ai-inference-with-centralized-state">Edge AI Inference with Centralized State<a class="anchor" href="#edge-ai-inference-with-centralized-state">#</a></h4>
+<p>Store user profiles, feature vectors, and model inputs in UnisonDB at a central or regional hub, then replicate that state out to edge nodes. Edge services perform inference locally against this replicated data, delivering low-latency responses without repeatedly calling back to the core database.</p>
+<h4 id="ai-agents-with-shared-ordered-state">AI Agents with Shared, Ordered State<a class="anchor" href="#ai-agents-with-shared-ordered-state">#</a></h4>
+<p>Use UnisonDB as the source of truth for AI agents operating across regions.<br>
+Agents read from edge replicas that mirror a centrally written log, ensuring a consistent, ordered stream of events and decisions across the fleet.</p>
+<h4 id="real-time-feature-and-policy-distribution-for-edge-ai">Real-Time Feature and Policy Distribution for Edge AI<a class="anchor" href="#real-time-feature-and-policy-distribution-for-edge-ai">#</a></h4>
+<p>Maintain global models, risk scores, and policy rules centrally, then stream updates to all edge locations through UnisonDB’s WAL-based replication.<br>
+Each edge node stays synchronized with the latest AI configurations and thresholds, enabling immediate, deterministic behavior changes close to users.</p>
+<h4 id="event-driven-microservices">Event-Driven Microservices<a class="anchor" href="#event-driven-microservices">#</a></h4>
 <p>Use UnisonDB as a reactive state store that behaves like both a database and a message bus. Services can subscribe to change streams to react instantly to updates without an external queue.</p>
-<p><strong>Globaly Synced Cached</strong></p>
+<h4 id="globaly-synced-cached">Globaly Synced Cached<a class="anchor" href="#globaly-synced-cached">#</a></h4>
 <p>Deploy UnisonDB near your application servers as a fast, persistent local cache. Unlike Redis or Memcached, UnisonDB provides WAL-backed durability and asynchronous replication, ensuring that cached state can survive restarts and sync globally.</p>
-<p><strong>Real-Time Personalization</strong></p>
+<h4 id="real-time-personalization">Real-Time Personalization<a class="anchor" href="#real-time-personalization">#</a></h4>
 <p>Keep user context and recommendation data local to the edge where requests occur. Updates replicate asynchronously to regional hubs — enabling fast, context-aware responses without waiting for a central database.</p>
-<p><strong>Multi-Region Replication</strong></p>
+<h4 id="multi-region-replication">Multi-Region Replication<a class="anchor" href="#multi-region-replication">#</a></h4>
 <p>Replicate data across geographic regions with configurable consistency.</p>
-<p><strong>Ad Delivery &amp; Bidding Systems</strong></p>
-<p>Run bidding logic or campaign evaluation next to local user data. Each region holds its own copy of targeting indexes, ensuring low-latency ad decisions while maintaining eventual global consistency.</p>
-<p><strong>Real-Time Analytics at the Edge</strong></p>
+<h4 id="real-time-analytics-at-the-edge">Real-Time Analytics at the Edge<a class="anchor" href="#real-time-analytics-at-the-edge">#</a></h4>
 <p>Perform in-situ aggregation, filtering, and anomaly detection close to where data is produced. UnisonDB’s WAL-based replication lets you stream computed insights upward to central clusters without heavy data movement.</p>
 <blockquote class='book-hint '>
 <p>In essence: UnisonDB is ideal for systems that demand reactivity, locality, and reliability — anywhere you need your data and compute to move together instead of apart.</p>
@@ -437,116 +486,25 @@ Applications can react to local changes instantly, while UnisonDB’s WAL-based 
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Use the HTTP API</span>
 </span></span><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/mykey <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;bXl2YWx1ZQ==&#34;}&#39;</span></span></span></code></pre></div><h2 id="replication-topologies">Replication Topologies<a class="anchor" href="#replication-topologies">#</a></h2>
-<p>UnisonDB supports multiple replication topologies to match any deployment model — from lightweight single-node setups to globally distributed, multi-region clusters.
-Each topology defines how WAL streams flow between nodes, enabling efficient fan-out, failover, and edge synchronization while preserving durability and consistency.</p>
-<blockquote class='book-hint '>
-<p>Whether scaling reads, syncing remote edges, or maintaining cross-region consistency — UnisonDB’s log-native replication adapts seamlessly to your architecture.</p>
-</blockquote><ol>
-<li><strong>Single Server</strong> Simple deployment for small workloads.</li>
-</ol>
-<pre tabindex="0"><code>┌─────────────────┐
-│  Primary Server │
-│  (Server Mode)  │
-│  - HTTP API     │
-│  - Writes OK    │
-│  - Reads OK     │
-└─────────────────┘</code></pre><ol start="2">
-<li><strong>Primary + Replicas (Read Scaling)</strong> Primary handles all writes, relayers provide read scalability.</li>
-</ol>
-<pre tabindex="0"><code>       ┌─────────────────┐
-       │  Primary Server │
-       │  (Server Mode)  │
-       └────────┬────────┘
-                │ gRPC replication
-       ┌────────┴────────┐
-       ↓                 ↓
-┌─────────────┐   ┌─────────────┐
-│  Relayer 1  │   │  Relayer 2  │
-│ (Read-only) │   │ (Read-only) │
-└─────────────┘   └─────────────┘</code></pre><ol start="3">
-<li><strong>Hub-and-Spoke (Edge Computing)</strong> Central hub replicates to many edge nodes. Each edge serves local apps.</li>
-</ol>
-<pre tabindex="0"><code>           ┌──────────────────┐
-           │   Central Hub    │
-           │  (Server Mode)   │
-           └────────┬─────────┘
-                    │ gRPC replication
-         ┌──────────┼──────────┐
-         ↓          ↓          ↓
-    ┌────────┐ ┌────────┐ ┌────────┐
-    │ Edge 1 │ │ Edge 2 │ │ Edge 3 │
-    │Relayer │ │Relayer │ │Relayer │
-    └───┬────┘ └───┬────┘ └───┬────┘
-        │          │          │
-     ZeroMQ     ZeroMQ     ZeroMQ
-        ↓          ↓          ↓
-    Local      Local      Local
-    Apps       Apps       Apps</code></pre><ol start="4">
-<li><strong>Multi-Hub (Geographic Distribution)</strong> Multiple hubs for geographic distribution. Each hub can be a server accepting local writes.</li>
-</ol>
-<pre tabindex="0"><code>┌──────────────┐           ┌──────────────┐
-│  Hub US-East │◄─────────►│  Hub Europe  │
-│ (Server Mode)│   gRPC    │(Server Mode) │
-└──────┬───────┘  bidirect.└──────┬───────┘
-       │                          │
-   gRPC│                          │gRPC
-       ↓                          ↓
-  ┌────────┐                 ┌────────┐
-  │ East   │                 │ Europe │
-  │Relayers│                 │Relayers│
-  └────────┘                 └────────┘</code></pre><ol start="5">
-<li><strong>Multi-Hop Relay (Deep Edge)</strong> Multi-hop replication for deep edge deployments.</li>
-</ol>
-<pre tabindex="0"><code>    ┌─────────┐
-    │ Primary │ (Server Mode)
-    └────┬────┘
-         │ gRPC
-         ↓
-    ┌─────────┐
-    │ Relay L1│ (Relayer Mode)
-    └────┬────┘
-         │ gRPC
-    ┌────┴─────┐
-    ↓          ↓
-┌─────────┐ ┌─────────┐
-│Relay L2a│ │Relay L2b│ (Relayer Mode)
-└────┬────┘ └────┬────┘
-     │           │ ZeroMQ
-     ↓           ↓
-  Local       Local
-  Apps        Apps</code></pre><ol start="6">
-<li><strong>Hybrid: Replication + Local Notifications</strong> Same instance uses gRPC for replication AND ZeroMQ for local notifications.</li>
-</ol>
-<pre tabindex="0"><code>┌─────────────────────────────────────┐
-│         Primary Server              │
-│         (Server Mode)               │
-│  ┌──────────────┐                   │
-│  │   Storage    │                   │
-│  └──────┬───────┘                   │
-│         │                           │
-│    ┌────┴────┐                      │
-│    ↓         ↓                      │
-│ [gRPC]   [ZeroMQ]                   │
-└───┬──────────┬──────────────────────┘
-    │          │
-    │          └──→ Local Apps (IPC)
-    │              - Cache service
-    │              - Analytics service
-    │              - Audit logger
-    ↓
-  Relayers (other machines)</code></pre><h2 id="documentation">Documentation<a class="anchor" href="#documentation">#</a></h2>
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;bXl2YWx1ZQ==&#34;}&#39;</span></span></span></code></pre></div><h2 id="learn-more">Learn More<a class="anchor" href="#learn-more">#</a></h2>
 <ul>
-<li><strong><a href="/docs/getting-started/">Start with the Quick Install Guide</a></strong> - Installation, configuration, and quick start</li>
-<li><strong><a href="/docs/architecture/">Explore UnisonDB’s Internal Architecture</a></strong> - Deep dive into UnisonDB internals</li>
-<li><strong><a href="/docs/api/http-api/">Browse the HTTP API Reference</a></strong> - REST API reference with examples</li>
-<li><strong><a href="/docs/examples/">Use Cases and Examples</a></strong> - Various Use Case Examples</li>
+<li><strong><a href="/docs/getting-started/" target="_blank" rel="noopener noreferrer">Start with the Quick Install Guide</a>
+</strong> - Installation, configuration, and quick start</li>
+<li><strong><a href="/docs/architecture/" target="_blank" rel="noopener noreferrer">Explore UnisonDB’s Internal Architecture</a>
+</strong> - Deep dive into UnisonDB internals</li>
+<li><strong><a href="/docs/api/http-api/" target="_blank" rel="noopener noreferrer">Browse the HTTP API Reference</a>
+</strong> - REST API reference with examples</li>
+<li><strong><a href="/docs/examples/" target="_blank" rel="noopener noreferrer">Use Cases and Examples</a>
+</strong> - Various Use Case Examples</li>
 </ul>
 <h2 id="community--support">Community &amp; Support<a class="anchor" href="#community--support">#</a></h2>
 <ul>
-<li><strong>GitHub</strong>: <a href="https://github.com/ankur-anand/unisondb">github.com/ankur-anand/unisondb</a></li>
-<li><strong>Issues</strong>: <a href="https://github.com/ankur-anand/unisondb/issues">Report bugs or request features</a></li>
-<li><strong>Discussions</strong>: <a href="https://github.com/ankur-anand/unisondb/discussions">Join the conversation</a></li>
+<li><strong>GitHub</strong>: <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">github.com/ankur-anand/unisondb</a>
+</li>
+<li><strong>Issues</strong>: <a href="https://github.com/ankur-anand/unisondb/issues" target="_blank" rel="noopener noreferrer">Report bugs or request features</a>
+</li>
+<li><strong>Discussions</strong>: <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener noreferrer">Join the conversation</a>
+</li>
 </ul>
 <h2 id="license">License<a class="anchor" href="#license">#</a></h2>
 <p>UnisonDB is released under the Apache 2.0 License.</p>
@@ -609,16 +567,27 @@ Each topology defines how WAL streams flow between nodes, enabling efficient fan
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#unisondb--built-for-seamless-message-bus-style-replication-at-the-edge">UnisonDB – Built for Seamless, Message-Bus-Style Replication at the Edge</a>
+    <li><a href="#unisondb--log-native-real-time-database-for-ai-and-edge-computing">UnisonDB – Log-Native, Real-Time Database for AI and Edge Computing</a>
       <ul>
-        <li><a href="#what-is-unisondb-">What is Unisondb ?</a></li>
+        <li><a href="#what-is-unisondb">What is UnisonDB?</a></li>
         <li><a href="#key-features">Key Features</a></li>
-        <li><a href="#namespace">Namespace</a></li>
+      </ul>
+    </li>
+    <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design</a></li>
+          </ul>
+        </li>
         <li><a href="#data-model">Data Model</a></li>
-        <li><a href="#use-cases">Use Cases</a></li>
+        <li><a href="#use-cases">Use Cases</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
         <li><a href="#quick-start">Quick Start</a></li>
-        <li><a href="#replication-topologies">Replication Topologies</a></li>
-        <li><a href="#documentation">Documentation</a></li>
+        <li><a href="#learn-more">Learn More</a></li>
         <li><a href="#community--support">Community &amp; Support</a></li>
         <li><a href="#license">License</a></li>
       </ul>

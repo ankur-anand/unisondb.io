@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://unisondb.io:1313/docs/</loc>
+    <loc>http://localhost:1313/docs/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/getting-started/</loc>
+    <loc>http://localhost:1313/docs/getting-started/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/api/http-api/</loc>
+    <loc>http://localhost:1313/docs/api/http-api/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/architecture/</loc>
+    <loc>http://localhost:1313/docs/architecture/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/api/</loc>
+    <loc>http://localhost:1313/docs/api/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/getting-started/configurations/</loc>
+    <loc>http://localhost:1313/docs/getting-started/configurations/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/examples/</loc>
+    <loc>http://localhost:1313/docs/examples/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/docs/examples/multi-dc-crdts/</loc>
+    <loc>http://localhost:1313/docs/examples/multi-dc-crdts/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/crdt/</loc>
+    <loc>http://localhost:1313/tags/crdt/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/categories/distributed-systems/</loc>
+    <loc>http://localhost:1313/categories/distributed-systems/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/edge-computing/</loc>
+    <loc>http://localhost:1313/tags/edge-computing/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/go/</loc>
+    <loc>http://localhost:1313/tags/go/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/replication/</loc>
+    <loc>http://localhost:1313/tags/replication/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/categories/tutorials/</loc>
+    <loc>http://localhost:1313/categories/tutorials/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/unisondb/</loc>
+    <loc>http://localhost:1313/tags/unisondb/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/</loc>
+    <loc>http://localhost:1313/</loc>
   </url><url>
-    <loc>https://unisondb.io:1313/tags/zeromq/</loc>
+    <loc>http://localhost:1313/tags/zeromq/</loc>
   </url>
 </urlset>

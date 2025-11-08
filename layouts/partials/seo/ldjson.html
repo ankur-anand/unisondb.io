@@ -1,24 +1,24 @@
 {{- /* Recompute safely for partial scope */ -}}
-{{- $seoTitle := cond .IsHome "UnisonDB – Reactive, Log-Native, Edge Database in Go" (printf "%s | %s" .Title .Site.Title) -}}
-{{- $seoDescription := .Description | default .Site.Params.seo.description | default .Site.Params.description | default "UnisonDB is a reactive, log-native, multi-model database that replicates like a message bus — built in Go for real-time, local-first, edge applications." -}}
+{{- $seoTitle := cond .IsHome .Title (printf "%s | %s" .Title .Site.Title) -}}
+{{- $seoDescription := .Params.description | default .Site.Params.description -}}
 {{- $image := .Params.image | default .Site.Params.seo.image | default "/images/og-image.png" -}}
 {{- $imageAbs := $image | absURL -}}
 {{- $canonical := .Permalink -}}
 
-<!-- WebSite / WebPage JSON-LD -->
+<!-- WebSite JSON-LD -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://unisondb.io/#website",
-  "name": "UnisonDB – Reactive, Log-Native, Edge Database in Go",
+  "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "description": "{{ $seoDescription }}",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
-    "name": "UnisonDB",
+    "name": "The UnisonDB Authors",
     "url": "https://unisondb.io/",
     "logo": {
       "@type": "ImageObject",
@@ -37,7 +37,7 @@
 </script>
 
 {{ if .IsHome }}
-<!-- SoftwareApplication JSON-LD -->
+<!-- SoftwareApplication JSON-LD (Homepage) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,16 +46,26 @@
   "name": "UnisonDB",
   "applicationCategory": "DatabaseApplication",
   "operatingSystem": "Linux, macOS, Windows",
-  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "description": "{{ $seoDescription }}",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "softwareVersion": "1.0",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
-  "author": { "@type": "Organization", "name": "UnisonDB Team", "@id": "https://unisondb.io/#organization" },
-  "publisher": { "@type": "Organization", "name": "UnisonDB", "@id": "https://unisondb.io/#organization" },
+  "author": {
+    "@type": "Organization",
+    "name": "The UnisonDB Authors",
+    "@id": "https://unisondb.io/#organization"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The UnisonDB Authors",
+    "@id": "https://unisondb.io/#organization"
+  },
   "codeRepository": "https://github.com/ankur-anand/unisondb",
   "programmingLanguage": "Go",
+  "image": {
+    "@type": "ImageObject",
+    "url": {{ $imageAbs | jsonify }}
+  },
   "sameAs": [
     "https://github.com/ankur-anand/unisondb",
     "https://x.com/in_aanand"

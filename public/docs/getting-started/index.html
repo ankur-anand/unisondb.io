@@ -14,7 +14,7 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://unisondb.io:1313/docs/getting-started/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="Getting Started">
   <meta property="og:description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
@@ -22,6 +22,7 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
 # Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
   <meta itemprop="name" content="Getting Started">
@@ -29,16 +30,17 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
 Table of Contents# Prerequisites Installation Running in Server Mode Running in Relayer Mode Prerequisites# System Requirements# Operating System: Linux or macOS Go: Version 1.24 or higher Installation# Building from Source# UnisonDB requires CGO to be enabled for LMDB bindings.
 # Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:">
   <meta itemprop="wordCount" content="1157">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
 
 <title>Getting Started | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="https://unisondb.io:1313/docs/getting-started/">
+<link rel="canonical" href="http://localhost:1313/docs/getting-started/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e9bb863a7a1344cad4442db7b4de6ac9e92efff766a3b290b80c12ef4de5e126.js" integrity="sha256-6buGOnoTRMrURC23tN5qyeku//dmo7KQuAwS703l4SY=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -50,23 +52,26 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
   gtag('config', 'G-GXZKSVMHYJ');
 </script>
 
-<link rel="alternate" type="application/rss+xml" href="https://unisondb.io:1313/docs/getting-started/index.xml" title="UnisonDB" />
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/getting-started/index.xml" title="UnisonDB" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="https://unisondb.io:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
-<meta name="keywords" content="unisondb, unison database, reactive database, log-native database, local-first database, edge database, multi-model database, multimodal database, distributed database, embedded distributed database, streaming replication, write ahead log, WAL, b&#43;tree storage engine, zero-copy replication, real-time sync database, edge computing, golang database, go storage engine, distributed kv store">
 
 
 
-<meta property="og:image" content="https://unisondb.io:1313/images/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Getting Started">
-<meta name="twitter:description" content="A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.">
-<meta name="twitter:image" content="https://unisondb.io:1313/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Getting Started">
+  <meta name="twitter:description" content="Getting Started with UnisonDB# This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
+Table of Contents# Prerequisites Installation Running in Server Mode Running in Relayer Mode Prerequisites# System Requirements# Operating System: Linux or macOS Go: Version 1.24 or higher Installation# Building from Source# UnisonDB requires CGO to be enabled for LMDB bindings.
+# Clone the repository git clone https://github.com/ankur-anand/unisondb.git cd unisondb # Enable CGO (required for LMDB) export CGO_ENABLED=1 # Build the binary go build -o unisondb ./cmd/unisondb # Verify installation ./unisondb --helpExpected output:">
+
+
+
 <meta name="twitter:site" content="@in_aanand">
 <meta name="twitter:creator" content="@in_aanand">
 
@@ -76,14 +81,14 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://unisondb.io/#website",
-  "name": "UnisonDB – Reactive, Log-Native, Edge Database in Go",
+  "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "A reactive, log-native database that replicates like a message bus — built for real-time, multimodal applications at the edge.",
+  "description": "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
-    "name": "UnisonDB",
+    "name": "The UnisonDB Authors",
     "url": "https://unisondb.io/",
     "logo": {
       "@type": "ImageObject",
@@ -100,7 +105,6 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
   }
 }
 </script>
-
 
 
 
@@ -380,10 +384,14 @@ Table of Contents# Prerequisites Installation Running in Server Mode Running in 
 <p>This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.</p>
 <h2 id="table-of-contents">Table of Contents<a class="anchor" href="#table-of-contents">#</a></h2>
 <ul>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#running-in-server-mode">Running in Server Mode</a></li>
-<li><a href="#running-in-relayer-mode">Running in Relayer Mode</a></li>
+<li><a href="#prerequisites" target="_blank" rel="noopener noreferrer">Prerequisites</a>
+</li>
+<li><a href="#installation" target="_blank" rel="noopener noreferrer">Installation</a>
+</li>
+<li><a href="#running-in-server-mode" target="_blank" rel="noopener noreferrer">Running in Server Mode</a>
+</li>
+<li><a href="#running-in-relayer-mode" target="_blank" rel="noopener noreferrer">Running in Relayer Mode</a>
+</li>
 </ul>
 <h2 id="prerequisites">Prerequisites<a class="anchor" href="#prerequisites">#</a></h2>
 <h3 id="system-requirements">System Requirements<a class="anchor" href="#system-requirements">#</a></h3>
