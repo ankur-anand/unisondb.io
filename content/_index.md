@@ -24,7 +24,7 @@ keywords: [
 
 # UnisonDB – Log-Native, Real-Time Database for AI and Edge Computing
 
-> **Replicates like a message bus. Acts like a database. Powers AI at the edge.**
+> **Replicates like a message bus. Acts like a database.**
 
 <img src="images/logo.svg" alt="UnisonDB" width="300" />
 
@@ -41,7 +41,7 @@ It is a **reactive**, [**log-native**](https://www.unisondb.io/docs/architecture
 
 UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.  
 
-- **Multi-Model Storage** – Supports [**Key-Value**](https://en.wikipedia.org/wiki/Key%E2%80%93value_database), [**Wide-Column**](https://en.wikipedia.org/wiki/Wide-column_store), and [**Large Object (LOB)**](https://en.wikipedia.org/wiki/Binary_large_object) data models — allowing flexible schema design for AI agents and edge systems.  
+- **Multi-Model Storage** – Supports [Key-Value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database), [Wide-Column](https://en.wikipedia.org/wiki/Wide-column_store), and [Large Object (LOB)](https://en.wikipedia.org/wiki/Binary_large_object) data models — allowing flexible schema design for AI agents and edge systems.  
 - **Streaming Replication** – WAL-based replication with sub-second fan-out to 100+ edge replicas ensures real-time data synchronization across distributed nodes.  
 - **Durable & Fast** – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.  
 - **Edge-First Architecture** – Purpose-built for Edge Computing and local-first applications, ensuring near-device computation and reduced cloud dependency.  
@@ -62,7 +62,7 @@ UnisonDB is designed to push intelligence and data closer to where it’s needed
 
 ## Multi-Tenancy Architecture
 
-UnisonDB is designed from the ground up for **multi-tenant environments**, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.
+UnisonDB is designed from the ground up for multi-tenant environments, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.
 
 Each tenant is represented by a **namespace** — an isolated logical database that includes:
 
@@ -71,9 +71,9 @@ Each tenant is represented by a **namespace** — an isolated logical database t
 - A persistent B+Tree storage tree  
 - An independent replication stream  
 
-This design allows a single UnisonDB instance to host **hundreds of tenants** efficiently, without resource contention or operational complexity.
+This design allows a single UnisonDB instance to host hundreds of tenants efficiently, without resource contention or operational complexity.
 
-<img src="images/unisondb_overview_namespace.png" alt="UnisonDB Multi-Tenancy Architecture" width="800" />
+<img src="images/unisondb_overview_namespace.png" alt="UnisonDB Multi-Tenancy Overview" width="800" />
 
 ### Key Advantages of UnisonDB’s Multi-Tenant Design
 
@@ -88,17 +88,17 @@ UnisonDB’s multi-model architecture lets you design data the way your applicat
 Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (LOB) storage models — all backed by the same WAL and B+Tree engine — without managing multiple systems.
 
 * [**Key-Value**](https://en.wikipedia.org/wiki/Key%E2%80%93value_database): Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
-<img src="images/kv.png"  alt="kv" width="300"/>
+<img src="images/kv.png"  alt="kv model" width="300"  />
 * [**Wide-Column**](https://en.wikipedia.org/wiki/Wide-column_store): Organizes data into rows with multiple named columns — great for structured, evolving entities.
-<img src="images/wide_column.png"  alt="Wide Column" />
+<img src="images/wide_column.png"  alt="Wide Column model" />
 * **Large Object (LOB)**: Manages large binary or text data in chunks — perfect for files, media, or backups.
-<img src="images/chunk_kv.png"  alt="lob" />
+<img src="images/chunk_kv.png"  alt="lob model" />
 
 ## Use Cases
 
-UnisonDB is built for **distributed edge-first architectures** systems where **data and computation must live close together** — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
+UnisonDB is built for distributed edge-first architectures systems where data and computation must live close together — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.
 
-By **co-locating data with the services that use it**, UnisonDB removes the traditional boundary between the database and the application layer.
+By co-locating data with the services that use it, UnisonDB removes the traditional boundary between the database and the application layer.
 Applications can react to local changes instantly, while UnisonDB’s WAL-based replication ensures eventual consistency across all replicas globally.
 
 #### Edge AI Inference with Centralized State
@@ -158,16 +158,16 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \
 
 ## Learn More
 
-- **[Start with the Quick Install Guide](/docs/getting-started/)** - Installation, configuration, and quick start
-- **[Explore UnisonDB’s Internal Architecture](/docs/architecture/)** - Deep dive into UnisonDB internals
-- **[Browse the HTTP API Reference](/docs/api/http-api/)** - REST API reference with examples
-- **[Use Cases and Examples](/docs/examples/)** - Various Use Case Examples
+- [Start with the Quick Install Guide](/docs/getting-started/) - Installation, configuration, and quick start
+- [Explore UnisonDB’s Internal Architecture](/docs/architecture/) - Deep dive into UnisonDB internals
+- [Browse the HTTP API Reference](/docs/api/http-api/) - REST API reference with examples
+- [Use Cases and Examples](/docs/examples/) - Various Use Case Examples
 
 ## Community & Support
 
-- **GitHub**: [github.com/ankur-anand/unisondb](https://github.com/ankur-anand/unisondb)
-- **Issues**: [Report bugs or request features](https://github.com/ankur-anand/unisondb/issues)
-- **Discussions**: [Join the conversation](https://github.com/ankur-anand/unisondb/discussions)
+- GitHub: [github.com/ankur-anand/unisondb](https://github.com/ankur-anand/unisondb)
+- Issues: [Report bugs or request features](https://github.com/ankur-anand/unisondb/issues)
+- Discussions: [Join the conversation](https://github.com/ankur-anand/unisondb/discussions)
 
 ## License
 
