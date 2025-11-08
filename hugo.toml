@@ -36,6 +36,7 @@ enableRobotsTXT = true
   BookComments = false
   BookPortableLinks = true
   BookServiceWorker = true
+  showShareButtons = true
 
 [markup]
   [markup.goldmark]

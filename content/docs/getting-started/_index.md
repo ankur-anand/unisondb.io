@@ -1,12 +1,50 @@
 ---
-title: "Getting Started"
+title: "Getting Started with UnisonDB"
+linkTitle: "Getting Started"
 weight: 1
 bookCollapseSection: false
+images: ["/images/getting_started.jpg"]
+description: "Step-by-step guide to install, configure, and run UnisonDB in under 5 minutes. Learn how to set up replicator and relayer modes for real-time data replication and edge deployment."
+keywords: [
+  "UnisonDB quick start",
+  "install UnisonDB",
+  "UnisonDB tutorial",
+  "edge computing database setup",
+  "real-time replication database",
+  "WAL-based database",
+  "distributed database getting started",
+  "UnisonDB replicator mode",
+  "UnisonDB relayer mode",
+  "UnisonDB configuration guide"
+]
 ---
+
 
 # Getting Started with UnisonDB
 
-This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Relayer modes.
+<img src="/images/getting_started.svg" alt="Getting Started with UnisonDB" style="max-width: 100%; height: auto;" />
+
+This guide will walk you through installing UnisonDB, configuring it, and running it in both Replicator and Relayer modes.
+
+```
+          ┌────────────────┐
+          │  Replicator    │
+          │  (Primary)     │
+          │  Writes → WAL  │
+          │  Streams gRPC  │
+          └──────┬─────────┘
+                 │
+        WAL Stream (gRPC)
+                 │
+   ┌─────────────┴──────────────┐
+   ↓                            ↓
+┌───────────┐              ┌───────────┐
+│ Relayer 1 │              │ Relayer 2 │
+│ (Replica) │              │ (Replica) │
+│ Local DB  │              │ Local DB  │
+│ Watch API │              │ Watch API │
+└───────────┘              └───────────┘
+```
 
 ## Table of Contents
 
@@ -45,16 +83,24 @@ go build -o unisondb ./cmd/unisondb
 
 Expected output:
 ```
+  _   _          _                     ___    ___
+ | | | |  _ _   (_)  ___  ___   _ _   |   \  | _ )
+ | |_| | | ' \  | | (_-< / _ \ | ' \  | |) | | _ \
+  \___/  |_||_| |_| /__/ \___/ |_||_| |___/  |___/
+
+     Database + Message Bus. Built for Edge.
+               https://unisondb.io
+
 NAME:
    unisondb - Run UnisonDB
 
 USAGE:
-   unisondb [global options] command [command options] [arguments...]
+   unisondb [global options] command [command options]
 
 COMMANDS:
-   replicator  Run in replicator (server) mode
-   relayer     Run in relayer (replica) mode
-   fuzzer      Run fuzzer for testing (if built with -tags fuzz)
+   replicator  Run in replicator mode
+   relayer     Run in relayer mode
+   fuzzer      This is a testing-only feature (disabled in production builds)
    help, h     Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -91,9 +137,9 @@ sudo mv unisondb /usr/local/bin/
 unisondb --help
 ```
 
-## Running in Server Mode
+## Running in Replicator Mode
 
-Server Mode runs UnisonDB as a **primary instance** that accepts writes and serves reads.
+Replicator Mode runs UnisonDB as a **primary instance** that accepts writes and serves reads.
 
 ### 1. Generate TLS Certificates (Recommended)
 
@@ -188,16 +234,11 @@ warn  = 100.0
 error = 100.0
 ```
 
-### 3. Start the Server
+### 3. Start the Replicator Server
 
-**Server Mode** (using `replicator` command):
+**Replicator Mode** (using `replicator` command):
 ```bash
 ./unisondb --config server.toml replicator
-```
-
-You can also put the command before flags:
-```bash
-./unisondb replicator --config server.toml
 ```
 
 ### 4. Verify Server is Running
@@ -296,7 +337,7 @@ warn  = 100.0
 error = 100.0
 ```
 
-### 2. Start the Relayer
+### 2. Start the Relayer Server
 
 **Start relayer**:
 ```bash
@@ -382,6 +423,21 @@ curl http://localhost:5000/api/v1/namespaces/default/kv/user:123
 ```
 
 ### Subscribing to Changes (ZeroMQ)
+
+* Build UnisonDB with ZeroMQ Lib
+
+This needs Zero MQ Installed Make Sure You've have it Installed.
+[Install ZeroMQ dependency ](https://zeromq.org/download/)
+
+```bash 
+# Clone the repository
+git clone https://github.com/ankur-anand/unisondb.git
+cd unisondb
+
+# Build the binary (CGO required for RocksDB)
+CGO_ENABLED=1 go build -tags zeromq ./cmd/unisondb
+```
+
 
 **Python example** (install `pyzmq` first):
 ```python

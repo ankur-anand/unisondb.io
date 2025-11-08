@@ -8,28 +8,23 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="API Reference# UnisonDB provides API interfaces for client access:
-HTTP REST API # RESTful HTTP API with JSON payloads, supporting:
-Key-Value operations Wide-Column operations Large Object (LOB) operations Stateful transactions Metadata queries Next Steps# HTTP API Reference - Complete HTTP API documentation ">
+<meta name="description" content="Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/api/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="API Reference">
-  <meta property="og:description" content="API Reference# UnisonDB provides API interfaces for client access:
-HTTP REST API # RESTful HTTP API with JSON payloads, supporting:
-Key-Value operations Wide-Column operations Large Object (LOB) operations Stateful transactions Metadata queries Next Steps# HTTP API Reference - Complete HTTP API documentation">
+  <meta property="og:title" content="UnisonDB API Reference">
+  <meta property="og:description" content="Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
     <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
-  <meta itemprop="name" content="API Reference">
-  <meta itemprop="description" content="API Reference# UnisonDB provides API interfaces for client access:
-HTTP REST API # RESTful HTTP API with JSON payloads, supporting:
-Key-Value operations Wide-Column operations Large Object (LOB) operations Stateful transactions Metadata queries Next Steps# HTTP API Reference - Complete HTTP API documentation">
+  <meta itemprop="name" content="UnisonDB API Reference">
+  <meta itemprop="description" content="Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries.">
   <meta itemprop="wordCount" content="42">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB API,HTTP REST API,database API documentation,Key-Value API,Wide-Column API,LOB API,transactional database API,edge computing database API,real-time replication,UnisonDB developer docs">
 
 <title>API Reference | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
@@ -39,7 +34,7 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -59,15 +54,14 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB API, HTTP REST API, database API documentation, Key-Value API, Wide-Column API, LOB API, transactional database API, edge computing database API, real-time replication, UnisonDB developer docs">
 
 
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
-  <meta name="twitter:title" content="API Reference">
-  <meta name="twitter:description" content="API Reference# UnisonDB provides API interfaces for client access:
-HTTP REST API # RESTful HTTP API with JSON payloads, supporting:
-Key-Value operations Wide-Column operations Large Object (LOB) operations Stateful transactions Metadata queries Next Steps# HTTP API Reference - Complete HTTP API documentation">
+  <meta name="twitter:title" content="UnisonDB API Reference">
+  <meta name="twitter:description" content="Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries.">
 
 
 
@@ -83,7 +77,7 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
   "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.",
+  "description": "Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
@@ -190,7 +184,7 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -241,6 +235,58 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -255,7 +301,7 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -388,7 +434,7 @@ Key-Value operations Wide-Column operations Large Object (LOB) operations Statef
     
       <a href="/docs/architecture/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Architecture</span>
+        <span>Architecture Overview</span>
       </a>
     
     </span>

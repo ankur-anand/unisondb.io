@@ -8,22 +8,25 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Hands-on examples demonstrating how to use UnisonDB for replication,and real-time data streaming.">
+<meta name="description" content="Step-by-step UnisonDB examples covering replication, multi-datacenter CRDT synchronization, and real-time edge data streaming.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/examples/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="Examples">
-  <meta property="og:description" content="Hands-on examples demonstrating how to use UnisonDB for replication,and real-time data streaming.">
+  <meta property="og:title" content="UnisonDB Examples and Tutorials">
+  <meta property="og:description" content="Step-by-step UnisonDB examples covering replication, multi-datacenter CRDT synchronization, and real-time edge data streaming.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
     <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
-  <meta itemprop="name" content="Examples">
-  <meta itemprop="description" content="Hands-on examples demonstrating how to use UnisonDB for replication,and real-time data streaming.">
-  <meta itemprop="wordCount" content="29">
+  <meta itemprop="name" content="UnisonDB Examples and Tutorials">
+  <meta itemprop="description" content="Step-by-step UnisonDB examples covering replication, multi-datacenter CRDT synchronization, and real-time edge data streaming.">
+  <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="88">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB examples,UnisonDB tutorials,CRDT database,multi-datacenter replication,real-time database,edge computing database,WAL-based replication,distributed systems,event-driven architecture,UnisonDB replication guide">
 
 <title>Examples | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
@@ -33,7 +36,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -53,13 +56,14 @@ https://github.com/alex-shpak/hugo-book
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB examples, UnisonDB tutorials, CRDT database, multi-datacenter replication, real-time database, edge computing database, WAL-based replication, distributed systems, event-driven architecture, UnisonDB replication guide">
 
 
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
-  <meta name="twitter:title" content="Examples">
-  <meta name="twitter:description" content="Hands-on examples demonstrating how to use UnisonDB for replication,and real-time data streaming.">
+  <meta name="twitter:title" content="UnisonDB Examples and Tutorials">
+  <meta name="twitter:description" content="Step-by-step UnisonDB examples covering replication, multi-datacenter CRDT synchronization, and real-time edge data streaming.">
 
 
 
@@ -75,7 +79,7 @@ https://github.com/alex-shpak/hugo-book
   "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "Hands-on examples demonstrating how to use UnisonDB for replication,and real-time data streaming.",
+  "description": "Step-by-step UnisonDB examples covering replication, multi-datacenter CRDT synchronization, and real-time edge data streaming.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
@@ -182,7 +186,7 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -233,6 +237,58 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="active">
       Examples</a>
   
@@ -247,7 +303,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -310,11 +366,11 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#examples">Examples</a>
+    <li><a href="#unisondb-examples">UnisonDB Examples</a>
       <ul>
         <li>
           <ul>
-            <li><a href="#1-building-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">1. Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a></li>
+            <li><a href="#1-how-to-build-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">1. How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a></li>
           </ul>
         </li>
       </ul>
@@ -331,10 +387,17 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="examples">Examples<a class="anchor" href="#examples">#</a></h1>
-<p>Explore practical examples that showcase <strong>UnisonDB’s capabilities</strong> — from single-node setups to multi-datacenter replication and real-time CRDT synchronization.</p>
-<h3 id="1-building-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb"><a href="multi-dc-crdt.md" target="_blank" rel="noopener noreferrer">1. Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a>
-<a class="anchor" href="#1-building-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">#</a></h3>
+  <article class="markdown book-article"><h1 id="unisondb-examples">UnisonDB Examples<a class="anchor" href="#unisondb-examples">#</a></h1>
+<p>Get hands-on with <strong>UnisonDB</strong> through practical examples that demonstrate how to deploy, replicate, and synchronize data across distributed systems.<br>
+Each tutorial highlights a real-world use case — from <strong>single-node configurations</strong> to <strong>multi-region CRDT replication</strong> and <strong>real-time streaming</strong> at the edge.</p>
+<hr>
+<h3 id="1-how-to-build-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb"><a href="multi-dc-crdts/" target="_blank" rel="noopener noreferrer">1. How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a>
+<a class="anchor" href="#1-how-to-build-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">#</a></h3>
+<p>Learn how to design globally replicated systems that stay consistent without coordination.<br>
+This example walks you through using <a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type" target="_blank" rel="noopener noreferrer"><strong>Conflict-Free Replicated Data Types (CRDTs)</strong></a>
+ with <strong>UnisonDB’s WAL-based replication</strong> to achieve <a href="https://en.wikipedia.org/wiki/Eventual_consistency" target="_blank" rel="noopener noreferrer"><strong>eventual consistency</strong></a>
+ across data centers.</p>
+<hr>
 </article>
  
       
@@ -368,15 +431,15 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/api/http-api/" class="flex align-center">
+      <a href="/docs/operations/backup-restore/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>HTTP API Reference</span>
+        <span>Backup and Restore</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/examples/multi-dc-crdts/" class="flex align-center">
+      <a href="/docs/examples/multi-dc-crdt/" class="flex align-center">
         <span>Multi-DC CRDT Replication</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
@@ -413,11 +476,11 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#examples">Examples</a>
+    <li><a href="#unisondb-examples">UnisonDB Examples</a>
       <ul>
         <li>
           <ul>
-            <li><a href="#1-building-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">1. Building Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a></li>
+            <li><a href="#1-how-to-build-conflict-free-multi-datacenter-systems-with-crdts-and-unisondb">1. How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</a></li>
           </ul>
         </li>
       </ul>

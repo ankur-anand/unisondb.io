@@ -1,28 +1,30 @@
 ---
-title: "Building Conflict-Free Multi-Datacenter Systems with CRDTs in UnisonDB"
+title: "How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB"
 linkTitle: "Multi-DC CRDT Replication"
 description: "Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB."
-type: docs
+date: 2025-11-02
+type: posts
 weight: 20
 draft: false
-slug: "multi-dc-crdts"
-tags: ["UnisonDB", "CRDT", "Replication", "Edge Computing", "ZeroMQ", "Go"]
-categories: ["Distributed Systems", "Tutorials"]
+bookToC: false
+images: ['/images/multi_dc_crdt.png']
+keywords: ["UnisonDB", "CRDT", "Replication", "Edge Computing", "ZeroMQ", "Go"]
+categories: ["Distributed Systems", "Tutorials", "CRDT"]
 ---
 
-# Building Real-Time Multi-Datacenter Applications with CRDTs and Edge Notifications in UnisonDB
+<img src="/images/multi_dc_crdt.svg" alt="Multi DC CRDT" />
 
 ## Introduction: The Challenge of Distributed State Management
 
 Imagine you're building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?
 
-**Conflict-free Replicated Data Types (CRDTs)** offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with **edge notifications**, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.
+[**Conflict-free Replicated Data Types (CRDTs)**](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with **edge notifications**, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.
 
 In this post, we'll build a multi-datacenter system using UnisonDB that demonstrates:
 -   Concurrent writes to multiple datacenters
--   Automatic conflict resolution using CRDTs
--   Real-time change notifications via ZeroMQ
--   Eventual consistency across all nodes
+-   Automatic conflict resolution using [CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
+-   Real-time change notifications via [ZeroMQ](https://en.wikipedia.org/wiki/ZeroMQ)
+-   [Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency) across all nodes
 
 ## Architecture Overview
 
@@ -44,7 +46,7 @@ Our demo system consists of three UnisonDB nodes:
    |  gRPC: 4001    |                       |  gRPC: 4002    |
    +--------+-------+                       +--------+-------+
             |                                         |
-            |               gRPC Replication               |
+            |               gRPC Replication          |
             +---------------------+-------------------+
                                   |
                                   v
@@ -54,7 +56,7 @@ Our demo system consists of three UnisonDB nodes:
                         |                     |
                         |  HTTP: 8003         |
                         |  ZMQ dc1: 5555 ---> |----+
-                        |  ZMQ dc2: 5556 ---> |----+  Change
+                        |  ZMQ dc2: 5556 ---> |----+  Watch API
                         +---------------------+    |  Notifications
                                                    |
                                                    v
@@ -86,13 +88,16 @@ go version
 
 ### Step 1: Build UnisonDB
 
-```bash
+This needs Zero MQ Installed Make Sure You've have it Installed.
+[Install ZeroMQ dependency ](https://zeromq.org/download/)
+
+```bash 
 # Clone the repository
 git clone https://github.com/ankur-anand/unisondb.git
 cd unisondb
 
 # Build the binary (CGO required for RocksDB)
-CGO_ENABLED=1 go build -o unisondb ./cmd/unisondb
+CGO_ENABLED=1 go build -tags zeromq ./cmd/unisondb
 ```
 
 ### Step 2: Start the Multi-DC Cluster
@@ -101,17 +106,17 @@ Open **three separate terminal windows** and run:
 
 **Terminal 1: Start Datacenter 1**
 ```bash
-./unisondb -config .cmd/examples/crdt-multi-dc/configs/dc1.toml replicator
+./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml replicator
 ```
 
 **Terminal 2: Start Datacenter 2**
 ```bash
-./unisondb -config .cmd/examples/crdt-multi-dc/configs/dc2.toml replicator
+./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml replicator
 ```
 
 **Terminal 3: Start Relayer**
 ```bash
-./unisondb -config .cmd/examples/crdt-multi-dc/configs/relayer.toml relayer
+./unisondb -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml relayer
 ```
 
 You should see output indicating each node is ready:
@@ -503,7 +508,7 @@ Feature flag changes propagate globally within milliseconds!
 # Clone and run the example
 git clone https://github.com/ankur-anand/unisondb.git
 cd unisondb
-CGO_ENABLED=1 go build -o unisondb ./cmd/unisondb
+CGO_ENABLED=1 go build -tags zeromq -o unisondb ./cmd/unisondb
 
 # Start the demo
 cd cmd/examples/crdt-multi-dc
@@ -521,6 +526,3 @@ cd cmd/examples/crdt-multi-dc
 
 Have questions or want to contribute? Open an issue on GitHub or join our community discussions!
 
----
-
-*Built with UnisonDB.*

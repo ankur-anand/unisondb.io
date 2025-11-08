@@ -1,0 +1,15 @@
+{{ define "main" }}
+<article class="markdown book-post">
+  <h1>
+    {{ .Title }}
+  </h1>
+  <div class="book-post-content markdown-inner">
+    {{- .Content -}}
+  </div>
+  {{ partial "docs/post-meta" . }}
+</article>
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "docs/post-prev-next" . }}
+{{ end }}

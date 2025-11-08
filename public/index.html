@@ -23,7 +23,9 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="UnisonDB – Log-Native Database For AI And Edge Computing">
   <meta itemprop="description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
-  <meta itemprop="wordCount" content="1019">
+  <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1012">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
   <meta itemprop="keywords" content="UnisonDB,unison db,log-native database,reactive database,real-time database,AI database,AI agents,edge AI,edge computing,local-first database,distributed database,streaming replication,Go database,real-time replication,event-driven database,multimodal data storage">
 
@@ -35,7 +37,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -221,7 +223,7 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -272,6 +274,58 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -286,7 +340,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -353,11 +407,7 @@ https://github.com/alex-shpak/hugo-book
       <ul>
         <li><a href="#what-is-unisondb">What is UnisonDB?</a></li>
         <li><a href="#key-features">Key Features</a></li>
-      </ul>
-    </li>
-    <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
-      <ul>
-        <li>
+        <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
           <ul>
             <li><a href="#key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design</a></li>
           </ul>
@@ -388,7 +438,7 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown book-article"><h1 id="unisondb--log-native-real-time-database-for-ai-and-edge-computing">UnisonDB – Log-Native, Real-Time Database for AI and Edge Computing<a class="anchor" href="#unisondb--log-native-real-time-database-for-ai-and-edge-computing">#</a></h1>
 <blockquote class='book-hint '>
-<p><strong>Replicates like a message bus. Acts like a database. Powers AI at the edge.</strong></p>
+<p><strong>Replicates like a message bus. Acts like a database.</strong></p>
 </blockquote><img src="images/logo.svg" alt="UnisonDB" width="300" />
 <h2 id="what-is-unisondb">What is UnisonDB?<a class="anchor" href="#what-is-unisondb">#</a></h2>
 <p>UnisonDB is an open-source database designed specifically for <a href="https://www.ibm.com/think/topics/edge-ai" target="_blank" rel="noopener noreferrer"><strong>Edge AI</strong></a>
@@ -402,9 +452,9 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="key-features">Key Features<a class="anchor" href="#key-features">#</a></h2>
 <p>UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.</p>
 <ul>
-<li><strong>Multi-Model Storage</strong> – Supports <a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer"><strong>Key-Value</strong></a>
-, <a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer"><strong>Wide-Column</strong></a>
-, and <a href="https://en.wikipedia.org/wiki/Binary_large_object" target="_blank" rel="noopener noreferrer"><strong>Large Object (LOB)</strong></a>
+<li><strong>Multi-Model Storage</strong> – Supports <a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer">Key-Value</a>
+, <a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer">Wide-Column</a>
+, and <a href="https://en.wikipedia.org/wiki/Binary_large_object" target="_blank" rel="noopener noreferrer">Large Object (LOB)</a>
  data models — allowing flexible schema design for AI agents and edge systems.</li>
 <li><strong>Streaming Replication</strong> – WAL-based replication with sub-second fan-out to 100+ edge replicas ensures real-time data synchronization across distributed nodes.</li>
 <li><strong>Durable &amp; Fast</strong> – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.</li>
@@ -417,8 +467,8 @@ https://github.com/alex-shpak/hugo-book
 </section>
 <img src="images/unison_overview.png"  alt="UnisonDB Architecture Overview" />
 <p>UnisonDB is designed to push intelligence and data closer to where it’s needed — enabling real-time AI and analytics at the edge without sacrificing consistency or durability.</p>
-<h1 id="multi-tenancy-architecture">Multi-Tenancy Architecture<a class="anchor" href="#multi-tenancy-architecture">#</a></h1>
-<p>UnisonDB is designed from the ground up for <strong>multi-tenant environments</strong>, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.</p>
+<h2 id="multi-tenancy-architecture">Multi-Tenancy Architecture<a class="anchor" href="#multi-tenancy-architecture">#</a></h2>
+<p>UnisonDB is designed from the ground up for multi-tenant environments, where multiple teams, applications, or organizations can share the same infrastructure while maintaining strict data isolation and replication control.</p>
 <p>Each tenant is represented by a <strong>namespace</strong> — an isolated logical database that includes:</p>
 <ul>
 <li>Its own Write-Ahead Log (WAL)</li>
@@ -426,8 +476,8 @@ https://github.com/alex-shpak/hugo-book
 <li>A persistent B+Tree storage tree</li>
 <li>An independent replication stream</li>
 </ul>
-<p>This design allows a single UnisonDB instance to host <strong>hundreds of tenants</strong> efficiently, without resource contention or operational complexity.</p>
-<img src="images/unisondb_overview_namespace.png" alt="UnisonDB Multi-Tenancy Architecture" width="800" />
+<p>This design allows a single UnisonDB instance to host hundreds of tenants efficiently, without resource contention or operational complexity.</p>
+<img src="images/unisondb_overview_namespace.png" alt="UnisonDB Multi-Tenancy Overview" width="800" />
 <h3 id="key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design<a class="anchor" href="#key-advantages-of-unisondbs-multi-tenant-design">#</a></h3>
 <ul>
 <li><strong>Complete Data Isolation</strong> – Each namespace is a fully independent database, ensuring strong security and fault isolation across tenants.</li>
@@ -441,16 +491,16 @@ Within a single instance, you can mix Key-Value, Wide-Column, and Large Object (
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer"><strong>Key-Value</strong></a>
 : Stores and retrieves data by a single unique key — simple, fast, and ideal for lookups.
-<img src="images/kv.png"  alt="kv" width="300"/></li>
+<img src="images/kv.png"  alt="kv model"  /></li>
 <li><a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer"><strong>Wide-Column</strong></a>
 : Organizes data into rows with multiple named columns — great for structured, evolving entities.
-<img src="images/wide_column.png"  alt="Wide Column" /></li>
+<img src="images/wide_column.png"  alt="Wide Column model" /></li>
 <li><strong>Large Object (LOB)</strong>: Manages large binary or text data in chunks — perfect for files, media, or backups.
-<img src="images/chunk_kv.png"  alt="lob" /></li>
+<img src="images/chunk_kv.png"  alt="lob model" /></li>
 </ul>
 <h2 id="use-cases">Use Cases<a class="anchor" href="#use-cases">#</a></h2>
-<p>UnisonDB is built for <strong>distributed edge-first architectures</strong> systems where <strong>data and computation must live close together</strong> — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.</p>
-<p>By <strong>co-locating data with the services that use it</strong>, UnisonDB removes the traditional boundary between the database and the application layer.
+<p>UnisonDB is built for distributed edge-first architectures systems where data and computation must live close together — reducing network hops, minimizing latency, and enabling real-time responsiveness at scale.</p>
+<p>By co-locating data with the services that use it, UnisonDB removes the traditional boundary between the database and the application layer.
 Applications can react to local changes instantly, while UnisonDB’s WAL-based replication ensures eventual consistency across all replicas globally.</p>
 <h4 id="edge-ai-inference-with-centralized-state">Edge AI Inference with Centralized State<a class="anchor" href="#edge-ai-inference-with-centralized-state">#</a></h4>
 <p>Store user profiles, feature vectors, and model inputs in UnisonDB at a central or regional hub, then replicate that state out to edge nodes. Edge services perform inference locally against this replicated data, delivering low-latency responses without repeatedly calling back to the core database.</p>
@@ -481,29 +531,29 @@ Each edge node stays synchronized with the latest AI configurations and threshol
 </span></span><span style="display:flex;"><span>go build -o unisondb ./cmd/unisondb
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Run in replicator mode (primary)</span>
-</span></span><span style="display:flex;"><span>./unisondb server --mode replicator --config config.toml
+</span></span><span style="display:flex;"><span>./unisondb --config config.toml replicator
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Use the HTTP API</span>
 </span></span><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/mykey <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;bXl2YWx1ZQ==&#34;}&#39;</span></span></span></code></pre></div><h2 id="learn-more">Learn More<a class="anchor" href="#learn-more">#</a></h2>
 <ul>
-<li><strong><a href="/docs/getting-started/" target="_blank" rel="noopener noreferrer">Start with the Quick Install Guide</a>
-</strong> - Installation, configuration, and quick start</li>
-<li><strong><a href="/docs/architecture/" target="_blank" rel="noopener noreferrer">Explore UnisonDB’s Internal Architecture</a>
-</strong> - Deep dive into UnisonDB internals</li>
-<li><strong><a href="/docs/api/http-api/" target="_blank" rel="noopener noreferrer">Browse the HTTP API Reference</a>
-</strong> - REST API reference with examples</li>
-<li><strong><a href="/docs/examples/" target="_blank" rel="noopener noreferrer">Use Cases and Examples</a>
-</strong> - Various Use Case Examples</li>
+<li><a href="/docs/getting-started/" target="_blank" rel="noopener noreferrer">Start with the Quick Install Guide</a>
+ - Installation, configuration, and quick start</li>
+<li><a href="/docs/architecture/" target="_blank" rel="noopener noreferrer">Explore UnisonDB’s Internal Architecture</a>
+ - Deep dive into UnisonDB internals</li>
+<li><a href="/docs/api/http-api/" target="_blank" rel="noopener noreferrer">Browse the HTTP API Reference</a>
+ - REST API reference with examples</li>
+<li><a href="/docs/examples/" target="_blank" rel="noopener noreferrer">Use Cases and Examples</a>
+ - Various Use Case Examples</li>
 </ul>
 <h2 id="community--support">Community &amp; Support<a class="anchor" href="#community--support">#</a></h2>
 <ul>
-<li><strong>GitHub</strong>: <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">github.com/ankur-anand/unisondb</a>
+<li>GitHub: <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">github.com/ankur-anand/unisondb</a>
 </li>
-<li><strong>Issues</strong>: <a href="https://github.com/ankur-anand/unisondb/issues" target="_blank" rel="noopener noreferrer">Report bugs or request features</a>
+<li>Issues: <a href="https://github.com/ankur-anand/unisondb/issues" target="_blank" rel="noopener noreferrer">Report bugs or request features</a>
 </li>
-<li><strong>Discussions</strong>: <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener noreferrer">Join the conversation</a>
+<li>Discussions: <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener noreferrer">Join the conversation</a>
 </li>
 </ul>
 <h2 id="license">License<a class="anchor" href="#license">#</a></h2>
@@ -571,11 +621,7 @@ Each edge node stays synchronized with the latest AI configurations and threshol
       <ul>
         <li><a href="#what-is-unisondb">What is UnisonDB?</a></li>
         <li><a href="#key-features">Key Features</a></li>
-      </ul>
-    </li>
-    <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
-      <ul>
-        <li>
+        <li><a href="#multi-tenancy-architecture">Multi-Tenancy Architecture</a>
           <ul>
             <li><a href="#key-advantages-of-unisondbs-multi-tenant-design">Key Advantages of UnisonDB’s Multi-Tenant Design</a></li>
           </ul>

@@ -8,30 +8,24 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
-Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.
-">
+<meta name="description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/configurations/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="Configuration">
-  <meta property="og:description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
-Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
+  <meta property="og:title" content="UnisonDB Configuration Guide">
+  <meta property="og:description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
     <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
-  <meta itemprop="name" content="Configuration">
-  <meta itemprop="description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
-Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
+  <meta itemprop="name" content="UnisonDB Configuration Guide">
+  <meta itemprop="description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
   <meta itemprop="wordCount" content="1599">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB configuration,UnisonDB setup guide,configure UnisonDB,database configuration file,UnisonDB WAL settings,UnisonDB replication config,edge database tuning,distributed database configuration,UnisonDB performance optimization,Watch API configuration">
 
 <title>Configuration | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
@@ -41,7 +35,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -60,15 +54,14 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB configuration, UnisonDB setup guide, configure UnisonDB, database configuration file, UnisonDB WAL settings, UnisonDB replication config, edge database tuning, distributed database configuration, UnisonDB performance optimization, Watch API configuration">
 
 
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
-  <meta name="twitter:title" content="Configuration">
-  <meta name="twitter:description" content="Configuration Guide# UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
-Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode# Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here’s a complete example:
-## Port of the http server http_port = 4000 listen_ip = &#34;0.0.0.0&#34; ## grpc config for replication [grpc_config] listen_ip = &#34;0.0.0.0&#34; port = 4001 # SSL/TLS certificate paths for gRPC server cert_path = &#34;../../certs/server.crt&#34; key_path = &#34;../../certs/server.key&#34; ca_path = &#34;../../certs/ca.crt&#34; # Allow insecure connections (no TLS) - ONLY for development! allow_insecure = false # StorageConfig stores all tunable parameters. [storage_config] base_dir = &#34;/tmp/unisondb/server&#34; # Base directory for storage namespaces = [&#34;default&#34;, &#34;tenant_1&#34;, &#34;tenant_2&#34;, &#34;tenant_3&#34;, &#34;tenant_4&#34;] bytes_per_sync = &#34;1MB&#34; segment_size = &#34;16MB&#34; arena_size = &#34;4MB&#34; wal_fsync_interval = &#34;1s&#34; ## WAL cleanup configuration [storage_config.wal_cleanup_config] enabled = false interval = &#34;5m&#34; max_age = &#34;1h&#34; min_segments = 5 max_segments = 10 ## Write notify config - coalesces notifications from WAL writers to readers [write_notify_config] enabled = true max_delay = &#34;20ms&#34; ## ZeroMQ notifier configuration (per-namespace) ## Publishes change notifications for local application consumption [notifier_config.default] bind_port = 5555 high_water_mark = 1000 linger_time = 1000 [notifier_config.tenant_1] bind_port = 5556 high_water_mark = 1000 linger_time = 1000 [pprof_config] enabled = true port = 6060 [log_config] log_level = &#34;info&#34; disable_timestamp = false ## This is for grpc logging only - controls sampling percentages per level [log_config.min_level_percents] debug = 100.0 info = 50.0 warn = 100.0 error = 100.0 ## Fuzzer configuration (for testing) [fuzz_config] ops_per_namespace = 400 workers_per_namespace = 50 local_relayer_count = 1000 startup_delay = &#34;10s&#34; enable_read_ops = falseRelayer Mode# Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.">
+  <meta name="twitter:title" content="UnisonDB Configuration Guide">
+  <meta name="twitter:description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
 
 
 
@@ -84,7 +77,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
   "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.",
+  "description": "Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
@@ -191,7 +184,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -242,6 +235,58 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -256,7 +301,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -322,7 +367,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
     <li><a href="#configuration-guide">Configuration Guide</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#replicator-mode">Replicator Mode</a></li>
         <li><a href="#relayer-mode">Relayer Mode</a></li>
         <li><a href="#configuration-reference">Configuration Reference</a>
           <ul>
@@ -351,18 +396,19 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
       
       
   <article class="markdown book-article"><h1 id="configuration-guide">Configuration Guide<a class="anchor" href="#configuration-guide">#</a></h1>
-<p>UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.</p>
+<p>UnisonDB uses <a href="https://en.wikipedia.org/wiki/TOML" target="_blank" rel="noopener noreferrer">TOML</a>
+ for configuration. This guide covers all available configuration options for both replicator and relayer modes.</p>
 <h2 id="table-of-contents">Table of Contents<a class="anchor" href="#table-of-contents">#</a></h2>
 <ul>
-<li><a href="#server-mode" target="_blank" rel="noopener noreferrer">Server Mode</a>
+<li><a href="#Replicator-mode" target="_blank" rel="noopener noreferrer">Replicator Mode</a>
 </li>
 <li><a href="#relayer-mode" target="_blank" rel="noopener noreferrer">Relayer Mode</a>
 </li>
 <li><a href="#configuration-reference" target="_blank" rel="noopener noreferrer">Configuration Reference</a>
 </li>
 </ul>
-<h2 id="server-mode">Server Mode<a class="anchor" href="#server-mode">#</a></h2>
-<p>Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p>
+<h2 id="replicator-mode">Replicator Mode<a class="anchor" href="#replicator-mode">#</a></h2>
+<p>Replicator mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Port of the http server</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
@@ -926,7 +972,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
     <span>
     
       <a href="/docs/architecture/" class="flex align-center">
-        <span>Architecture</span>
+        <span>Architecture Overview</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     
@@ -965,7 +1011,7 @@ Table of Contents# Server Mode Relayer Mode Configuration Reference Server Mode#
     <li><a href="#configuration-guide">Configuration Guide</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#replicator-mode">Replicator Mode</a></li>
         <li><a href="#relayer-mode">Relayer Mode</a></li>
         <li><a href="#configuration-reference">Configuration Reference</a>
           <ul>

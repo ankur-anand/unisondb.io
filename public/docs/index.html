@@ -11,6 +11,7 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
 Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
 Architecture # Understand the internal design and components of UnisonDB.
+Deployment # Deployment topologies, configurations, and operational best practices.
 API Reference # Complete reference for HTTP and gRPC APIs.
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
@@ -21,6 +22,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.
   <meta property="og:description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
 Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
 Architecture # Understand the internal design and components of UnisonDB.
+Deployment # Deployment topologies, configurations, and operational best practices.
 API Reference # Complete reference for HTTP and gRPC APIs.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
@@ -31,8 +33,11 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
   <meta itemprop="description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
 Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
 Architecture # Understand the internal design and components of UnisonDB.
+Deployment # Deployment topologies, configurations, and operational best practices.
 API Reference # Complete reference for HTTP and gRPC APIs.">
-  <meta itemprop="wordCount" content="52">
+  <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="61">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
 
 <title>Documentation | UnisonDB</title>
@@ -43,7 +48,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -72,6 +77,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
   <meta name="twitter:description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
 Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
 Architecture # Understand the internal design and components of UnisonDB.
+Deployment # Deployment topologies, configurations, and operational best practices.
 API Reference # Complete reference for HTTP and gRPC APIs.">
 
 
@@ -195,7 +201,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -246,6 +252,58 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -260,7 +318,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -329,6 +387,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
           <ul>
             <li><a href="#getting-started">Getting Started</a></li>
             <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#deployment">Deployment</a></li>
             <li><a href="#api-reference">API Reference</a></li>
           </ul>
         </li>
@@ -355,6 +414,9 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 <h3 id="architecture"><a href="architecture/" target="_blank" rel="noopener noreferrer">Architecture</a>
 <a class="anchor" href="#architecture">#</a></h3>
 <p>Understand the internal design and components of UnisonDB.</p>
+<h3 id="deployment"><a href="deployment/" target="_blank" rel="noopener noreferrer">Deployment</a>
+<a class="anchor" href="#deployment">#</a></h3>
+<p>Deployment topologies, configurations, and operational best practices.</p>
 <h3 id="api-reference"><a href="api/" target="_blank" rel="noopener noreferrer">API Reference</a>
 <a class="anchor" href="#api-reference">#</a></h3>
 <p>Complete reference for HTTP and gRPC APIs.</p>
@@ -423,6 +485,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
           <ul>
             <li><a href="#getting-started">Getting Started</a></li>
             <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#deployment">Deployment</a></li>
             <li><a href="#api-reference">API Reference</a></li>
           </ul>
         </li>

@@ -43,6 +43,22 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \
   -d '{"value":"aGVsbG8gd29ybGQ="}'
 ```
 
+## Request Size Limits Restrictions
+
+### Maximum Request Size
+
+To keep UnisonDB's HTTP layer efficient, safe, and predictable, each HTTP request is limited to a **maximum size of 1 MB**.
+
+This limit applies to the **entire request body**, including:
+
+- JSON payload
+- Base64-encoded values
+- Any metadata sent in the body
+
+If your workload needs to store data larger than 1 MB, you **should not** push it as a single HTTP write. Instead, use UnisonDB's [**transactional (Txn) write path**](#transaction-operations), which is designed to handle larger logical operations safely and atomically.
+
+---
+
 ## Key-Value Operations
 
 ### Put KV
@@ -417,6 +433,18 @@ Transactions allow atomic operations across multiple keys.
 3. ABORT    → Cancel transaction
 ```
 
+### Transaction Type Restrictions
+
+**Transactions are bound to the `entryType` specified during `BEGIN`.**
+Once opened, a transaction can **only** accept operations matching its type:
+
+| `entryType` | Allowed Operations | Endpoint |
+|-------------|-------------------|----------|
+| `kv` | Key-Value only | `POST /tx/{txnId}/kv` |
+| `row` | Wide-Column only | `POST /tx/{txnId}/row` |
+| `lob` | Large Objects only | `POST /tx/{txnId}/lob` |
+
+
 ### Begin Transaction
 
 Start a new transaction.
@@ -555,6 +583,40 @@ curl -X POST "http://localhost:4000/api/v1/default/tx/{txnId}/lob?key=file:backu
 {
   "success": true
 }
+```
+
+### Handling Large Objects (LOB > 1MB)
+
+For files or data larger than 1MB, use **LOB transactions** with chunking:
+
+#### Example: Upload a 5MB File
+
+```bash
+#!/bin/bash
+FILE="large-file.bin"
+KEY="files:backup-20250108.tar.gz"
+CHUNK_SIZE=1048576  # 1MB chunks
+
+# 1. Begin LOB transaction
+RESPONSE=$(curl -s -X POST http://localhost:4000/api/v1/default/tx/begin \
+  -d '{"operation":"put","entryType":"lob"}')
+TXN_ID=$(echo $RESPONSE | jq -r '.txnId')
+
+# 2. Split file into 1MB chunks and upload
+split -b $CHUNK_SIZE "$FILE" /tmp/chunk_
+for CHUNK in /tmp/chunk_*; do
+  echo "Uploading $CHUNK..."
+  curl -X POST "http://localhost:4000/api/v1/default/tx/$TXN_ID/lob?key=$KEY" \
+    --data-binary @"$CHUNK"
+done
+
+# 3. Commit transaction
+curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/commit
+
+# 4. Cleanup
+rm /tmp/chunk_*
+
+echo "Large file uploaded successfully!"
 ```
 
 ---

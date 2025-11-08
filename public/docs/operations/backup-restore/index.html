@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Complete guide to backing up and restoring UnisonDB data using WAL segments and B-Tree snapshots">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/operations/backup-restore/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="Backup and Restore">
+  <meta property="og:description" content="Complete guide to backing up and restoring UnisonDB data using WAL segments and B-Tree snapshots">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+
+  <meta itemprop="name" content="Backup and Restore">
+  <meta itemprop="description" content="Complete guide to backing up and restoring UnisonDB data using WAL segments and B-Tree snapshots">
+  <meta itemprop="wordCount" content="1362">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB backup,database backup,WAL backup,B-Tree snapshot,disaster recovery,point-in-time recovery">
+
+<title>Backup and Restore | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/operations/backup-restore/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB backup, database backup, WAL backup, B-Tree snapshot, disaster recovery, point-in-time recovery">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Backup and Restore">
+  <meta name="twitter:description" content="Complete guide to backing up and restoring UnisonDB data using WAL segments and B-Tree snapshots">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Complete guide to backing up and restoring UnisonDB data using WAL segments and B-Tree snapshots",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="active">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Backup and Restore</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#backup-and-restore">Backup and Restore</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#backup-apis">Backup APIs</a>
+          <ul>
+            <li><a href="#wal-segment-backup">WAL Segment Backup</a></li>
+            <li><a href="#b-tree-snapshot-backup">B-Tree Snapshot Backup</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-strategies">Backup Strategies</a>
+          <ul>
+            <li><a href="#1-full-backup-snapshot-only">1. Full Backup (Snapshot Only)</a></li>
+            <li><a href="#2-incremental-backup-wal--periodic-snapshots">2. Incremental Backup (WAL + Periodic Snapshots)</a></li>
+            <li><a href="#3-continuous-wal-archival">3. Continuous WAL Archival</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-automation">Backup Automation</a>
+          <ul>
+            <li><a href="#systemd-timer-example">Systemd Timer Example</a></li>
+          </ul>
+        </li>
+        <li><a href="#storage-integration-examples">Storage Integration Examples</a>
+          <ul>
+            <li><a href="#amazon-s3">Amazon S3</a></li>
+          </ul>
+        </li>
+        <li><a href="#restore-procedures">Restore Procedures</a>
+          <ul>
+            <li><a href="#full-restore-from-b-tree-snapshot">Full Restore from B-Tree Snapshot</a></li>
+            <li><a href="#point-in-time-recovery-pitr">Point-in-Time Recovery (PITR)</a></li>
+          </ul>
+        </li>
+        <li><a href="#best-practices">Best Practices</a>
+          <ul>
+            <li><a href="#backup-schedule">Backup Schedule</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#testing-restores">Testing Restores</a></li>
+            <li><a href="#monitoring">Monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#troubleshooting">Troubleshooting</a>
+          <ul>
+            <li><a href="#backup-fails-with-permission-denied">Backup Fails with Permission Denied</a></li>
+            <li><a href="#backup-directory-full">Backup Directory Full</a></li>
+            <li><a href="#restore-fails-with-corrupted-snapshot">Restore Fails with Corrupted Snapshot</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="backup-and-restore">Backup and Restore<a class="anchor" href="#backup-and-restore">#</a></h1>
+<p>UnisonDB provides HTTP APIs for creating durable backups of both Write-Ahead Log (WAL) segments and B-Tree snapshots.</p>
+<h2 id="overview">Overview<a class="anchor" href="#overview">#</a></h2>
+<p>UnisonDB&rsquo;s backup system is designed around two complementary artifacts:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+          <th>Recovery Capability</th>
+          <th>Storage Size</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>WAL Segments</strong></td>
+          <td>Incremental transaction logs</td>
+          <td>Point-in-time recovery</td>
+          <td>Small (append-only)</td>
+      </tr>
+      <tr>
+          <td><strong>B-Tree Snapshots</strong></td>
+          <td>Full database state</td>
+          <td>Fast baseline restore</td>
+          <td>Larger (full state)</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Key Principles:</strong></p>
+<ul>
+<li><strong>Namespace isolation</strong>: Each namespace has its own backup root (<code>&lt;dataDir&gt;/backups/{namespace}</code>)</li>
+<li><strong>Crash-consistent</strong>: All backups are atomic and immediately usable</li>
+<li><strong>BYO tooling</strong>: UnisonDB emits raw files; you control compression, encryption, and storage</li>
+<li><strong>Security</strong>: Relative paths only—no directory traversal or cross-namespace access</li>
+</ul>
+<h2 id="backup-apis">Backup APIs<a class="anchor" href="#backup-apis">#</a></h2>
+<h3 id="wal-segment-backup">WAL Segment Backup<a class="anchor" href="#wal-segment-backup">#</a></h3>
+<p>Copies sealed WAL segments to a backup directory for incremental archival.</p>
+<p><strong>Endpoint:</strong></p>
+<pre tabindex="0"><code>POST /api/v1/{namespace}/wal/backup</code></pre><p><strong>Request Body:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;afterSegmentId&#34;</span>: <span style="color:#ae81ff">42</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;backupDir&#34;</span>: <span style="color:#e6db74">&#34;wal/customer-a&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>afterSegmentId</code></td>
+          <td>integer</td>
+          <td>No</td>
+          <td>Only copy segments with IDs greater than this value. Omit or set to <code>0</code> to copy all sealed segments.</td>
+      </tr>
+      <tr>
+          <td><code>backupDir</code></td>
+          <td>string</td>
+          <td>Yes</td>
+          <td><strong>Relative path</strong> within <code>&lt;dataDir&gt;/backups/{namespace}</code>. Absolute paths or <code>..</code> traversal are rejected.</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Response:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;backups&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">43</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/users/wal/customer-a/000000043.wal&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">44</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/users/wal/customer-a/000000044.wal&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;afterSegmentId&#34;: 100,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;backupDir&#34;: &#34;wal/daily&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><hr>
+<h3 id="b-tree-snapshot-backup">B-Tree Snapshot Backup<a class="anchor" href="#b-tree-snapshot-backup">#</a></h3>
+<p>Creates a consistent snapshot of the entire B-Tree store.</p>
+<p><strong>Endpoint:</strong></p>
+<pre tabindex="0"><code>POST /api/v1/{namespace}/btree/backup</code></pre><p><strong>Request Body:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;snapshots/users-20250108.snapshot&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>path</code></td>
+          <td>string</td>
+          <td>Yes</td>
+          <td><strong>Relative path</strong> within <code>&lt;dataDir&gt;/backups/{namespace}</code>. UnisonDB writes to <code>{path}.tmp</code>, fsyncs, then atomically renames.</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Response:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/users/snapshots/users-20250108.snapshot&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;bytes&#34;</span>: <span style="color:#ae81ff">73400320</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Example:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;path&#34;: &#34;snapshots/users-&#39;</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;.snapshot&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><hr>
+<h2 id="backup-strategies">Backup Strategies<a class="anchor" href="#backup-strategies">#</a></h2>
+<h3 id="1-full-backup-snapshot-only">1. Full Backup (Snapshot Only)<a class="anchor" href="#1-full-backup-snapshot-only">#</a></h3>
+<p>Simple strategy for small databases or infrequent backups.</p>
+<p><strong>Workflow:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Daily full snapshot</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;path&#34;: &#34;daily/snapshot-&#39;</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;.db&#34;}&#39;</span></span></span></code></pre></div><hr>
+<h3 id="2-incremental-backup-wal--periodic-snapshots">2. Incremental Backup (WAL + Periodic Snapshots)<a class="anchor" href="#2-incremental-backup-wal--periodic-snapshots">#</a></h3>
+<p><strong>Workflow:</strong></p>
+<p><strong>Daily baseline:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Full B-Tree snapshot</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;path&#34;: &#34;weekly/snapshot-&#39;</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;.db&#34;}&#39;</span></span></span></code></pre></div><p><strong>Hourly incremental:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Every hour: Copy new WAL segments</span>
+</span></span><span style="display:flex;"><span>LAST_SEGMENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cat /var/backups/last_wal_id.txt <span style="color:#f92672">||</span> echo 0<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;afterSegmentId\&#34;: </span>$LAST_SEGMENT<span style="color:#e6db74">, \&#34;backupDir\&#34;: \&#34;wal/</span><span style="color:#66d9ef">$(</span>date +%Y%m%d-%H<span style="color:#66d9ef">)</span><span style="color:#e6db74">\&#34;}&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  | jq -r <span style="color:#e6db74">&#39;.backups[-1].segmentId&#39;</span> &gt; /var/backups/last_wal_id.txt</span></span></code></pre></div><hr>
+<h3 id="3-continuous-wal-archival">3. Continuous WAL Archival<a class="anchor" href="#3-continuous-wal-archival">#</a></h3>
+<p><strong>Workflow:</strong></p>
+<p>Use a cron job or systemd timer to continuously ship WAL segments:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># /usr/local/bin/unison-wal-archive.sh</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>STATE_FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/lib/unison/wal-archive-state.json&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Read last archived segment</span>
+</span></span><span style="display:flex;"><span>LAST_SEGMENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>jq -r <span style="color:#e6db74">&#39;.lastSegmentId // 0&#39;</span> <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span> 2&gt;/dev/null <span style="color:#f92672">||</span> echo 0<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Backup new segments</span>
+</span></span><span style="display:flex;"><span>RESPONSE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s -X POST http://localhost:8080/api/v1/$NAMESPACE/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;afterSegmentId\&#34;: </span>$LAST_SEGMENT<span style="color:#e6db74">, \&#34;backupDir\&#34;: \&#34;wal/archive\&#34;}&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Extract latest segment ID</span>
+</span></span><span style="display:flex;"><span>NEW_LAST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$RESPONSE<span style="color:#e6db74">&#34;</span> | jq -r <span style="color:#e6db74">&#39;.backups[-1].segmentId // 0&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$NEW_LAST<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Update state</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;{\&#34;lastSegmentId\&#34;: </span>$NEW_LAST<span style="color:#e6db74">, \&#34;timestamp\&#34;: \&#34;</span><span style="color:#66d9ef">$(</span>date -Iseconds<span style="color:#66d9ef">)</span><span style="color:#e6db74">\&#34;}&#34;</span> &gt; <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compress and upload to S3</span>
+</span></span><span style="display:flex;"><span>  find /var/unison/data/backups/$NAMESPACE/wal/archive -name <span style="color:#e6db74">&#34;*.wal&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    -mmin -15 -exec gzip <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    -exec aws s3 cp <span style="color:#f92672">{}</span>.gz s3://backups/unison/$NAMESPACE/wal/ <span style="color:#ae81ff">\;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span></span></span></code></pre></div><p><strong>Cron schedule:</strong></p>
+<pre tabindex="0"><code class="language-cron" data-lang="cron">*/15 * * * * /usr/local/bin/unison-wal-archive.sh</code></pre><hr>
+<h2 id="backup-automation">Backup Automation<a class="anchor" href="#backup-automation">#</a></h2>
+<h3 id="systemd-timer-example">Systemd Timer Example<a class="anchor" href="#systemd-timer-example">#</a></h3>
+<p><strong>Service unit</strong> (<code>/etc/systemd/system/unison-backup.service</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[Unit]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Description</span><span style="color:#f92672">=</span><span style="color:#e6db74">UnisonDB Backup Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">After</span><span style="color:#f92672">=</span><span style="color:#e6db74">network.target</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Service]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#e6db74">oneshot</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">User</span><span style="color:#f92672">=</span><span style="color:#e6db74">unison</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ExecStart</span><span style="color:#f92672">=</span><span style="color:#e6db74">/usr/local/bin/unison-backup.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StandardOutput</span><span style="color:#f92672">=</span><span style="color:#e6db74">journal</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StandardError</span><span style="color:#f92672">=</span><span style="color:#e6db74">journal</span></span></span></code></pre></div><p><strong>Timer unit</strong> (<code>/etc/systemd/system/unison-backup.timer</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[Unit]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Description</span><span style="color:#f92672">=</span><span style="color:#e6db74">UnisonDB Backup Timer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Timer]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">OnCalendar</span><span style="color:#f92672">=</span><span style="color:#e6db74">daily</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">OnCalendar</span><span style="color:#f92672">=</span><span style="color:#e6db74">*:0/6  # Every 6 hours</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Persistent</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Install]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WantedBy</span><span style="color:#f92672">=</span><span style="color:#e6db74">timers.target</span></span></span></code></pre></div><p><strong>Backup script</strong> (<code>/usr/local/bin/unison-backup.sh</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>set -euo pipefail
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>BACKUP_ROOT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/unison/data/backups/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>DATE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d-%H%M<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. B-Tree snapshot (daily at midnight)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date +%H%M<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0000&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Creating B-Tree snapshot...&#34;</span>
+</span></span><span style="display:flex;"><span>  curl -X POST http://localhost:8080/api/v1/$NAMESPACE/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    -d <span style="color:#e6db74">&#34;{\&#34;path\&#34;: \&#34;snapshots/btree-</span>$DATE<span style="color:#e6db74">.db\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compress snapshot</span>
+</span></span><span style="display:flex;"><span>  zstd -q --rm <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Upload to S3</span>
+</span></span><span style="display:flex;"><span>  aws s3 cp <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db.zst&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    s3://backups/unison/$NAMESPACE/snapshots/
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. WAL incremental (every run)</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Backing up WAL segments...&#34;</span>
+</span></span><span style="display:flex;"><span>STATE_FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/lib/unison/wal-state-</span>$NAMESPACE<span style="color:#e6db74">.json&#34;</span>
+</span></span><span style="display:flex;"><span>LAST_SEGMENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>jq -r <span style="color:#e6db74">&#39;.lastSegmentId // 0&#39;</span> <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span> 2&gt;/dev/null <span style="color:#f92672">||</span> echo 0<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RESPONSE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s -X POST http://localhost:8080/api/v1/$NAMESPACE/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;afterSegmentId\&#34;: </span>$LAST_SEGMENT<span style="color:#e6db74">, \&#34;backupDir\&#34;: \&#34;wal/</span>$DATE<span style="color:#e6db74">\&#34;}&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Update state</span>
+</span></span><span style="display:flex;"><span>NEW_LAST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$RESPONSE<span style="color:#e6db74">&#34;</span> | jq -r <span style="color:#e6db74">&#39;.backups[-1].segmentId // 0&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$NEW_LAST<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;{\&#34;lastSegmentId\&#34;: </span>$NEW_LAST<span style="color:#e6db74">, \&#34;timestamp\&#34;: \&#34;</span><span style="color:#66d9ef">$(</span>date -Iseconds<span style="color:#66d9ef">)</span><span style="color:#e6db74">\&#34;}&#34;</span> &gt; <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compress and upload WAL segments</span>
+</span></span><span style="display:flex;"><span>  tar -czf <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">/wal-</span>$DATE<span style="color:#e6db74">.tar.gz&#34;</span> -C <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;wal/</span>$DATE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  aws s3 cp <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">/wal-</span>$DATE<span style="color:#e6db74">.tar.gz&#34;</span> s3://backups/unison/$NAMESPACE/wal/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Cleanup local WAL backups older than 7 days</span>
+</span></span><span style="display:flex;"><span>  find <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">/wal&#34;</span> -type d -mtime +7 -exec rm -rf <span style="color:#f92672">{}</span> +
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Backup completed successfully&#34;</span></span></span></code></pre></div><p><strong>Enable the timer:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl daemon-reload
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now unison-backup.timer
+</span></span><span style="display:flex;"><span>sudo systemctl status unison-backup.timer</span></span></code></pre></div><hr>
+<h2 id="storage-integration-examples">Storage Integration Examples<a class="anchor" href="#storage-integration-examples">#</a></h2>
+<h3 id="amazon-s3">Amazon S3<a class="anchor" href="#amazon-s3">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># Backup to S3 with encryption</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>BACKUP_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/unison/data/backups/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>S3_BUCKET<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;s3://company-backups/unison/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>DATE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Create B-Tree snapshot</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/$NAMESPACE/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;path\&#34;: \&#34;snapshots/btree-</span>$DATE<span style="color:#e6db74">.db\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Compress and encrypt</span>
+</span></span><span style="display:flex;"><span>zstd -q <span style="color:#e6db74">&#34;</span>$BACKUP_DIR<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db&#34;</span>
+</span></span><span style="display:flex;"><span>gpg --encrypt --recipient backup@company.com <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;</span>$BACKUP_DIR<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db.zst&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Upload to S3 with server-side encryption</span>
+</span></span><span style="display:flex;"><span>aws s3 cp <span style="color:#e6db74">&#34;</span>$BACKUP_DIR<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db.zst.gpg&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;</span>$S3_BUCKET<span style="color:#e6db74">/snapshots/&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --storage-class STANDARD_IA <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --server-side-encryption AES256
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Cleanup local files</span>
+</span></span><span style="display:flex;"><span>rm -f <span style="color:#e6db74">&#34;</span>$BACKUP_DIR<span style="color:#e6db74">/snapshots/btree-</span>$DATE<span style="color:#e6db74">.db&#34;</span>*</span></span></code></pre></div><hr>
+<h2 id="restore-procedures">Restore Procedures<a class="anchor" href="#restore-procedures">#</a></h2>
+<h3 id="full-restore-from-b-tree-snapshot">Full Restore from B-Tree Snapshot<a class="anchor" href="#full-restore-from-b-tree-snapshot">#</a></h3>
+<p><strong>Scenario:</strong> Complete data loss, restore from latest snapshot.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Stop UnisonDB</span>
+</span></span><span style="display:flex;"><span>sudo systemctl stop unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Download snapshot from S3</span>
+</span></span><span style="display:flex;"><span>aws s3 cp s3://backups/unison/users/snapshots/btree-20250108.db.zst <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  /tmp/restore.db.zst
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Decompress</span>
+</span></span><span style="display:flex;"><span>zstd -d /tmp/restore.db.zst -o /tmp/restore.db
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Replace existing database</span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>DATA_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/unison/data/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rm -rf <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/db&#34;</span>/*
+</span></span><span style="display:flex;"><span>mkdir -p <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/db&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Copy snapshot to data directory (engine-specific)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For LMDB:</span>
+</span></span><span style="display:flex;"><span>cp /tmp/restore.db <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/db/data.mdb&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Restart UnisonDB</span>
+</span></span><span style="display:flex;"><span>sudo systemctl start unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. Verify</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/api/v1/users/kv/test-key</span></span></code></pre></div><hr>
+<h3 id="point-in-time-recovery-pitr">Point-in-Time Recovery (PITR)<a class="anchor" href="#point-in-time-recovery-pitr">#</a></h3>
+<p><strong>Scenario:</strong> Restore to a specific point in time using snapshot + WAL replay.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># Restore to 2025-01-08 14:30:00 UTC</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TARGET_TIME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2025-01-08T14:30:00Z&#34;</span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Find baseline snapshot before target time</span>
+</span></span><span style="display:flex;"><span>SNAPSHOT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>aws s3 ls s3://backups/unison/$NAMESPACE/snapshots/ | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  awk <span style="color:#e6db74">&#39;{print $4}&#39;</span> | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  grep -E <span style="color:#e6db74">&#39;btree-[0-9]{8}&#39;</span> | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  sort | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  awk -v target<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date -d <span style="color:#e6db74">&#34;</span>$TARGET_TIME<span style="color:#e6db74">&#34;</span> +%Y%m%d<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#39;$0 &lt;= target&#39;</span> | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  tail -1<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Using baseline snapshot: </span>$SNAPSHOT<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Download and restore snapshot</span>
+</span></span><span style="display:flex;"><span>aws s3 cp <span style="color:#e6db74">&#34;s3://backups/unison/</span>$NAMESPACE<span style="color:#e6db74">/snapshots/</span>$SNAPSHOT<span style="color:#e6db74">&#34;</span> /tmp/
+</span></span><span style="display:flex;"><span>zstd -d <span style="color:#e6db74">&#34;/tmp/</span>$SNAPSHOT<span style="color:#e6db74">&#34;</span> -o /tmp/restore.db
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Download WAL segments after snapshot</span>
+</span></span><span style="display:flex;"><span>SNAPSHOT_DATE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $SNAPSHOT | grep -oE <span style="color:#e6db74">&#39;[0-9]{8}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>mkdir -p /tmp/wal-restore
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>aws s3 sync <span style="color:#e6db74">&#34;s3://backups/unison/</span>$NAMESPACE<span style="color:#e6db74">/wal/&#34;</span> /tmp/wal-restore/ <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --exclude <span style="color:#e6db74">&#34;*&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --include <span style="color:#e6db74">&#34;wal-</span><span style="color:#e6db74">${</span>SNAPSHOT_DATE<span style="color:#e6db74">}</span><span style="color:#e6db74">*.tar.gz&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Extract WAL segments</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> archive in /tmp/wal-restore/*.tar.gz; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  tar -xzf <span style="color:#e6db74">&#34;</span>$archive<span style="color:#e6db74">&#34;</span> -C /tmp/wal-restore/
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Stop UnisonDB and restore</span>
+</span></span><span style="display:flex;"><span>sudo systemctl stop unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DATA_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/unison/data/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>rm -rf <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/db&#34;</span>/* <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/wal&#34;</span>/*
+</span></span><span style="display:flex;"><span>cp /tmp/restore.db <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/db/data.mdb&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. Copy WAL segments up to target time</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (UnisonDB will replay WAL on startup)</span>
+</span></span><span style="display:flex;"><span>find /tmp/wal-restore -name <span style="color:#e6db74">&#34;*.wal&#34;</span> | sort | <span style="color:#66d9ef">while</span> read wal; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Check WAL timestamp (implementation-specific)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Copy only if before target time</span>
+</span></span><span style="display:flex;"><span>  cp <span style="color:#e6db74">&#34;</span>$wal<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span>$DATA_DIR<span style="color:#e6db74">/wal/&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 7. Restart and verify</span>
+</span></span><span style="display:flex;"><span>sudo systemctl start unisondb</span></span></code></pre></div><hr>
+<h2 id="best-practices">Best Practices<a class="anchor" href="#best-practices">#</a></h2>
+<h3 id="backup-schedule">Backup Schedule<a class="anchor" href="#backup-schedule">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Frequency</th>
+          <th>Component</th>
+          <th>Retention</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Hourly</strong></td>
+          <td>WAL segments</td>
+          <td>7 days local, 30 days remote</td>
+      </tr>
+      <tr>
+          <td><strong>Daily</strong></td>
+          <td>B-Tree snapshot</td>
+          <td>7 days local, 90 days remote</td>
+      </tr>
+      <tr>
+          <td><strong>Weekly</strong></td>
+          <td>Full backup (WAL + snapshot)</td>
+          <td>1 year</td>
+      </tr>
+      <tr>
+          <td><strong>Monthly</strong></td>
+          <td>Compliance archive</td>
+          <td>7 years (if required)</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="security">Security<a class="anchor" href="#security">#</a></h3>
+<p><strong>1. Encrypt backups:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># GPG encryption before upload</span>
+</span></span><span style="display:flex;"><span>gpg --encrypt --recipient backup-key@company.com backup.db</span></span></code></pre></div><p><strong>2. Access control:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Restrict backup directory permissions</span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">700</span> /var/unison/data/backups
+</span></span><span style="display:flex;"><span>chown unison:unison /var/unison/data/backups</span></span></code></pre></div><p><strong>3. Audit logging:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Log all backup API calls</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:8080/api/v1/users/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;backupDir&#34;: &#34;wal/archive&#34;}&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  | tee -a /var/log/unison-backups.log</span></span></code></pre></div><h3 id="testing-restores">Testing Restores<a class="anchor" href="#testing-restores">#</a></h3>
+<p><strong>Monthly restore drill:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># Test restore in isolated environment</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>TEST_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/tmp/restore-test-</span><span style="color:#66d9ef">$(</span>date +%s<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Create test environment</span>
+</span></span><span style="display:flex;"><span>mkdir -p <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">&#34;</span>/<span style="color:#f92672">{</span>db,wal<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Download latest snapshot</span>
+</span></span><span style="display:flex;"><span>aws s3 cp s3://backups/unison/$NAMESPACE/snapshots/latest.db.zst <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">/&#34;</span>
+</span></span><span style="display:flex;"><span>zstd -d <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">/latest.db.zst&#34;</span> -o <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">/db/data.mdb&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Start UnisonDB in test mode</span>
+</span></span><span style="display:flex;"><span>unisondb --data-dir <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">&#34;</span> --http-addr localhost:9999 &amp;
+</span></span><span style="display:flex;"><span>PID<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Verify data integrity</span>
+</span></span><span style="display:flex;"><span>sleep <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:9999/health
+</span></span><span style="display:flex;"><span>curl http://localhost:9999/api/v1/$NAMESPACE/kv/test-key
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Cleanup</span>
+</span></span><span style="display:flex;"><span>kill $PID
+</span></span><span style="display:flex;"><span>rm -rf <span style="color:#e6db74">&#34;</span>$TEST_DIR<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Restore test completed successfully&#34;</span></span></span></code></pre></div><h3 id="monitoring">Monitoring<a class="anchor" href="#monitoring">#</a></h3>
+<p><strong>Key metrics to track:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Backup success rate</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/metrics | grep backup_success_total
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Last backup timestamp</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/metrics | grep backup_last_timestamp_seconds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Backup size</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/metrics | grep backup_bytes_total</span></span></code></pre></div><p><strong>Alert on:</strong></p>
+<ul>
+<li>Backup failures (2+ consecutive failures)</li>
+<li>Backup age &gt; 24 hours</li>
+<li>Backup size anomalies (&gt;50% change)</li>
+<li>WAL segment gap detection</li>
+</ul>
+<hr>
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting">#</a></h2>
+<h3 id="backup-fails-with-permission-denied">Backup Fails with Permission Denied<a class="anchor" href="#backup-fails-with-permission-denied">#</a></h3>
+<p><strong>Symptom:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;permission denied: /var/unison/data/backups/users/wal&#34;</span>}</span></span></code></pre></div><p><strong>Solution:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Ensure backup directory is writable</span>
+</span></span><span style="display:flex;"><span>sudo chown -R unison:unison /var/unison/data/backups
+</span></span><span style="display:flex;"><span>sudo chmod -R <span style="color:#ae81ff">755</span> /var/unison/data/backups</span></span></code></pre></div><hr>
+<h3 id="backup-directory-full">Backup Directory Full<a class="anchor" href="#backup-directory-full">#</a></h3>
+<p><strong>Symptom:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;no space left on device&#34;</span>}</span></span></code></pre></div><p><strong>Solution:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Clean up old local backups</span>
+</span></span><span style="display:flex;"><span>find /var/unison/data/backups -type f -mtime +7 -delete
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Or mount separate volume</span>
+</span></span><span style="display:flex;"><span>sudo mount /dev/sdb1 /var/unison/data/backups</span></span></code></pre></div><hr>
+<h3 id="restore-fails-with-corrupted-snapshot">Restore Fails with Corrupted Snapshot<a class="anchor" href="#restore-fails-with-corrupted-snapshot">#</a></h3>
+<p><strong>Symptom:</strong></p>
+<pre tabindex="0"><code>ERROR: database file is corrupted</code></pre><p><strong>Solution:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Verify checksum (if available)</span>
+</span></span><span style="display:flex;"><span>sha256sum backup.db
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Compare with original checksum</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Try previous snapshot</span>
+</span></span><span style="display:flex;"><span>aws s3 ls s3://backups/unison/users/snapshots/ | sort | tail -2</span></span></code></pre></div><hr>
+<h2 id="next-steps">Next Steps<a class="anchor" href="#next-steps">#</a></h2>
+<ul>
+<li><a href="../deployment/" target="_blank" rel="noopener noreferrer">Deployment Topologies</a>
+ - High availability with relayers</li>
+<li><a href="../monitoring/" target="_blank" rel="noopener noreferrer">Monitoring</a>
+ - Tracking backup health</li>
+<li><a href="../api/http-api/" target="_blank" rel="noopener noreferrer">HTTP API Reference</a>
+ - Complete API documentation</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/operations/backup-restore.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/operations/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Operations</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/examples/" class="flex align-center">
+        <span>Examples</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#backup-and-restore">Backup and Restore</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#backup-apis">Backup APIs</a>
+          <ul>
+            <li><a href="#wal-segment-backup">WAL Segment Backup</a></li>
+            <li><a href="#b-tree-snapshot-backup">B-Tree Snapshot Backup</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-strategies">Backup Strategies</a>
+          <ul>
+            <li><a href="#1-full-backup-snapshot-only">1. Full Backup (Snapshot Only)</a></li>
+            <li><a href="#2-incremental-backup-wal--periodic-snapshots">2. Incremental Backup (WAL + Periodic Snapshots)</a></li>
+            <li><a href="#3-continuous-wal-archival">3. Continuous WAL Archival</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-automation">Backup Automation</a>
+          <ul>
+            <li><a href="#systemd-timer-example">Systemd Timer Example</a></li>
+          </ul>
+        </li>
+        <li><a href="#storage-integration-examples">Storage Integration Examples</a>
+          <ul>
+            <li><a href="#amazon-s3">Amazon S3</a></li>
+          </ul>
+        </li>
+        <li><a href="#restore-procedures">Restore Procedures</a>
+          <ul>
+            <li><a href="#full-restore-from-b-tree-snapshot">Full Restore from B-Tree Snapshot</a></li>
+            <li><a href="#point-in-time-recovery-pitr">Point-in-Time Recovery (PITR)</a></li>
+          </ul>
+        </li>
+        <li><a href="#best-practices">Best Practices</a>
+          <ul>
+            <li><a href="#backup-schedule">Backup Schedule</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#testing-restores">Testing Restores</a></li>
+            <li><a href="#monitoring">Monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#troubleshooting">Troubleshooting</a>
+          <ul>
+            <li><a href="#backup-fails-with-permission-denied">Backup Fails with Permission Denied</a></li>
+            <li><a href="#backup-directory-full">Backup Directory Full</a></li>
+            <li><a href="#restore-fails-with-corrupted-snapshot">Restore Fails with Corrupted Snapshot</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

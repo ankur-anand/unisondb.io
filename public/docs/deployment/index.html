@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/deployment/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="UnisonDB Deployment Topologies">
+  <meta property="og:description" content="Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:1313/images/deployment_topologies.png">
+
+
+  <meta itemprop="name" content="UnisonDB Deployment Topologies">
+  <meta itemprop="description" content="Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems.">
+  <meta itemprop="wordCount" content="1016">
+  <meta itemprop="image" content="http://localhost:1313/images/deployment_topologies.png">
+  <meta itemprop="keywords" content="UnisonDB deployment,Edge Computing database,real-time replication,distributed database,primary replica topology,hub and spoke architecture,multi-hop replication,edge AI data sync,UnisonDB relayer,UnisonDB replicator">
+
+<title>Deployment Topologies | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/deployment/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/deployment/index.xml" title="UnisonDB" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB deployment, Edge Computing database, real-time replication, distributed database, primary replica topology, hub and spoke architecture, multi-hop replication, edge AI data sync, UnisonDB relayer, UnisonDB replicator">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/deployment_topologies.png">
+  <meta name="twitter:title" content="UnisonDB Deployment Topologies">
+  <meta name="twitter:description" content="Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems.">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/deployment/" class="active">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Deployment Topologies</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#deployment-topologies">Deployment Topologies</a>
+      <ul>
+        <li><a href="#overview">Overview</a>
+          <ul>
+            <li><a href="#core-components">Core Components</a></li>
+          </ul>
+        </li>
+        <li><a href="#1-single-server">1. Single Server</a>
+          <ul>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#monitoring">Monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-replicator--read-replicas">2. Replicator + Read Replicas</a>
+          <ul>
+            <li><a href="#configuration-1">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-hub-and-spoke-edge-computing">3. Hub-and-Spoke (Edge Computing)</a>
+          <ul>
+            <li><a href="#configuration-2">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#4-multi-hop-relay-deep-edge">4. Multi-Hop Relay (Deep Edge)</a>
+          <ul>
+            <li><a href="#configuration-3">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#5-hybrid-replication--local-events">5. Hybrid: Replication + Local Events</a>
+          <ul>
+            <li><a href="#configuration-4">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="deployment-topologies">Deployment Topologies<a class="anchor" href="#deployment-topologies">#</a></h1>
+<blockquote class='book-hint '>
+<p>Scalable, resilient, and edge-ready — UnisonDB adapts to your deployment architecture.</p>
+</blockquote><img src="/images/deployment_topologies.svg" alt="UnisonDB Deployment Topologies" style="max-width: 100%; height: auto;" />
+<p>Design your own <a href="https://en.wikipedia.org/wiki/Data_mesh" target="_blank" rel="noopener noreferrer"><strong>data mesh</strong></a>
+ with UnisonDB’s log-native architecture.
+Replicate, stream, and sync data effortlessly across edge and cloud environments.</p>
+<hr>
+<h2 id="overview">Overview<a class="anchor" href="#overview">#</a></h2>
+<p>UnisonDB uses a <strong>dual-mode architecture</strong> — <strong>Server (Replicator)</strong> for writes and <strong>Relayer</strong> for reads — allowing flexible, distributed deployments.</p>
+<h3 id="core-components">Core Components<a class="anchor" href="#core-components">#</a></h3>
+<ul>
+<li><strong>Replicator Mode</strong> – Primary node responsible for writes and WAL-based streaming</li>
+<li><strong>Relayer Mode</strong> – Read-only node replicating from one or more upstreams</li>
+<li><strong>Watch API</strong> – Real-time notifications for local apps or edge devices</li>
+<li><strong>gRPC Replication</strong> – Durable WAL streaming protocol for replication and recovery</li>
+</ul>
+<hr>
+<h2 id="1-single-server">1. Single Server<a class="anchor" href="#1-single-server">#</a></h2>
+<p>Simplest deployment for development, testing, or small standalone applications.</p>
+<pre tabindex="0"><code>┌──────────────────────────┐
+│   UnisonDB Server        │
+│  (Replicator Mode)       │
+│                          │
+│   • HTTP API :8080       │
+│   • gRPC API :9090       │
+│   • Watch API :5555      │
+│                          │
+│   Capabilities:          │
+│   * Reads &amp; Writes       │
+│   * Local watch events   │
+│   * No replication       │
+│   * No high availability │
+└──────────────────────────┘</code></pre><h3 id="configuration">Configuration<a class="anchor" href="#configuration">#</a></h3>
+<p><strong>Server config</strong> (<code>server.toml</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;./data&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:8080&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">wal</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fsync_enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">transport</span> = <span style="color:#e6db74">&#34;zeromq&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5555&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">10000</span></span></span></code></pre></div><h3 id="monitoring">Monitoring<a class="anchor" href="#monitoring">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Check server health</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/health
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># View server stats</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/stats
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Monitor watch subscribers</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:8080/stats/watch</span></span></code></pre></div><hr>
+<h2 id="2-replicator--read-replicas">2. Replicator + Read Replicas<a class="anchor" href="#2-replicator--read-replicas">#</a></h2>
+<p>Replicator handles writes, replicas provide read scalability and geographic distribution.</p>
+<pre tabindex="0"><code>       ┌─────────────────────┐
+       │   Replicator Server │  (Replicator Mode)
+       │   US-East           │
+       │   • Writes          │
+       │   • Reads           │
+       └──────────┬──────────┘
+                  │ gRPC replication (TLS)
+         ┌────────┼────────┬────────┐
+         ↓        ↓        ↓        ↓
+    ┌────────┐┌────────┐┌────────┐┌────────┐
+    │Relayer ││Relayer ││Relayer ││Relayer │
+    │US-West ││Europe  ││Asia    ││Canada  │
+    │        ││        ││        ││        │
+    │Read-   ││Read-   ││Read-   ││Read-   │
+    │only    ││only    ││only    ││only    │
+    └────────┘└────────┘└────────┘└────────┘</code></pre><h3 id="configuration-1">Configuration<a class="anchor" href="#configuration-1">#</a></h3>
+<p><strong>Replicator server</strong> (<code>primary.toml</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:8080&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replication</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_cert</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/server.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_key</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/server.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_ca</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5555&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">10000</span></span></span></code></pre></div><p><strong>Relayer</strong> (<code>relayer-us-west.toml</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:8080&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstreams</span> = [
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;primary.us-east.example.com:9090&#34;</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_cert</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/client.crt&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_key</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/client.key&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_ca</span> = <span style="color:#e6db74">&#34;/etc/unisondb/tls/ca.crt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Relayer can also publish local watch events</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5555&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">10000</span></span></span></code></pre></div><hr>
+<h2 id="3-hub-and-spoke-edge-computing">3. Hub-and-Spoke (Edge Computing)<a class="anchor" href="#3-hub-and-spoke-edge-computing">#</a></h2>
+<p>Central hub replicates to many edge nodes, each serving local applications.</p>
+<pre tabindex="0"><code>                 ┌──────────────────┐
+                 │   Central Hub    │  (Replicator Mode)
+                 │   (Cloud/DC)     │
+                 │   • All writes   │
+                 └────────┬─────────┘
+                          │ gRPC replication
+         ┌────────────────┼────────────────┐
+         ↓                ↓                ↓
+    ┌─────────┐      ┌─────────┐      ┌─────────┐
+    │ Edge 1  │      │ Edge 2  │      │ Edge 3  │  (Relayers)
+    │ Store A │      │ Store B │      │ Store C │
+    └────┬────┘      └────┬────┘      └────┬────┘
+         │ Watch API      │ Watch API      │ Watch API
+         ↓                ↓                ↓
+    ┌─────────┐      ┌─────────┐      ┌─────────┐
+    │ POS     │      │ POS     │      │ POS     │  Local apps
+    │ Inv Mgmt│      │ Inv Mgmt│      │ Inv Mgmt│  (subscribers)
+    │ Display │      │ Display │      │ Display │
+    └─────────┘      └─────────┘      └─────────┘</code></pre><h3 id="configuration-2">Configuration<a class="anchor" href="#configuration-2">#</a></h3>
+<p><strong>Hub (central Replicator server)</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:8080&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">namespaces</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Different namespaces for different data types</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">inventory</span> = { <span style="color:#a6e22e">wal_segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span> }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">orders</span> = { <span style="color:#a6e22e">wal_segment_size</span> = <span style="color:#e6db74">&#34;8MB&#34;</span> }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">analytics</span> = { <span style="color:#a6e22e">wal_segment_size</span> = <span style="color:#e6db74">&#34;32MB&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replication</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_connections</span> = <span style="color:#ae81ff">1000</span>  <span style="color:#75715e"># Support many edge nodes</span></span></span></code></pre></div><p><strong>Edge relayer</strong> (<code>edge-store-001.toml</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;127.0.0.1:8080&#34;</span>  <span style="color:#75715e"># Local only</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstreams</span> = [<span style="color:#e6db74">&#34;hub.central.example.com:9090&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">reconnect_interval</span> = <span style="color:#e6db74">&#34;5s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#e6db74">&#34;100MB&#34;</span>  <span style="color:#75715e"># Handle disconnections</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Edge nodes publish local watch events</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;inventory&#34;</span>, <span style="color:#e6db74">&#34;orders&#34;</span>]  <span style="color:#75715e"># Only needed namespaces</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://127.0.0.1:5555&#34;</span>    <span style="color:#75715e"># Local IPC only</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">5000</span></span></span></code></pre></div><hr>
+<h2 id="4-multi-hop-relay-deep-edge">4. Multi-Hop Relay (Deep Edge)<a class="anchor" href="#4-multi-hop-relay-deep-edge">#</a></h2>
+<p>Hierarchical replication for deep edge deployments or bandwidth-constrained networks.</p>
+<pre tabindex="0"><code>         ┌──────────────┐
+         │   Primary    │  (Replicator Mode - Cloud)
+         │   (Cloud)    │
+         └──────┬───────┘
+                │ gRPC
+                ↓
+         ┌──────────────┐
+         │  Tier 1      │  (Relayer - Regional DC)
+         │  Regional    │
+         └──────┬───────┘
+                │ gRPC
+        ┌───────┴────────┐
+        ↓                ↓
+   ┌─────────┐      ┌─────────┐
+   │ Tier 2  │      │ Tier 2  │  (Relayer - Edge Cluster)
+   │ West    │      │ East    │
+   └────┬────┘      └────┬────┘
+        │                │
+    ┌───┴───┐        ┌───┴───┐
+    ↓       ↓        ↓       ↓
+  Tier 3  Tier 3   Tier 3  Tier 3  (Relayer - Leaf Nodes)
+  Store1  Store2   Store3  Store4
+    ↓       ↓        ↓       ↓
+  Local   Local    Local   Local
+  Apps    Apps     Apps    Apps</code></pre><h3 id="configuration-3">Configuration<a class="anchor" href="#configuration-3">#</a></h3>
+<p><strong>Tier 1 (Regional relayer)</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>  <span style="color:#75715e"># Accept downstream connections</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstreams</span> = [<span style="color:#e6db74">&#34;primary.cloud.example.com:9090&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This relayer can also relay to downstream</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_relay</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span></span></span></code></pre></div><p><strong>Tier 2 (Edge cluster relayer)</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstreams</span> = [<span style="color:#e6db74">&#34;tier1-regional.example.com:9090&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_relay</span> = <span style="color:#66d9ef">true</span>  <span style="color:#75715e"># Relay to Tier 3</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span></span></span></code></pre></div><p><strong>Tier 3 (Leaf relayer)</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;127.0.0.1:8080&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstreams</span> = [<span style="color:#e6db74">&#34;tier2-west.example.com:9090&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_relay</span> = <span style="color:#66d9ef">false</span>  <span style="color:#75715e"># Leaf node, no downstream</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://127.0.0.1:5555&#34;</span></span></span></code></pre></div><hr>
+<h2 id="5-hybrid-replication--local-events">5. Hybrid: Replication + Local Events<a class="anchor" href="#5-hybrid-replication--local-events">#</a></h2>
+<p>Combines durable replication with local event-driven applications.</p>
+<pre tabindex="0"><code>┌───────────────────────────────────┐
+│        Replicator Server          │
+│        (Replicator Mode)          │
+│                                   │
+│   ┌───────────────────┐           │
+│   │   Storage Engine  │           │
+│   └─────────┬─────────┘           │
+│             │                     │
+│     ┌───────┴────────┐            │
+│     ↓                ↓            │
+│  [gRPC]          [Watch API]      │
+│  :9090           :5555            │
+└────┬──────────────────┬───────────┘
+     │                  │
+     │                  └──────┐
+     ↓                         ↓
+┌─────────┐            ┌─────────────┐
+│ Remote  │            │ Local Apps  │
+│Relayers │            │             │
+└─────────┘            │ • Cache     │
+                       │ • Analytics │
+                       │ • Audit Log │
+                       │ • Dashboard │
+                       └─────────────┘</code></pre><h3 id="configuration-4">Configuration<a class="anchor" href="#configuration-4">#</a></h3>
+<p><strong>Primary with both channels</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">server</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mode</span> = <span style="color:#e6db74">&#34;server&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">data_dir</span> = <span style="color:#e6db74">&#34;/data/unisondb&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:8080&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_addr</span> = <span style="color:#e6db74">&#34;0.0.0.0:9090&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># gRPC replication for remote relayers</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replication</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tls_enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Watch API for local applications</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enabled</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">transport</span> = <span style="color:#e6db74">&#34;zeromq&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;users&#34;</span>, <span style="color:#e6db74">&#34;sessions&#34;</span>, <span style="color:#e6db74">&#34;metrics&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Per-namespace watch configuration</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>.<span style="color:#a6e22e">users</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5555&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">10000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>.<span style="color:#a6e22e">sessions</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5556&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">20000</span>  <span style="color:#75715e"># High-frequency updates</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">watch</span>.<span style="color:#a6e22e">metrics</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bind_addr</span> = <span style="color:#e6db74">&#34;tcp://*:5557&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">buffer_size</span> = <span style="color:#ae81ff">50000</span></span></span></code></pre></div><hr>
+<p><strong>Watch API security:</strong></p>
+<ul>
+<li>Bind to <code>127.0.0.1</code> for local-only access</li>
+</ul>
+<hr>
+<h2 id="next-steps">Next Steps<a class="anchor" href="#next-steps">#</a></h2>
+<ul>
+<li><a href="../getting-started/configurations/" target="_blank" rel="noopener noreferrer">Configuration Reference</a>
+ - Detailed config options</li>
+<li><a href="../api/http-api/" target="_blank" rel="noopener noreferrer">HTTP API</a>
+ - API documentation</li>
+<li><a href="../architecture/" target="_blank" rel="noopener noreferrer">Architecture Overview</a>
+ - Architecture Overview</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/deployment/_index.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/api/http-api/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>HTTP API Reference</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/operations/" class="flex align-center">
+        <span>Operations</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#deployment-topologies">Deployment Topologies</a>
+      <ul>
+        <li><a href="#overview">Overview</a>
+          <ul>
+            <li><a href="#core-components">Core Components</a></li>
+          </ul>
+        </li>
+        <li><a href="#1-single-server">1. Single Server</a>
+          <ul>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#monitoring">Monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-replicator--read-replicas">2. Replicator + Read Replicas</a>
+          <ul>
+            <li><a href="#configuration-1">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-hub-and-spoke-edge-computing">3. Hub-and-Spoke (Edge Computing)</a>
+          <ul>
+            <li><a href="#configuration-2">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#4-multi-hop-relay-deep-edge">4. Multi-Hop Relay (Deep Edge)</a>
+          <ul>
+            <li><a href="#configuration-3">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#5-hybrid-replication--local-events">5. Hybrid: Replication + Local Events</a>
+          <ul>
+            <li><a href="#configuration-4">Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

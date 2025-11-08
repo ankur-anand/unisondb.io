@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/examples/multi-dc-crdt/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
+  <meta property="og:description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2025-11-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-11-02T00:00:00+00:00">
+    <meta property="og:image" content="http://localhost:1313/images/multi_dc_crdt.png">
+
+
+  <meta itemprop="name" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
+  <meta itemprop="description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
+  <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1505">
+  <meta itemprop="image" content="http://localhost:1313/images/multi_dc_crdt.png">
+  <meta itemprop="keywords" content="UnisonDB,CRDT,Replication,Edge Computing,ZeroMQ,Go">
+
+<title>Multi-DC CRDT Replication | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/examples/multi-dc-crdt/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB, CRDT, Replication, Edge Computing, ZeroMQ, Go">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/multi_dc_crdt.png">
+  <meta name="twitter:title" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
+  <meta name="twitter:description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-posts">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="active">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Multi-DC CRDT Replication</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>
+    How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB
+  </h1>
+  <div class="book-post-content markdown-inner"><img src="/images/multi_dc_crdt.svg" alt="Multi DC CRDT" />
+<h2 id="introduction-the-challenge-of-distributed-state-management">Introduction: The Challenge of Distributed State Management<a class="anchor" href="#introduction-the-challenge-of-distributed-state-management">#</a></h2>
+<p>Imagine you&rsquo;re building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?</p>
+<p><a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type" target="_blank" rel="noopener noreferrer"><strong>Conflict-free Replicated Data Types (CRDTs)</strong></a>
+ offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with <strong>edge notifications</strong>, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.</p>
+<p>In this post, we&rsquo;ll build a multi-datacenter system using UnisonDB that demonstrates:</p>
+<ul>
+<li>Concurrent writes to multiple datacenters</li>
+<li>Automatic conflict resolution using <a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type" target="_blank" rel="noopener noreferrer">CRDTs</a>
+</li>
+<li>Real-time change notifications via <a href="https://en.wikipedia.org/wiki/ZeroMQ" target="_blank" rel="noopener noreferrer">ZeroMQ</a>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Eventual_consistency" target="_blank" rel="noopener noreferrer">Eventual consistency</a>
+ across all nodes</li>
+</ul>
+<h2 id="architecture-overview">Architecture Overview<a class="anchor" href="#architecture-overview">#</a></h2>
+<p>Our demo system consists of three UnisonDB nodes:</p>
+<pre tabindex="0"><code>+---------------------------------------------------------------+
+|                    Multi-DC CRDT Architecture                 |
++---------------------------------------------------------------+
+
+        Writes                                    Writes
+          |                                         |
+          v                                         v
+   +----------------+                       +----------------+
+   |  Datacenter 1  |                       |  Datacenter 2  |
+   |   (Primary)    |                       |   (Primary)    |
+   |                |                       |                |
+   |  HTTP: 8001    |                       |  HTTP: 8002    |
+   |  gRPC: 4001    |                       |  gRPC: 4002    |
+   +--------+-------+                       +--------+-------+
+            |                                         |
+            |               gRPC Replication          |
+            +---------------------+-------------------+
+                                  |
+                                  v
+                        +---------------------+
+                        |      Relayer        |
+                        |     (Read-Only)     |
+                        |                     |
+                        |  HTTP: 8003         |
+                        |  ZMQ dc1: 5555 ---&gt; |----+
+                        |  ZMQ dc2: 5556 ---&gt; |----+  Watch API
+                        +---------------------+    |  Notifications
+                                                   |
+                                                   v
+                                         +--------------------+
+                                         |    CRDT Client     |
+                                         |   (Go / Node.js)   |
+                                         |                    |
+                                         |   Converged State  |
+                                         +--------------------+</code></pre><h3 id="component-roles">Component Roles<a class="anchor" href="#component-roles">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Role</th>
+          <th>Namespace</th>
+          <th>HTTP Port</th>
+          <th>gRPC Port</th>
+          <th>ZMQ Ports</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>DC1</strong></td>
+          <td>Primary (accepts writes)</td>
+          <td><code>ad-campaign-dc1</code></td>
+          <td>8001</td>
+          <td>4001</td>
+          <td>-</td>
+      </tr>
+      <tr>
+          <td><strong>DC2</strong></td>
+          <td>Primary (accepts writes)</td>
+          <td><code>ad-campaign-dc2</code></td>
+          <td>8002</td>
+          <td>4002</td>
+          <td>-</td>
+      </tr>
+      <tr>
+          <td><strong>Relayer</strong></td>
+          <td>Read-only replica</td>
+          <td><code>ad-campaign-dc1</code>, <code>ad-campaign-dc2</code></td>
+          <td>8003</td>
+          <td>-</td>
+          <td>5555, 5556</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="building-and-running-unisondb">Building and Running UnisonDB<a class="anchor" href="#building-and-running-unisondb">#</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="anchor" href="#prerequisites">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Ensure you have Go 1.21+ and CGO enabled</span>
+</span></span><span style="display:flex;"><span>go version
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># go version go1.21.0 or higher</span></span></span></code></pre></div><h3 id="step-1-build-unisondb">Step 1: Build UnisonDB<a class="anchor" href="#step-1-build-unisondb">#</a></h3>
+<p>This needs Zero MQ Installed Make Sure You&rsquo;ve have it Installed.
+<a href="https://zeromq.org/download/" target="_blank" rel="noopener noreferrer">Install ZeroMQ dependency </a>
+</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Clone the repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/ankur-anand/unisondb.git
+</span></span><span style="display:flex;"><span>cd unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build the binary (CGO required for RocksDB)</span>
+</span></span><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go build -tags zeromq ./cmd/unisondb</span></span></code></pre></div><h3 id="step-2-start-the-multi-dc-cluster">Step 2: Start the Multi-DC Cluster<a class="anchor" href="#step-2-start-the-multi-dc-cluster">#</a></h3>
+<p>Open <strong>three separate terminal windows</strong> and run:</p>
+<p><strong>Terminal 1: Start Datacenter 1</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml replicator</span></span></code></pre></div><p><strong>Terminal 2: Start Datacenter 2</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml replicator</span></span></code></pre></div><p><strong>Terminal 3: Start Relayer</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml relayer</span></span></code></pre></div><p>You should see output indicating each node is ready:</p>
+<pre tabindex="0"><code>INFO: HTTP server listening on :8001
+INFO: gRPC server listening on :4001
+INFO: Namespace &#39;ad-campaign-dc1&#39; initialized</code></pre><h3 id="step-3-start-the-crdt-client">Step 3: Start the CRDT Client<a class="anchor" href="#step-3-start-the-crdt-client">#</a></h3>
+<p>Open a <strong>fourth terminal</strong> to run the client that will observe CRDT state:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd cmd/examples/golang-crdt-client
+</span></span><span style="display:flex;"><span>go run main.go</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>  Waiting for change notifications...
+
+  Connecting to ZeroMQ ad-campaign-dc1: tcp://localhost:5555
+  Connecting to ZeroMQ ad-campaign-dc2: tcp://localhost:5556
+  ZeroMQ listener started for namespace: ad-campaign-dc1
+  ZeroMQ listener started for namespace: ad-campaign-dc2</code></pre><p>Your system is now ready!</p>
+<h2 id="understanding-crdts-two-types-in-action">Understanding CRDTs: Two Types in Action<a class="anchor" href="#understanding-crdts-two-types-in-action">#</a></h2>
+<h3 id="1-lww-register-last-write-wins-register">1. LWW-Register (Last-Write-Wins Register)<a class="anchor" href="#1-lww-register-last-write-wins-register">#</a></h3>
+<p><strong>Use Cases:</strong> User profiles, configuration settings, feature flags</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>Each write includes a <strong>timestamp</strong> and <strong>replica ID</strong></li>
+<li>Conflicts are resolved by choosing the write with the <strong>latest timestamp</strong></li>
+<li>If timestamps are equal, the <strong>lexicographically higher replica ID</strong> wins</li>
+</ul>
+<p><strong>Data Format:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;actual data&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1698765432000</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;replica&#34;</span>: <span style="color:#e6db74">&#34;ad-campaign-dc1&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h3 id="2-g-counter-grow-only-counter">2. G-Counter (Grow-Only Counter)<a class="anchor" href="#2-g-counter-grow-only-counter">#</a></h3>
+<p><strong>Use Cases:</strong> Page views, API calls, distributed metrics (monotonically increasing)</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>Each replica maintains its own counter</li>
+<li>Merging takes the <strong>maximum</strong> count per replica</li>
+<li>Total value is the <strong>sum</strong> of all replica counters</li>
+<li>Can only increase (never decrease)</li>
+</ul>
+<p><strong>Data Format:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;replica&#34;</span>: <span style="color:#e6db74">&#34;ad-campaign-dc1&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;count&#34;</span>: <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="demo-scenarios-with-curl-examples">Demo Scenarios with curl Examples<a class="anchor" href="#demo-scenarios-with-curl-examples">#</a></h2>
+<h3 id="scenario-1-basic-lww-register-update">Scenario 1: Basic LWW-Register Update<a class="anchor" href="#scenario-1-basic-lww-register-update">#</a></h3>
+<p>Let&rsquo;s update a user&rsquo;s status across two datacenters:</p>
+<p><strong>Write &ldquo;online&rdquo; to DC1 (timestamp: 1698765432000)</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/lww:user-status&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;online&#34;,&#34;timestamp&#34;:1698765432000,&#34;replica&#34;:&#34;ad-campaign-dc1&#34;}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Client Output:</strong></p>
+<pre tabindex="0"><code>  Change notification received
+   Topic: ad-campaign-dc1.kv
+   Key: lww:user-status
+   Operation: put
+
+  Processing update: lww:user-status
+  LWW-Register updated: lww:user-status
+   Value: online
+   Timestamp: 1698765432000
+   Replica: ad-campaign-dc1
+
+  CURRENT CRDT STATE
+
+  LWW-Registers:
+  lww:user-status:
+    Value: online
+    Timestamp: 1698765432000
+    Replica: ad-campaign-dc1</code></pre><p>Now write &ldquo;away&rdquo; to DC2 with a <strong>newer timestamp</strong>:</p>
+<p><strong>Write &ldquo;away&rdquo; to DC2 (timestamp: 1698765433000)</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/lww:user-status&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;away&#34;,&#34;timestamp&#34;:1698765433000,&#34;replica&#34;:&#34;ad-campaign-dc2&#34;}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Client Output:</strong></p>
+<pre tabindex="0"><code>  Change notification received
+   Topic: ad-campaign-dc2.kv
+   Key: lww:user-status
+   Operation: put
+
+  Processing update: lww:user-status
+  LWW-Register updated: lww:user-status
+   Value: away
+   Timestamp: 1698765433000
+   Replica: ad-campaign-dc2
+
+  CURRENT CRDT STATE
+
+  LWW-Registers:
+  lww:user-status:
+    Value: away
+    Timestamp: 1698765433000
+    Replica: ad-campaign-dc2</code></pre><p><strong>What happened?</strong> The client automatically resolved the conflict! DC2&rsquo;s write won because it had a <strong>newer timestamp</strong> (1698765433000 &gt; 1698765432000).</p>
+<h3 id="scenario-2-concurrent-writes-with-same-timestamp">Scenario 2: Concurrent Writes with Same Timestamp<a class="anchor" href="#scenario-2-concurrent-writes-with-same-timestamp">#</a></h3>
+<p>What happens when two datacenters write at the exact same millisecond?</p>
+<p><strong>Write to DC1:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>TIMESTAMP<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%s<span style="color:#66d9ef">)</span><span style="color:#ae81ff">000</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/lww:config&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#34;{\&#34;value\&#34;:\&#34;DC1 wins?\&#34;,\&#34;timestamp\&#34;:</span>$TIMESTAMP<span style="color:#e6db74">,\&#34;replica\&#34;:\&#34;ad-campaign-dc1\&#34;}&#34;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Write to DC2 (same timestamp):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/lww:config&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#34;{\&#34;value\&#34;:\&#34;DC2 wins!\&#34;,\&#34;timestamp\&#34;:</span>$TIMESTAMP<span style="color:#e6db74">,\&#34;replica\&#34;:\&#34;ad-campaign-dc2\&#34;}&#34;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Result:</strong> <code>ad-campaign-dc2</code> wins because lexicographically <code>&quot;ad-campaign-dc2&quot; &gt; &quot;ad-campaign-dc1&quot;</code>. This ensures <strong>deterministic conflict resolution</strong> across all replicas.</p>
+<h3 id="scenario-3-distributed-counter-g-counter">Scenario 3: Distributed Counter (G-Counter)<a class="anchor" href="#scenario-3-distributed-counter-g-counter">#</a></h3>
+<p>Let&rsquo;s track page views across two datacenters:</p>
+<p><strong>DC1 serves 5 requests:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/counter:page-views&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;ad-campaign-dc1&#34;,&#34;count&#34;:5}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>DC2 serves 3 requests:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/counter:page-views&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;ad-campaign-dc2&#34;,&#34;count&#34;:3}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Client Output:</strong></p>
+<pre tabindex="0"><code>  CURRENT CRDT STATE
+
+  G-Counters:
+  counter:page-views:
+    Replica Counts: {&#34;ad-campaign-dc1&#34;:5,&#34;ad-campaign-dc2&#34;:3}
+    Total: 8</code></pre><p><strong>Result:</strong> Total = <strong>8</strong> (5 from DC1 + 3 from DC2). The counters from both datacenters are automatically merged!</p>
+<h3 id="scenario-4-out-of-order-delivery-stale-write">Scenario 4: Out-of-Order Delivery (Stale Write)<a class="anchor" href="#scenario-4-out-of-order-delivery-stale-write">#</a></h3>
+<p>What if network delays cause an old write to arrive after a newer one?</p>
+<p><strong>Write NEW value to DC1:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/lww:feature-flag&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;value&#34;:true,&#34;timestamp&#34;:2000,&#34;replica&#34;:&#34;ad-campaign-dc1&#34;}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Write OLD value to DC2 (stale):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/lww:feature-flag&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;value&#34;:false,&#34;timestamp&#34;:1000,&#34;replica&#34;:&#34;ad-campaign-dc2&#34;}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Client Output:</strong></p>
+<pre tabindex="0"><code>  Processing update: lww:feature-flag
+    LWW-Register ignored (stale): lww:feature-flag
+   Incoming timestamp: 1000
+   Current timestamp: 2000</code></pre><p><strong>Result:</strong> The stale write is <strong>automatically ignored</strong>. The CRDT logic ensures we never regress to an older state!</p>
+<h3 id="scenario-5-multiple-counters-operating-independently">Scenario 5: Multiple Counters Operating Independently<a class="anchor" href="#scenario-5-multiple-counters-operating-independently">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Track different metrics</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/counter:api-calls&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;ad-campaign-dc1&#34;,&#34;count&#34;:100}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/counter:api-calls&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;ad-campaign-dc2&#34;,&#34;count&#34;:75}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/counter:db-queries&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;ad-campaign-dc1&#34;,&#34;count&#34;:250}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p><strong>Client Output:</strong></p>
+<pre tabindex="0"><code>  CURRENT CRDT STATE
+
+  G-Counters:
+  counter:api-calls:
+    Replica Counts: {&#34;ad-campaign-dc1&#34;:100,&#34;ad-campaign-dc2&#34;:75}
+    Total: 175
+
+  counter:db-queries:
+    Replica Counts: {&#34;ad-campaign-dc1&#34;:250}
+    Total: 250</code></pre><p>Each counter operates independently with its own convergence!</p>
+<h2 id="reading-data-from-the-relayer">Reading Data from the Relayer<a class="anchor" href="#reading-data-from-the-relayer">#</a></h2>
+<p>The relayer provides read-only access to both datacenter namespaces:</p>
+<p><strong>Read from DC1 namespace:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;http://localhost:8003/api/v1/ad-campaign-dc1/kv/lww:user-status&#34;</span> | jq</span></span></code></pre></div><p><strong>Response:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;eyJ2YWx1ZSI6ImF3YXkiLCJ0aW1lc3RhbXAiOjE2OTg3NjU0MzMwMDAsInJlcGxpY2EiOiJhZC1jYW1wYWlnbi1kYzIifQ==&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Decode the base64 value:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;eyJ2YWx1ZSI6ImF3YXkiLCJ0aW1lc3RhbXAiOjE2OTg3NjU0MzMwMDAsInJlcGxpY2EiOiJhZC1jYW1wYWlnbi1kYzIifQ==&#34;</span> | base64 -d | jq</span></span></code></pre></div><p><strong>Output:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;away&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;timestamp&#34;</span>: <span style="color:#ae81ff">1698765433000</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;replica&#34;</span>: <span style="color:#e6db74">&#34;ad-campaign-dc2&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="how-conflict-resolution-works-under-the-hood">How Conflict Resolution Works Under the Hood<a class="anchor" href="#how-conflict-resolution-works-under-the-hood">#</a></h2>
+<h3 id="lww-register-algorithm">LWW-Register Algorithm<a class="anchor" href="#lww-register-algorithm">#</a></h3>
+<p>The conflict resolution logic in <code>lww_register.go:30-39</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">LWWRegister</span>) <span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">value</span> <span style="color:#66d9ef">interface</span>{}, <span style="color:#a6e22e">timestamp</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">replica</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Rule 1: Accept if timestamp is newer</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">timestamp</span> &gt; <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Timestamp</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Value</span> = <span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Timestamp</span> = <span style="color:#a6e22e">timestamp</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replica</span> = <span style="color:#a6e22e">replica</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Rule 2: If timestamps equal, use replica ID as tiebreaker</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">timestamp</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Timestamp</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">replica</span> &gt; <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replica</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Value</span> = <span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replica</span> = <span style="color:#a6e22e">replica</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Rule 3: Reject stale updates</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Key Properties:</strong></p>
+<ul>
+<li><strong>Commutative</strong>: Order of updates doesn&rsquo;t matter</li>
+<li><strong>Associative</strong>: Grouping of updates doesn&rsquo;t matter</li>
+<li><strong>Idempotent</strong>: Applying the same update multiple times is safe</li>
+<li><strong>Deterministic</strong>: All replicas converge to the same value</li>
+</ul>
+<h3 id="g-counter-merge-algorithm">G-Counter Merge Algorithm<a class="anchor" href="#g-counter-merge-algorithm">#</a></h3>
+<p>The merge logic in <code>g_counter.go</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GCounter</span>) <span style="color:#a6e22e">Merge</span>(<span style="color:#a6e22e">replica</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">count</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">current</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Counts</span>[<span style="color:#a6e22e">replica</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Only accept higher counts (monotonic)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">count</span> &gt; <span style="color:#a6e22e">current</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Counts</span>[<span style="color:#a6e22e">replica</span>] = <span style="color:#a6e22e">count</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GCounter</span>) <span style="color:#a6e22e">GetValue</span>() <span style="color:#66d9ef">int64</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">total</span> <span style="color:#f92672">:=</span> int64(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">count</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Counts</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">total</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">count</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">total</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Key Properties:</strong></p>
+<ul>
+<li><strong>Monotonic</strong>: Values only increase</li>
+<li><strong>Convergent</strong>: All replicas reach the same total</li>
+<li><strong>Partition-tolerant</strong>: Works across network splits</li>
+</ul>
+<h2 id="real-world-use-cases">Real-World Use Cases<a class="anchor" href="#real-world-use-cases">#</a></h2>
+<h3 id="1-user-presence-system">1. User Presence System<a class="anchor" href="#1-user-presence-system">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># User goes online in US datacenter</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/lww:user:alice:status&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#34;{\&#34;value\&#34;:\&#34;online\&#34;,\&#34;timestamp\&#34;:</span><span style="color:#66d9ef">$(</span>date +%s<span style="color:#66d9ef">)</span><span style="color:#e6db74">000,\&#34;replica\&#34;:\&#34;us-east-1\&#34;}&#34;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># User goes away in EU datacenter (newer timestamp wins)</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/lww:user:alice:status&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#34;{\&#34;value\&#34;:\&#34;away\&#34;,\&#34;timestamp\&#34;:</span><span style="color:#66d9ef">$(($(</span>date +%s<span style="color:#66d9ef">)</span><span style="color:#f92672">+</span><span style="color:#ae81ff">5</span><span style="color:#66d9ef">))</span><span style="color:#e6db74">000,\&#34;replica\&#34;:\&#34;eu-west-1\&#34;}&#34;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p>All clients worldwide see the latest status in real-time!</p>
+<h3 id="2-distributed-analytics">2. Distributed Analytics<a class="anchor" href="#2-distributed-analytics">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Track impressions across regions</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/counter:campaign-123:impressions&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;us-east-1&#34;,&#34;count&#34;:1500}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8002/api/v1/ad-campaign-dc2/kv/counter:campaign-123:impressions&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#39;{&#34;replica&#34;:&#34;eu-west-1&#34;,&#34;count&#34;:2300}&#39;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global total: 3800 impressions</span></span></span></code></pre></div><h3 id="3-feature-flags">3. Feature Flags<a class="anchor" href="#3-feature-flags">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Enable feature in production</span>
+</span></span><span style="display:flex;"><span>curl -X PUT <span style="color:#e6db74">&#34;http://localhost:8001/api/v1/ad-campaign-dc1/kv/lww:feature:new-ui&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;: &#34;&#39;</span><span style="color:#66d9ef">$(</span>echo -n <span style="color:#e6db74">&#34;{\&#34;value\&#34;:true,\&#34;timestamp\&#34;:</span><span style="color:#66d9ef">$(</span>date +%s<span style="color:#66d9ef">)</span><span style="color:#e6db74">000,\&#34;replica\&#34;:\&#34;control-plane\&#34;}&#34;</span> | base64<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;}&#39;</span></span></span></code></pre></div><p>Feature flag changes propagate globally within milliseconds!</p>
+<h3 id="try-it-yourself">Try It Yourself<a class="anchor" href="#try-it-yourself">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Clone and run the example</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/ankur-anand/unisondb.git
+</span></span><span style="display:flex;"><span>cd unisondb
+</span></span><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go build -tags zeromq -o unisondb ./cmd/unisondb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Start the demo</span>
+</span></span><span style="display:flex;"><span>cd cmd/examples/crdt-multi-dc</span></span></code></pre></div><p><strong>Watch the magic happen</strong> as conflicts resolve themselves and state converges across datacenters!</p>
+<hr>
+<h2 id="additional-resources">Additional Resources<a class="anchor" href="#additional-resources">#</a></h2>
+<ul>
+<li><a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">UnisonDB GitHub Repository</a>
+</li>
+<li><a href="https://crdt.tech/" target="_blank" rel="noopener noreferrer">CRDT Research Papers</a>
+</li>
+<li><a href="https://zguide.zeromq.org/" target="_blank" rel="noopener noreferrer">ZeroMQ Guide</a>
+</li>
+</ul>
+<p>Have questions or want to contribute? Open an issue on GitHub or join our community discussions!</p>
+</div>
+  
+  <div class="flex align-center text-small book-post-date">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>November 2, 2025</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/categories/distributed-systems/">Distributed Systems</a>, 
+      <a href="/categories/tutorials/">Tutorials</a>, 
+      <a href="/categories/crdt/">CRDT</a>
+  </div>
+  
+
+  
+
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+  <div>
+  
+  </div>
+  <div>
+  
+  </div>
+</div>
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

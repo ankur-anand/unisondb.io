@@ -1,21 +1,35 @@
 ---
-title: "Configuration"
+title: "UnisonDB Configuration Guide"
+linkTitle: "Configuration"
 weight: 3
+description: "Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments."
+keywords: [
+  "UnisonDB configuration",
+  "UnisonDB setup guide",
+  "configure UnisonDB",
+  "database configuration file",
+  "UnisonDB WAL settings",
+  "UnisonDB replication config",
+  "edge database tuning",
+  "distributed database configuration",
+  "UnisonDB performance optimization",
+  "Watch API configuration"
+]
 ---
 
 # Configuration Guide
 
-UnisonDB uses TOML for configuration. This guide covers all available configuration options for both server and relayer modes.
+UnisonDB uses [TOML](https://en.wikipedia.org/wiki/TOML) for configuration. This guide covers all available configuration options for both replicator and relayer modes.
 
 ## Table of Contents
 
-- [Server Mode](#server-mode)
+- [Replicator Mode](#Replicator-mode)
 - [Relayer Mode](#relayer-mode)
 - [Configuration Reference](#configuration-reference)
 
-## Server Mode
+## Replicator Mode
 
-Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here's a complete example:
+Replicator mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here's a complete example:
 
 ```toml
 ## Port of the http server

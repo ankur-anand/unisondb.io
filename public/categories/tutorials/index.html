@@ -22,6 +22,8 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="Tutorials">
   <meta itemprop="description" content="Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.">
+  <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
 
 <title>Tutorials | UnisonDB</title>
@@ -32,7 +34,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -181,7 +183,7 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -232,6 +234,58 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -246,7 +300,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -310,36 +364,33 @@ https://github.com/alex-shpak/hugo-book
   
   <article class="markdown book-post">
     <h2>
-      <a href="/docs/examples/multi-dc-crdts/">Multi-DC CRDT Replication</a>
+      <a href="/docs/examples/multi-dc-crdt/">Multi-DC CRDT Replication</a>
     </h2>
     
+  <div class="flex align-center text-small book-post-date">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>November 2, 2025</span>
+  </div>
+
 
 
   
   <div class="text-small">
     
       <a href="/categories/distributed-systems/">Distributed Systems</a>, 
-      <a href="/categories/tutorials/">Tutorials</a>
+      <a href="/categories/tutorials/">Tutorials</a>, 
+      <a href="/categories/crdt/">CRDT</a>
   </div>
   
 
   
-  <div class="text-small">
-    
-      <a href="/tags/unisondb/">UnisonDB</a>, 
-      <a href="/tags/crdt/">CRDT</a>, 
-      <a href="/tags/replication/">Replication</a>, 
-      <a href="/tags/edge-computing/">Edge Computing</a>, 
-      <a href="/tags/zeromq/">ZeroMQ</a>, 
-      <a href="/tags/go/">Go</a>
-  </div>
-  
 
 
-    <div class="book-post-content"><h1 id="building-real-time-multi-datacenter-applications-with-crdts-and-edge-notifications-in-unisondb">Building Real-Time Multi-Datacenter Applications with CRDTs and Edge Notifications in UnisonDB<a class="anchor" href="#building-real-time-multi-datacenter-applications-with-crdts-and-edge-notifications-in-unisondb">#</a></h1>
+    <div class="book-post-content"><img src="/images/multi_dc_crdt.svg" alt="Multi DC CRDT" />
 <h2 id="introduction-the-challenge-of-distributed-state-management">Introduction: The Challenge of Distributed State Management<a class="anchor" href="#introduction-the-challenge-of-distributed-state-management">#</a></h2>
 <p>Imagine you&rsquo;re building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?</p>
-<p><strong>Conflict-free Replicated Data Types (CRDTs)</strong> offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with <strong>edge notifications</strong>, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.</p></div>
+<p><a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type" target="_blank" rel="noopener noreferrer"><strong>Conflict-free Replicated Data Types (CRDTs)</strong></a>
+ offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with <strong>edge notifications</strong>, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.</p></div>
   </article>
   
 
@@ -402,6 +453,11 @@ https://github.com/alex-shpak/hugo-book
       <ul>
       
         <li class="flex align-center">
+          <a href="/categories/crdt/">CRDT</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex align-center">
           <a href="/categories/distributed-systems/">Distributed Systems</a>
           <span>1</span>
         </li>
@@ -419,36 +475,6 @@ https://github.com/alex-shpak/hugo-book
     <li class="book-section-flat">
       <a>Tags</a>
       <ul>
-      
-        <li class="flex align-center">
-          <a href="/tags/crdt/">CRDT</a>
-          <span>1</span>
-        </li>
-      
-        <li class="flex align-center">
-          <a href="/tags/edge-computing/">Edge Computing</a>
-          <span>1</span>
-        </li>
-      
-        <li class="flex align-center">
-          <a href="/tags/go/">Go</a>
-          <span>1</span>
-        </li>
-      
-        <li class="flex align-center">
-          <a href="/tags/replication/">Replication</a>
-          <span>1</span>
-        </li>
-      
-        <li class="flex align-center">
-          <a href="/tags/unisondb/">UnisonDB</a>
-          <span>1</span>
-        </li>
-      
-        <li class="flex align-center">
-          <a href="/tags/zeromq/">ZeroMQ</a>
-          <span>1</span>
-        </li>
       
       </ul>
     </li>

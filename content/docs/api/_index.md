@@ -1,7 +1,22 @@
 ---
-title: "API Reference"
+title: "UnisonDB API Reference"
+linkTitle: "API Reference"
 weight: 3
 bookCollapseSection: false
+description: "Explore UnisonDB’s API reference — including RESTful HTTP endpoints for Key-Value, Wide-Column, and Large Object (LOB) data operations with transactional support and metadata queries."
+keywords: [
+  "UnisonDB API",
+  "HTTP REST API",
+  "database API documentation",
+  "Key-Value API",
+  "Wide-Column API",
+  "LOB API",
+  "transactional database API",
+  "edge computing database API",
+  "real-time replication",
+  "UnisonDB developer docs"
+]
+
 ---
 
 # API Reference

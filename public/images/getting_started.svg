@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 943 581.64">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 16px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-3, .cls-5 {
+        font-family: Helvetica-Bold, Helvetica;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: #22d3ee;
+        font-size: 12px;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: CourierNewPSMT, 'Courier New';
+      }
+
+      .cls-6 {
+        stroke: #3b82f6;
+      }
+
+      .cls-6, .cls-7 {
+        stroke-width: 2px;
+      }
+
+      .cls-7 {
+        fill: #dcfce7;
+        stroke: #10b981;
+      }
+
+      .cls-8 {
+        fill: #2563eb;
+      }
+
+      .cls-3 {
+        fill: #1f2937;
+        font-size: 14px;
+      }
+
+      .cls-4 {
+        fill: #64748b;
+        font-size: 11px;
+      }
+
+      .cls-9 {
+        fill: #1e293b;
+      }
+
+      .cls-10 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-5 {
+        fill: #111827;
+        font-size: 24px;
+      }
+    </style>
+  </defs>
+  <text class="cls-5" transform="translate(296.67 20.64)"><tspan x="0" y="0">Getting Started with UnisonDB</tspan></text>
+  <circle class="cls-8" cx="22" cy="75.64" r="22"/>
+  <text class="cls-1" transform="translate(17.55 82.64)"><tspan x="0" y="0">1</tspan></text>
+  <rect class="cls-6" x="62" y="53.64" width="880" height="75" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(77 73.64)"><tspan x="0" y="0">Clone Repository</tspan></text>
+  <rect class="cls-9" x="77" y="80.64" width="850" height="38" rx="3" ry="3"/>
+  <text class="cls-4" transform="translate(87 95.64)"><tspan x="0" y="0"># Clone from GitHub</tspan></text>
+  <text class="cls-2" transform="translate(87 110.64)"><tspan x="0" y="0">git clone https://github.com/ankur-anand/unisondb.git</tspan></text>
+  <circle class="cls-8" cx="22" cy="170.64" r="22"/>
+  <text class="cls-1" transform="translate(17.55 177.64)"><tspan x="0" y="0">2</tspan></text>
+  <rect class="cls-6" x="62" y="148.64" width="880" height="90" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(77 168.64)"><tspan x="0" y="0">Build</tspan></text>
+  <rect class="cls-9" x="77" y="175.64" width="850" height="53" rx="3" ry="3"/>
+  <text class="cls-2" transform="translate(89.7 205.64) scale(.97 1)"><tspan x="0" y="0">cd unisondb</tspan></text>
+  <text class="cls-2" transform="translate(87 220.64)"><tspan x="0" y="0">CGO_ENABLED=1 go build -o unisondb ./cmd/unisondb</tspan></text>
+  <circle class="cls-8" cx="22" cy="280.64" r="22"/>
+  <text class="cls-1" transform="translate(17.55 287.64)"><tspan x="0" y="0">3</tspan></text>
+  <rect class="cls-6" x="62" y="258.64" width="880" height="80" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(77 278.64)"><tspan x="0" y="0">Start Server</tspan></text>
+  <rect class="cls-9" x="77" y="285.64" width="850" height="43" rx="3" ry="3"/>
+  <text class="cls-2" transform="translate(87 300.64)"><tspan x="0" y="0">./unisondb --config server.toml replicator</tspan></text>
+  <text class="cls-4" transform="translate(87 315.64)"><tspan x="0" y="0"># Server running on http://localhost:8080</tspan></text>
+  <circle class="cls-8" cx="22" cy="385.64" r="22"/>
+  <text class="cls-1" transform="translate(17.55 392.64)"><tspan x="0" y="0">4</tspan></text>
+  <rect class="cls-6" x="62" y="363.64" width="430" height="140" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(77 383.64)"><tspan class="cls-10" x="0" y="0">W</tspan><tspan x="12.97" y="0">rite Data</tspan></text>
+  <rect class="cls-9" x="77" y="390.64" width="400" height="103" rx="3" ry="3"/>
+  <text class="cls-4" transform="translate(87 405.64)"><tspan x="0" y="0"># Store a key-value pair</tspan></text>
+  <text class="cls-2" transform="translate(87 420.64)"><tspan x="0" y="0">curl -X PUT \</tspan></text>
+  <text class="cls-2" transform="translate(97 435.64)"><tspan x="0" y="0">http://localhost:8080/api/v1/\</tspan></text>
+  <text class="cls-2" transform="translate(97 450.64)"><tspan x="0" y="0">default/kv/user:1 \</tspan></text>
+  <text class="cls-2" transform="translate(97 465.64)"><tspan x="0" y="0">-H &quot;Content-Type: application/json&quot;</tspan></text>
+  <text class="cls-2" transform="translate(97 480.64)"><tspan x="0" y="0">-d &apos;{&quot;value&quot;:&quot;...&quot;}&apos;</tspan></text>
+  <g>
+    <circle class="cls-8" cx="529.5" cy="381.38" r="22"/>
+    <text class="cls-1" transform="translate(522.55 388.38)"><tspan x="0" y="0">5</tspan></text>
+  </g>
+  <rect class="cls-6" x="552" y="363.64" width="390" height="140" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(567 383.64)"><tspan x="0" y="0">Read Data</tspan></text>
+  <rect class="cls-9" x="567" y="390.64" width="360" height="103" rx="3" ry="3"/>
+  <text class="cls-4" transform="translate(577 405.64)"><tspan x="0" y="0"># Retrieve the value</tspan></text>
+  <text class="cls-2" transform="translate(577 420.64)"><tspan x="0" y="0">curl http://localhost:8080/</tspan></text>
+  <text class="cls-2" transform="translate(587 435.64)"><tspan x="0" y="0">api/v1/default/kv/user:1</tspan></text>
+  <text class="cls-4" transform="translate(577 455.64)"><tspan x="0" y="0"># Response:</tspan></text>
+  <text class="cls-2" transform="translate(577 470.64)"><tspan x="0" y="0">{&quot;value&quot;:&quot;...&quot;, &quot;found&quot;:true}</tspan></text>
+  <rect class="cls-7" x="62" y="525.64" width="880" height="55" rx="4" ry="4"/>
+  <text class="cls-3" transform="translate(397.38 548.64)"><tspan x="0" y="0">Success! UnisonDB is Running</tspan></text>
+</svg>

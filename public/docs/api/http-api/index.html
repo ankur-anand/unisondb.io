@@ -8,39 +8,24 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
-Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
-Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):
-">
+<meta name="description" content="Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/api/http-api/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="HTTP API Reference">
-  <meta property="og:description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
-Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
-Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):">
+  <meta property="og:title" content="UnisonDB HTTP API Reference – REST Endpoints and Usage Guide">
+  <meta property="og:description" content="Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+    <meta property="og:image" content="http://localhost:1313/images/http_api_overview.png">
 
 
-  <meta itemprop="name" content="HTTP API Reference">
-  <meta itemprop="description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
-Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
-Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):">
-  <meta itemprop="wordCount" content="1066">
-  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="name" content="UnisonDB HTTP API Reference – REST Endpoints and Usage Guide">
+  <meta itemprop="description" content="Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments.">
+  <meta itemprop="wordCount" content="1631">
+  <meta itemprop="image" content="http://localhost:1313/images/http_api_overview.png">
+  <meta itemprop="keywords" content="UnisonDB API,UnisonDB HTTP API,UnisonDB REST API,log-native database API,edge computing API,AI database API,database replication API,namespace management API,real-time database API,Go database REST API">
 
 <title>HTTP API Reference | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
@@ -50,7 +35,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.e3f24b9c2b2a265f647489e48ead7c9c9ab110cf157d782388dd5c423ccc0d78.js" integrity="sha256-4/JLnCsqJl9kdInkjq18nJqxEM8VfXgjiN1cQjzMDXg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -69,18 +54,14 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB API, UnisonDB HTTP API, UnisonDB REST API, log-native database API, edge computing API, AI database API, database replication API, namespace management API, real-time database API, Go database REST API">
 
 
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
-  <meta name="twitter:title" content="HTTP API Reference">
-  <meta name="twitter:description" content="HTTP API Reference# Complete reference for UnisonDB’s HTTP REST API.
-Base URL# http://localhost:4000/api/v1/{namespace}Data Encoding# All binary values must be base64-encoded:
-# Encode a value echo -n &#34;hello world&#34; | base64 # Output: aGVsbG8gd29ybGQ= # Use in request curl -X PUT http://localhost:4000/api/v1/default/kv/greeting \ -d &#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;Key-Value Operations# Put KV# Store a key-value pair.
-Request:
-PUT /api/v1/{namespace}/kv/{key} Content-Type: application/json { &#34;value&#34;: &#34;base64-encoded-value&#34; }Example:
-curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-Type: application/json&#34; \ -d &#39;{ &#34;value&#34;: &#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34; }&#39;Response (200 OK):">
+  <meta name="twitter:image" content="http://localhost:1313/images/http_api_overview.png">
+  <meta name="twitter:title" content="UnisonDB HTTP API Reference – REST Endpoints and Usage Guide">
+  <meta name="twitter:description" content="Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments.">
 
 
 
@@ -96,7 +77,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
   "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.",
+  "description": "Comprehensive UnisonDB HTTP API reference — learn how to interact with UnisonDB’s REST endpoints for data operations, replication control, and namespace management in edge and AI-driven deployments.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
@@ -203,7 +184,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 
   
     <a href="/docs/architecture/" class="">
-      Architecture</a>
+      Architecture Overview</a>
   
 
           
@@ -254,6 +235,58 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
   
 
   
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/examples/" class="">
       Examples</a>
   
@@ -268,7 +301,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
   
 
   
-    <a href="/docs/examples/multi-dc-crdts/" class="">
+    <a href="/docs/examples/multi-dc-crdt/" class="">
       Multi-DC CRDT Replication</a>
   
 
@@ -335,6 +368,11 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
       <ul>
         <li><a href="#base-url">Base URL</a></li>
         <li><a href="#data-encoding">Data Encoding</a></li>
+        <li><a href="#request-size-limits-restrictions">Request Size Limits Restrictions</a>
+          <ul>
+            <li><a href="#maximum-request-size">Maximum Request Size</a></li>
+          </ul>
+        </li>
         <li><a href="#key-value-operations">Key-Value Operations</a>
           <ul>
             <li><a href="#put-kv">Put KV</a></li>
@@ -362,10 +400,12 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
         <li><a href="#transaction-operations">Transaction Operations</a>
           <ul>
             <li><a href="#transaction-lifecycle">Transaction Lifecycle</a></li>
+            <li><a href="#transaction-type-restrictions">Transaction Type Restrictions</a></li>
             <li><a href="#begin-transaction">Begin Transaction</a></li>
             <li><a href="#append-kv-to-transaction">Append KV to Transaction</a></li>
             <li><a href="#append-row-to-transaction">Append Row to Transaction</a></li>
             <li><a href="#append-lob-to-transaction">Append LOB to Transaction</a></li>
+            <li><a href="#handling-large-objects-lob--1mb">Handling Large Objects (LOB &gt; 1MB)</a></li>
             <li><a href="#commit-transaction">Commit Transaction</a></li>
             <li><a href="#abort-transaction">Abort Transaction</a></li>
           </ul>
@@ -375,6 +415,13 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
             <li><a href="#get-current-offset">Get Current Offset</a></li>
             <li><a href="#get-engine-statistics">Get Engine Statistics</a></li>
             <li><a href="#get-checkpoint">Get Checkpoint</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-operations">Backup Operations</a>
+          <ul>
+            <li><a href="#wal-segment-backup">WAL Segment Backup</a></li>
+            <li><a href="#b-tree-snapshot-backup">B-Tree Snapshot Backup</a></li>
+            <li><a href="#backup-workflow-example">Backup Workflow Example</a></li>
           </ul>
         </li>
         <li><a href="#error-responses">Error Responses</a>
@@ -399,26 +446,42 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
       
       
   <article class="markdown book-article"><h1 id="http-api-reference">HTTP API Reference<a class="anchor" href="#http-api-reference">#</a></h1>
-<p>Complete reference for UnisonDB&rsquo;s HTTP REST API.</p>
+<img src="/images/http_api_overview.svg" alt="UnisonDB HTTP API" style="max-width: 100%; height: auto;" />
+<p>Complete reference for UnisonDB&rsquo;s <a href="https://en.wikipedia.org/wiki/HTTP" target="_blank" rel="noopener noreferrer">HTTP</a>
+ <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener noreferrer">REST</a>
+ API.</p>
 <h2 id="base-url">Base URL<a class="anchor" href="#base-url">#</a></h2>
 <pre tabindex="0"><code>http://localhost:4000/api/v1/{namespace}</code></pre><h2 id="data-encoding">Data Encoding<a class="anchor" href="#data-encoding">#</a></h2>
-<p>All binary values must be base64-encoded:</p>
+<p>All binary values must be <a href="https://en.wikipedia.org/wiki/Base64" target="_blank" rel="noopener noreferrer">base64-encoded</a>
+:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Encode a value</span>
 </span></span><span style="display:flex;"><span>echo -n <span style="color:#e6db74">&#34;hello world&#34;</span> | base64
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Output: aGVsbG8gd29ybGQ=</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Use in request</span>
 </span></span><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/greeting <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;</span></span></span></code></pre></div><h2 id="key-value-operations">Key-Value Operations<a class="anchor" href="#key-value-operations">#</a></h2>
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;value&#34;:&#34;aGVsbG8gd29ybGQ=&#34;}&#39;</span></span></span></code></pre></div><h2 id="request-size-limits-restrictions">Request Size Limits Restrictions<a class="anchor" href="#request-size-limits-restrictions">#</a></h2>
+<h3 id="maximum-request-size">Maximum Request Size<a class="anchor" href="#maximum-request-size">#</a></h3>
+<p>To keep UnisonDB&rsquo;s HTTP layer efficient, safe, and predictable, each HTTP request is limited to a <strong>maximum size of 1 MB</strong>.</p>
+<p>This limit applies to the <strong>entire request body</strong>, including:</p>
+<ul>
+<li>JSON payload</li>
+<li>Base64-encoded values</li>
+<li>Any metadata sent in the body</li>
+</ul>
+<p>If your workload needs to store data larger than 1 MB, you <strong>should not</strong> push it as a single HTTP write. Instead, use UnisonDB&rsquo;s <a href="#transaction-operations" target="_blank" rel="noopener noreferrer"><strong>transactional (Txn) write path</strong></a>
+, which is designed to handle larger logical operations safely and atomically.</p>
+<hr>
+<h2 id="key-value-operations">Key-Value Operations<a class="anchor" href="#key-value-operations">#</a></h2>
 <h3 id="put-kv">Put KV<a class="anchor" href="#put-kv">#</a></h3>
 <p>Store a key-value pair.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT /api/v1/{namespace}/kv/{key}
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;value&#34;: &#34;base64-encoded-value&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PUT /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/kv/<span style="color:#f92672">{</span>key<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;base64-encoded-value&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
@@ -436,7 +499,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-kv">Get KV<a class="anchor" href="#get-kv">#</a></h3>
 <p>Retrieve a value by key.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/kv/<span style="color:#f92672">{</span>key<span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;eyJuYW1lIjoiSm9obiIsImFnZSI6MzB9&#34;</span>,
@@ -449,7 +512,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="delete-kv">Delete KV<a class="anchor" href="#delete-kv">#</a></h3>
 <p>Delete a key.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/kv/{key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>DELETE /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/kv/<span style="color:#f92672">{</span>key<span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE http://localhost:4000/api/v1/default/kv/user:123</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
@@ -458,16 +521,16 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <p>Perform multiple operations in one request.</p>
 <h4 id="batch-put">Batch Put<a class="anchor" href="#batch-put">#</a></h4>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;items&#34;: [
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {&#34;key&#34;: &#34;key1&#34;, &#34;value&#34;: &#34;dmFsdWUx&#34;},
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {&#34;key&#34;: &#34;key2&#34;, &#34;value&#34;: &#34;dmFsdWUy&#34;}
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  ]
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/kv/batch
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;put&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;items&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key1&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;dmFsdWUx&#34;</span><span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key2&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;dmFsdWUy&#34;</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/kv/batch <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;operation&#34;: &#34;put&#34;,
@@ -479,30 +542,15 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-get">Batch Get<a class="anchor" href="#batch-get">#</a></h4>
-<p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;get&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;items&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {<span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key1&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;dmFsdWUx&#34;</span>, <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>},
-</span></span><span style="display:flex;"><span>    {<span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;key2&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">false</span>}
-</span></span><span style="display:flex;"><span>  ]
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-delete">Batch Delete<a class="anchor" href="#batch-delete">#</a></h4>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/kv/batch
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;delete&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;keys&#34;: [&#34;key1&#34;, &#34;key2&#34;]
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/kv/batch
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;delete&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;keys&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;key1&#34;</span>, <span style="color:#e6db74">&#34;key2&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">2</span>
@@ -511,15 +559,15 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="put-row">Put Row<a class="anchor" href="#put-row">#</a></h3>
 <p>Store a row with multiple columns.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT /api/v1/{namespace}/row/{rowKey}
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;columns&#34;: {
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;column1&#34;: &#34;base64-value1&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;column2&#34;: &#34;base64-value2&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  }
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PUT /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/<span style="color:#f92672">{</span>rowKey<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;columns&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;column1&#34;</span>: <span style="color:#e6db74">&#34;base64-value1&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;column2&#34;</span>: <span style="color:#e6db74">&#34;base64-value2&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X PUT http://localhost:4000/api/v1/default/row/user:john <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;columns&#34;: {
@@ -534,7 +582,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-row">Get Row<a class="anchor" href="#get-row">#</a></h3>
 <p>Retrieve all columns for a row.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/<span style="color:#f92672">{</span>rowKey<span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:john&#34;</span>,
@@ -548,7 +596,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-row-columns">Get Row Columns<a class="anchor" href="#get-row-columns">#</a></h3>
 <p>Retrieve specific columns only.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/row/{rowKey}?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/<span style="color:#f92672">{</span>rowKey<span style="color:#f92672">}</span>?columns<span style="color:#f92672">=</span>col1,col2</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/row/user:john?columns=name,email&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:john&#34;</span>,
@@ -561,7 +609,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="delete-row">Delete Row<a class="anchor" href="#delete-row">#</a></h3>
 <p>Delete an entire row.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/row/{rowKey}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>DELETE /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/<span style="color:#f92672">{</span>rowKey<span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE http://localhost:4000/api/v1/default/row/user:john</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
@@ -569,7 +617,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="delete-row-columns">Delete Row Columns<a class="anchor" href="#delete-row-columns">#</a></h3>
 <p>Delete specific columns from a row.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE /api/v1/{namespace}/row/{rowKey}/columns?columns=col1,col2</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>DELETE /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/<span style="color:#f92672">{</span>rowKey<span style="color:#f92672">}</span>/columns?columns<span style="color:#f92672">=</span>col1,col2</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X DELETE <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/row/user:john/columns?columns=age,city&#34;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
@@ -577,47 +625,24 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="batch-row-operations">Batch Row Operations<a class="anchor" href="#batch-row-operations">#</a></h3>
 <h4 id="batch-put-rows">Batch Put Rows<a class="anchor" href="#batch-put-rows">#</a></h4>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/row/batch
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rows&#34;: [
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    {
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      &#34;rowKey&#34;: &#34;user:1&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      &#34;columns&#34;: {
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &#34;name&#34;: &#34;QWxpY2U=&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &#34;email&#34;: &#34;YWxpY2VAZXhhbXBsZS5jb20=&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">      }
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    }
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  ]
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/row/batch
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;put&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;rows&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:1&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;columns&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;QWxpY2U=&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;YWxpY2VAZXhhbXBsZS5jb20=&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;processed&#34;</span>: <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h4 id="batch-get-rows">Batch Get Rows<a class="anchor" href="#batch-get-rows">#</a></h4>
-<p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/row/batch
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;get&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rowKeys&#34;: [&#34;user:1&#34;, &#34;user:2&#34;]
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rows&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:1&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;columns&#34;</span>: {<span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;QWxpY2U=&#34;</span>},
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:2&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;columns&#34;</span>: {},
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;found&#34;</span>: <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
 <h2 id="large-object-lob-operations">Large Object (LOB) Operations<a class="anchor" href="#large-object-lob-operations">#</a></h2>
 <h3 id="put-lob">Put LOB<a class="anchor" href="#put-lob">#</a></h3>
@@ -626,7 +651,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-lob">Get LOB<a class="anchor" href="#get-lob">#</a></h3>
 <p>Download a large binary object.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/lob?key={key}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/lob?key<span style="color:#f92672">={</span>key<span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/lob?key=file:doc.pdf&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output document.pdf</span></span></code></pre></div><p><strong>Response</strong>: Binary data stream</p>
 <hr>
@@ -637,16 +662,45 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 2. APPEND   → Add operations (multiple times)
 3. COMMIT   → Apply atomically
    OR
-3. ABORT    → Cancel transaction</code></pre><h3 id="begin-transaction">Begin Transaction<a class="anchor" href="#begin-transaction">#</a></h3>
+3. ABORT    → Cancel transaction</code></pre><h3 id="transaction-type-restrictions">Transaction Type Restrictions<a class="anchor" href="#transaction-type-restrictions">#</a></h3>
+<p><strong>Transactions are bound to the <code>entryType</code> specified during <code>BEGIN</code>.</strong>
+Once opened, a transaction can <strong>only</strong> accept operations matching its type:</p>
+<table>
+  <thead>
+      <tr>
+          <th><code>entryType</code></th>
+          <th>Allowed Operations</th>
+          <th>Endpoint</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>kv</code></td>
+          <td>Key-Value only</td>
+          <td><code>POST /tx/{txnId}/kv</code></td>
+      </tr>
+      <tr>
+          <td><code>row</code></td>
+          <td>Wide-Column only</td>
+          <td><code>POST /tx/{txnId}/row</code></td>
+      </tr>
+      <tr>
+          <td><code>lob</code></td>
+          <td>Large Objects only</td>
+          <td><code>POST /tx/{txnId}/lob</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="begin-transaction">Begin Transaction<a class="anchor" href="#begin-transaction">#</a></h3>
 <p>Start a new transaction.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/begin
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;operation&#34;: &#34;put&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;entryType&#34;: &#34;kv&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/begin
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;put&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;entryType&#34;</span>: <span style="color:#e6db74">&#34;kv&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>operation</code>: <code>&quot;put&quot;</code>, <code>&quot;update&quot;</code>, or <code>&quot;delete&quot;</code></li>
 <li><code>entryType</code>: <code>&quot;kv&quot;</code>, <code>&quot;row&quot;</code>, or <code>&quot;lob&quot;</code></li>
@@ -665,13 +719,13 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="append-kv-to-transaction">Append KV to Transaction<a class="anchor" href="#append-kv-to-transaction">#</a></h3>
 <p>Add a key-value operation to the transaction.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/kv
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;key&#34;: &#34;mykey&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;value&#34;: &#34;bXl2YWx1ZQ==&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/kv
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;mykey&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;bXl2YWx1ZQ==&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Use the txnId from BEGIN response</span>
 </span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../kv <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
@@ -685,16 +739,16 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="append-row-to-transaction">Append Row to Transaction<a class="anchor" href="#append-row-to-transaction">#</a></h3>
 <p>Add a row operation to the transaction.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/row
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;rowKey&#34;: &#34;user:1&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;columns&#34;: {
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;name&#34;: &#34;QWxpY2U=&#34;,
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &#34;status&#34;: &#34;YWN0aXZl&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  }
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/row
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;rowKey&#34;</span>: <span style="color:#e6db74">&#34;user:1&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;columns&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;QWxpY2U=&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;YWN0aXZl&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/row <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;rowKey&#34;: &#34;user:charlie&#34;,
@@ -709,19 +763,46 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="append-lob-to-transaction">Append LOB to Transaction<a class="anchor" href="#append-lob-to-transaction">#</a></h3>
 <p>Add a large object to the transaction.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/lob?key={key}
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/octet-stream
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;binary data&gt;</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/lob?key<span style="color:#f92672">={</span>key<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>Content-Type: application/octet-stream
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;binary data&gt;</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/tx/{txnId}/lob?key=file:backup.tar.gz&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --data-binary @backup.tar.gz</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h3 id="handling-large-objects-lob--1mb">Handling Large Objects (LOB &gt; 1MB)<a class="anchor" href="#handling-large-objects-lob--1mb">#</a></h3>
+<p>For files or data larger than 1MB, use <strong>LOB transactions</strong> with chunking:</p>
+<h4 id="example-upload-a-5mb-file">Example: Upload a 5MB File<a class="anchor" href="#example-upload-a-5mb-file">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;large-file.bin&#34;</span>
+</span></span><span style="display:flex;"><span>KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;files:backup-20250108.tar.gz&#34;</span>
+</span></span><span style="display:flex;"><span>CHUNK_SIZE<span style="color:#f92672">=</span><span style="color:#ae81ff">1048576</span>  <span style="color:#75715e"># 1MB chunks</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Begin LOB transaction</span>
+</span></span><span style="display:flex;"><span>RESPONSE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s -X POST http://localhost:4000/api/v1/default/tx/begin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{&#34;operation&#34;:&#34;put&#34;,&#34;entryType&#34;:&#34;lob&#34;}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>TXN_ID<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo $RESPONSE | jq -r <span style="color:#e6db74">&#39;.txnId&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Split file into 1MB chunks and upload</span>
+</span></span><span style="display:flex;"><span>split -b $CHUNK_SIZE <span style="color:#e6db74">&#34;</span>$FILE<span style="color:#e6db74">&#34;</span> /tmp/chunk_
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> CHUNK in /tmp/chunk_*; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Uploading </span>$CHUNK<span style="color:#e6db74">...&#34;</span>
+</span></span><span style="display:flex;"><span>  curl -X POST <span style="color:#e6db74">&#34;http://localhost:4000/api/v1/default/tx/</span>$TXN_ID<span style="color:#e6db74">/lob?key=</span>$KEY<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --data-binary @<span style="color:#e6db74">&#34;</span>$CHUNK<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Commit transaction</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/$TXN_ID/commit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Cleanup</span>
+</span></span><span style="display:flex;"><span>rm /tmp/chunk_*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Large file uploaded successfully!&#34;</span></span></span></code></pre></div><hr>
 <h3 id="commit-transaction">Commit Transaction<a class="anchor" href="#commit-transaction">#</a></h3>
 <p>Apply all operations atomically.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/commit</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/commit</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../commit</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
@@ -735,7 +816,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="abort-transaction">Abort Transaction<a class="anchor" href="#abort-transaction">#</a></h3>
 <p>Cancel the transaction without applying changes.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /api/v1/{namespace}/tx/{txnId}/abort</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/tx/<span style="color:#f92672">{</span>txnId<span style="color:#f92672">}</span>/abort</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/tx/2a3b4c.../abort</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;success&#34;</span>: <span style="color:#66d9ef">true</span>
@@ -743,14 +824,13 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <ul>
 <li>No operations are applied</li>
 <li>Transaction ID is no longer valid</li>
-<li>All buffered changes are discarded</li>
 </ul>
 <hr>
 <h2 id="metadata-operations">Metadata Operations<a class="anchor" href="#metadata-operations">#</a></h2>
 <h3 id="get-current-offset">Get Current Offset<a class="anchor" href="#get-current-offset">#</a></h3>
 <p>Get the current WAL position.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/offset</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/offset</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/offset</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
@@ -760,7 +840,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-engine-statistics">Get Engine Statistics<a class="anchor" href="#get-engine-statistics">#</a></h3>
 <p>Get engine performance statistics.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/stats</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/stats</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/stats</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
@@ -773,7 +853,7 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 <h3 id="get-checkpoint">Get Checkpoint<a class="anchor" href="#get-checkpoint">#</a></h3>
 <p>Get the last checkpoint position.</p>
 <p><strong>Request</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/v1/{namespace}/checkpoint</span></span></span></code></pre></div><p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/checkpoint</span></span></code></pre></div><p><strong>Example</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://localhost:4000/api/v1/default/checkpoint</span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;namespace&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
@@ -781,6 +861,126 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">5</span>,
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;offset&#34;</span>: <span style="color:#ae81ff">12000</span>
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h2 id="backup-operations">Backup Operations<a class="anchor" href="#backup-operations">#</a></h2>
+<p>UnisonDB provides APIs for creating durable backups of both WAL segments and B-Tree snapshots. All backup paths must be <strong>relative</strong> to the server&rsquo;s backup root (<code>&lt;dataDir&gt;/backups/{namespace}</code>).</p>
+<h3 id="wal-segment-backup">WAL Segment Backup<a class="anchor" href="#wal-segment-backup">#</a></h3>
+<p>Create an incremental backup by copying sealed WAL segments.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/wal/backup
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;afterSegmentId&#34;</span>: 42,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;backupDir&#34;</span>: <span style="color:#e6db74">&#34;wal/customer-a&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>afterSegmentId</code> (optional): Only copy segments with IDs greater than this value. Omit or set to <code>0</code> to copy all sealed segments.</li>
+<li><code>backupDir</code> (required): <strong>Relative path</strong> within the backup root. Absolute paths or <code>..</code> traversal are rejected.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Backup all segments after segment 100</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;afterSegmentId&#34;: 100,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;backupDir&#34;: &#34;wal/daily&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;backups&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">101</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/default/wal/daily/000000101.wal&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;segmentId&#34;</span>: <span style="color:#ae81ff">102</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/default/wal/daily/000000102.wal&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Incremental backups for point-in-time recovery</li>
+<li>Compliance archival of transaction logs</li>
+<li>Shipping WAL segments to remote storage</li>
+</ul>
+<p><strong>Errors</strong>:</p>
+<ul>
+<li><code>400 Bad Request</code>: Invalid path (absolute or contains <code>..</code>)</li>
+<li><code>404 Not Found</code>: Namespace not found</li>
+<li><code>500 Internal Server Error</code>: Filesystem error, permission denied</li>
+</ul>
+<hr>
+<h3 id="b-tree-snapshot-backup">B-Tree Snapshot Backup<a class="anchor" href="#b-tree-snapshot-backup">#</a></h3>
+<p>Create a full snapshot of the B-Tree store.</p>
+<p><strong>Request</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /api/v1/<span style="color:#f92672">{</span>namespace<span style="color:#f92672">}</span>/btree/backup
+</span></span><span style="display:flex;"><span>Content-Type: application/json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;snapshots/users-20250108.snapshot&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div><p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>path</code> (required): <strong>Relative path</strong> within the backup root. The server writes to <code>{path}.tmp</code>, fsyncs, then atomically renames.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Create a snapshot with today&#39;s date</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/default/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;path&#34;: &#34;snapshots/backup-&#39;</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;.db&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  }&#39;</span></span></span></code></pre></div><p><strong>Response</strong> (200 OK):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;path&#34;</span>: <span style="color:#e6db74">&#34;/var/unison/data/backups/default/snapshots/backup-20250108.db&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;bytes&#34;</span>: <span style="color:#ae81ff">73400320</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Full database backups for disaster recovery</li>
+<li>Creating read-only replicas for analytics</li>
+<li>Migrating data to new servers</li>
+</ul>
+<p><strong>Errors</strong>:</p>
+<ul>
+<li><code>400 Bad Request</code>: Invalid path (absolute or contains <code>..</code>)</li>
+<li><code>404 Not Found</code>: Namespace not found</li>
+<li><code>500 Internal Server Error</code>: Filesystem error, disk full</li>
+</ul>
+<hr>
+<h3 id="backup-workflow-example">Backup Workflow Example<a class="anchor" href="#backup-workflow-example">#</a></h3>
+<p>Complete backup automation script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># Daily backup script</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span>
+</span></span><span style="display:flex;"><span>DATE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>STATE_FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/lib/unison/wal-state.json&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. B-Tree snapshot (daily)</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Creating B-Tree snapshot...&#34;</span>
+</span></span><span style="display:flex;"><span>curl -X POST http://localhost:4000/api/v1/$NAMESPACE/btree/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;path\&#34;: \&#34;snapshots/btree-</span>$DATE<span style="color:#e6db74">.db\&#34;}&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. WAL incremental</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Backing up WAL segments...&#34;</span>
+</span></span><span style="display:flex;"><span>LAST_SEGMENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>jq -r <span style="color:#e6db74">&#39;.lastSegmentId // 0&#39;</span> <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span> 2&gt;/dev/null <span style="color:#f92672">||</span> echo 0<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RESPONSE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>curl -s -X POST http://localhost:4000/api/v1/$NAMESPACE/wal/backup <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -d <span style="color:#e6db74">&#34;{\&#34;afterSegmentId\&#34;: </span>$LAST_SEGMENT<span style="color:#e6db74">, \&#34;backupDir\&#34;: \&#34;wal/</span>$DATE<span style="color:#e6db74">\&#34;}&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Update state</span>
+</span></span><span style="display:flex;"><span>NEW_LAST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$RESPONSE<span style="color:#e6db74">&#34;</span> | jq -r <span style="color:#e6db74">&#39;.backups[-1].segmentId // 0&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$NEW_LAST<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;{\&#34;lastSegmentId\&#34;: </span>$NEW_LAST<span style="color:#e6db74">, \&#34;timestamp\&#34;: \&#34;</span><span style="color:#66d9ef">$(</span>date -Iseconds<span style="color:#66d9ef">)</span><span style="color:#e6db74">\&#34;}&#34;</span> &gt; <span style="color:#e6db74">&#34;</span>$STATE_FILE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Compress and upload to S3 (optional)</span>
+</span></span><span style="display:flex;"><span>BACKUP_ROOT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/var/unison/data/backups/</span>$NAMESPACE<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>tar -czf <span style="color:#e6db74">&#34;/tmp/backup-</span>$DATE<span style="color:#e6db74">.tar.gz&#34;</span> -C <span style="color:#e6db74">&#34;</span>$BACKUP_ROOT<span style="color:#e6db74">&#34;</span> .
+</span></span><span style="display:flex;"><span>aws s3 cp <span style="color:#e6db74">&#34;/tmp/backup-</span>$DATE<span style="color:#e6db74">.tar.gz&#34;</span> <span style="color:#e6db74">&#34;s3://backups/unison/</span>$NAMESPACE<span style="color:#e6db74">/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Backup completed successfully&#34;</span></span></span></code></pre></div><p>For detailed backup strategies, automation, and restore procedures, see the <a href="../../operations/backup-restore/" target="_blank" rel="noopener noreferrer">Backup and Restore Guide</a>
+.</p>
+<hr>
 <h2 id="error-responses">Error Responses<a class="anchor" href="#error-responses">#</a></h2>
 <p>All errors follow this format:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
@@ -903,8 +1103,8 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
     </span>
     <span>
     
-      <a href="/docs/examples/" class="flex align-center">
-        <span>Examples</span>
+      <a href="/docs/deployment/" class="flex align-center">
+        <span>Deployment Topologies</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     
@@ -944,6 +1144,11 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
       <ul>
         <li><a href="#base-url">Base URL</a></li>
         <li><a href="#data-encoding">Data Encoding</a></li>
+        <li><a href="#request-size-limits-restrictions">Request Size Limits Restrictions</a>
+          <ul>
+            <li><a href="#maximum-request-size">Maximum Request Size</a></li>
+          </ul>
+        </li>
         <li><a href="#key-value-operations">Key-Value Operations</a>
           <ul>
             <li><a href="#put-kv">Put KV</a></li>
@@ -971,10 +1176,12 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
         <li><a href="#transaction-operations">Transaction Operations</a>
           <ul>
             <li><a href="#transaction-lifecycle">Transaction Lifecycle</a></li>
+            <li><a href="#transaction-type-restrictions">Transaction Type Restrictions</a></li>
             <li><a href="#begin-transaction">Begin Transaction</a></li>
             <li><a href="#append-kv-to-transaction">Append KV to Transaction</a></li>
             <li><a href="#append-row-to-transaction">Append Row to Transaction</a></li>
             <li><a href="#append-lob-to-transaction">Append LOB to Transaction</a></li>
+            <li><a href="#handling-large-objects-lob--1mb">Handling Large Objects (LOB &gt; 1MB)</a></li>
             <li><a href="#commit-transaction">Commit Transaction</a></li>
             <li><a href="#abort-transaction">Abort Transaction</a></li>
           </ul>
@@ -984,6 +1191,13 @@ curl -X PUT http://localhost:4000/api/v1/default/kv/user:123 \ -H &#34;Content-T
             <li><a href="#get-current-offset">Get Current Offset</a></li>
             <li><a href="#get-engine-statistics">Get Engine Statistics</a></li>
             <li><a href="#get-checkpoint">Get Checkpoint</a></li>
+          </ul>
+        </li>
+        <li><a href="#backup-operations">Backup Operations</a>
+          <ul>
+            <li><a href="#wal-segment-backup">WAL Segment Backup</a></li>
+            <li><a href="#b-tree-snapshot-backup">B-Tree Snapshot Backup</a></li>
+            <li><a href="#backup-workflow-example">Backup Workflow Example</a></li>
           </ul>
         </li>
         <li><a href="#error-responses">Error Responses</a>
