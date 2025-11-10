@@ -2,6 +2,7 @@
 title: UnisonDB – Log-Native Database For AI And Edge Computing
 description: Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.
 images: ['/images/og-image.png']
+layout: doc
 keywords: [
   "UnisonDB",
   "unison db",
@@ -26,7 +27,9 @@ keywords: [
 
 > **Replicates like a message bus. Acts like a database.**
 
-<img src="images/logo.svg" alt="UnisonDB" width="300" />
+<div style="text-align: center; margin: 2rem 0;">
+  <img src="images/logo.svg" alt="UnisonDB Logo" width="300" />
+</div>
 
 ## What is UnisonDB?
 
@@ -54,7 +57,7 @@ UnisonDB’s architecture is built around a log-native core that unifies storage
 
 </section>
 
-<img src="images/unison_overview.png"  alt="UnisonDB Architecture Overview" />
+<img src="images/unisondb_overview.png"  alt="UnisonDB Architecture Overview" />
 
 
 UnisonDB is designed to push intelligence and data closer to where it’s needed — enabling real-time AI and analytics at the edge without sacrificing consistency or durability.

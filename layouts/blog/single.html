@@ -1,0 +1,63 @@
+{{ define "main" }}
+<article class="markdown book-post">
+  <h1>{{ .Title }}</h1>
+
+  <!-- Date and Author at top -->
+  <div class="book-post-header-meta" style="margin: 1rem 0 2rem 0; padding-bottom: 1.5rem; border-bottom: 2px solid var(--gray-200, #e5e7eb); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; color: var(--gray-600, #6b7280);">
+    {{ with .Date }}
+    <div class="flex align-center text-small book-post-date" style="display: flex; align-items: center; gap: 0.5rem;">
+      <img src="{{ partial "docs/icon" "calendar" }}" class="book-icon" alt="Calendar" />
+      <time datetime="{{ .Format "2006-01-02" }}">
+        {{ .Format "January 2, 2006" }}
+      </time>
+    </div>
+    {{ end }}
+
+    {{ with .Params.author }}
+    <div class="text-small book-post-author" style="display: flex; align-items: center; gap: 0.25rem;">
+      <span style="opacity: 0.7;">By</span>
+      <strong style="color: var(--gray-700, #374151);">{{ . }}</strong>
+    </div>
+    {{ end }}
+  </div>
+
+  <!-- Summary if present -->
+  {{ with .Summary }}
+  <div class="book-post-summary" style="margin: 0 0 2rem 0; padding: 1.25rem 1.5rem; background: var(--gray-100, #f3f4f6); border-left: 4px solid var(--color-link, #0055bb); border-radius: 0.25rem; font-style: italic; color: var(--gray-700, #374151); line-height: 1.6;">
+    {{ . }}
+  </div>
+  {{ end }}
+
+  <!-- Main Content -->
+  <div class="book-post-content markdown-inner">
+    {{ .Content }}
+  </div>
+
+  <!-- Categories and Tags at bottom -->
+  {{ if or .Params.categories .Params.tags }}
+  <div class="book-post-footer-meta" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--gray-200, #e5e7eb);">
+    {{ with .Params.categories }}
+    <div class="book-post-categories" style="margin-bottom: 1rem;">
+      <span style="font-weight: 600; color: var(--gray-700, #374151); margin-right: 0.75rem;">Categories:</span>
+      {{ range $i, $cat := . }}
+        <span style="display: inline-block; padding: 0.25rem 0.75rem; margin: 0.25rem 0.25rem 0.25rem 0; background: var(--gray-200, #e5e7eb); color: var(--gray-700, #374151); border-radius: 0.25rem; font-size: 0.875rem;">{{ $cat }}</span>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    {{ with .Params.tags }}
+    <div class="book-post-tags">
+      <span style="font-weight: 600; color: var(--gray-700, #374151); margin-right: 0.75rem;">Tags:</span>
+      {{ range $i, $tag := . }}
+        <span style="display: inline-block; padding: 0.25rem 0.75rem; margin: 0.25rem 0.25rem 0.25rem 0; background: var(--color-link-light, #e6f0ff); color: var(--color-link, #0055bb); border-radius: 0.25rem; font-size: 0.875rem;">{{ $tag }}</span>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+</article>
+{{ end }}
+
+{{ define "toc" }}
+  {{ partial "docs/toc" . }}
+{{ end }}

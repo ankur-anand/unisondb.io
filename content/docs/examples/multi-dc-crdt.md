@@ -4,9 +4,10 @@ linkTitle: "Multi-DC CRDT Replication"
 description: "Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB."
 date: 2025-11-02
 type: posts
+author: "Ankur Anand"
 weight: 20
 draft: false
-bookToC: false
+bookToC: true
 images: ['/images/multi_dc_crdt.png']
 keywords: ["UnisonDB", "CRDT", "Replication", "Edge Computing", "ZeroMQ", "Go"]
 categories: ["Distributed Systems", "Tutorials", "CRDT"]

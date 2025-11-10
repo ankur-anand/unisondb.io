@@ -8,39 +8,27 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
-Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
-Architecture # Understand the internal design and components of UnisonDB.
-Deployment # Deployment topologies, configurations, and operational best practices.
-API Reference # Complete reference for HTTP and gRPC APIs.
-">
+<meta name="description" content="Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/">
   <meta property="og:site_name" content="UnisonDB">
-  <meta property="og:title" content="Documentation">
-  <meta property="og:description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
-Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
-Architecture # Understand the internal design and components of UnisonDB.
-Deployment # Deployment topologies, configurations, and operational best practices.
-API Reference # Complete reference for HTTP and gRPC APIs.">
+  <meta property="og:title" content="UnisonDB Documentation">
+  <meta property="og:description" content="Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
     <meta property="og:image" content="http://localhost:1313/images/og-image.png">
 
 
-  <meta itemprop="name" content="Documentation">
-  <meta itemprop="description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
-Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
-Architecture # Understand the internal design and components of UnisonDB.
-Deployment # Deployment topologies, configurations, and operational best practices.
-API Reference # Complete reference for HTTP and gRPC APIs.">
+  <meta itemprop="name" content="UnisonDB Documentation">
+  <meta itemprop="description" content="Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems.">
   <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="61">
+  <meta itemprop="wordCount" content="78">
   <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="UnisonDB documentation,UnisonDB guide,UnisonDB setup,log-native database,Edge AI database,real-time replication,streaming database,Go database,edge computing,distributed systems">
 
-<title>Documentation | UnisonDB</title>
+<title>UnisonDB Documentation | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="http://localhost:1313/docs/">
@@ -48,7 +36,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.0caba0306053441c5b9db4564885ed45e399b7a7e312a2d39294e0ae75b1048a.js" integrity="sha256-DKugMGBTRBxbnbRWSIXtReOZt6fjEqLTkpTgrnWxBIo=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.c70ace00361da3a26e14c88da6953d426c69d8dc0e15b858ad0fd7c3655a79a2.js" integrity="sha256-xwrOADYdo6JuFMiNppU9Qmxp2NwOFbhYrQ/Xw2VaeaI=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -68,17 +56,14 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 <meta name="googlebot" content="index, follow">
 
 <meta name="author" content="Ankur Anand">
+<meta name="keywords" content="UnisonDB documentation, UnisonDB guide, UnisonDB setup, log-native database, Edge AI database, real-time replication, streaming database, Go database, edge computing, distributed systems">
 
 
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
-  <meta name="twitter:title" content="Documentation">
-  <meta name="twitter:description" content="UnisonDB Documentation# Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
-Documentation Sections# Getting Started # Learn how to install, configure, and start using UnisonDB.
-Architecture # Understand the internal design and components of UnisonDB.
-Deployment # Deployment topologies, configurations, and operational best practices.
-API Reference # Complete reference for HTTP and gRPC APIs.">
+  <meta name="twitter:title" content="UnisonDB Documentation">
+  <meta name="twitter:description" content="Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems.">
 
 
 
@@ -94,7 +79,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
   "name": "UnisonDB",
   "url": "https://unisondb.io/",
   "inLanguage": "en-US",
-  "description": "Reactive, log-native database built for AI agents and edge computing — delivering low-latency, real-time replication and multimodal data sync at scale.",
+  "description": "Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems.",
   "publisher": {
     "@type": "Organization",
     "@id": "https://unisondb.io/#organization",
@@ -156,13 +141,12 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 
 
 
+<ul>
 
   
-  <ul>
     
-      
-        <li>
-          
+      <li>
+        
   
   
 
@@ -171,7 +155,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       Getting Started</a>
   
 
-          
+        
   <ul>
     
       
@@ -190,12 +174,12 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
     
   </ul>
 
-        </li>
-      
+      </li>
     
-      
-        <li>
-          
+  
+    
+      <li>
+        
   
   
 
@@ -204,17 +188,17 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       Architecture Overview</a>
   
 
-          
+        
   <ul>
     
   </ul>
 
-        </li>
-      
+      </li>
     
-      
-        <li>
-          
+  
+    
+      <li>
+        
   
   
 
@@ -223,7 +207,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       API Reference</a>
   
 
-          
+        
   <ul>
     
       
@@ -242,12 +226,12 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
     
   </ul>
 
-        </li>
-      
+      </li>
     
-      
-        <li>
-          
+  
+    
+      <li>
+        
   
   
 
@@ -256,17 +240,17 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       Deployment Topologies</a>
   
 
-          
+        
   <ul>
     
   </ul>
 
-        </li>
-      
+      </li>
     
-      
-        <li>
-          
+  
+    
+      <li>
+        
   
   
 
@@ -275,7 +259,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       Operations</a>
   
 
-          
+        
   <ul>
     
       
@@ -294,12 +278,12 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
     
   </ul>
 
-        </li>
-      
+      </li>
     
-      
-        <li>
-          
+  
+    
+      <li>
+        
   
   
 
@@ -308,7 +292,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       Examples</a>
   
 
-          
+        
   <ul>
     
       
@@ -327,11 +311,35 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
     
   </ul>
 
-        </li>
-      
+      </li>
+    
+  
+
+
+
+
+  <li class="book-section-flat"  class="book-section-collapse" >
+    
+  
+  
+
+  
+    <input type="checkbox" id="section-9a540b355eab634b7d2d40f68ad2c4e6" class="toggle"  />
+    <label for="section-9a540b355eab634b7d2d40f68ad2c4e6" class="flex">
+      <a role="button" class="">
+        Blog Posts</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+    
+  <ul>
     
   </ul>
 
+  </li>
+
+</ul>
 
 
 
@@ -343,6 +351,24 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
 
 
 
+<ul>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener" class="book-github-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </svg>
+      GitHub
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener" class="book-discussions-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Discussions
+    </a>
+  </li>
+</ul>
 
 </nav>
 
@@ -365,7 +391,7 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Documentation</h3>
+  <h3>UnisonDB Documentation</h3>
 
   <label for="toc-control">
     
@@ -406,20 +432,20 @@ API Reference # Complete reference for HTTP and gRPC APIs.">
       
       
   <article class="markdown book-article"><h1 id="unisondb-documentation">UnisonDB Documentation<a class="anchor" href="#unisondb-documentation">#</a></h1>
-<p>Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.</p>
+<p>This guide covers everything you need to install, configure, and operate UnisonDB at scale.</p>
 <h2 id="documentation-sections">Documentation Sections<a class="anchor" href="#documentation-sections">#</a></h2>
 <h3 id="getting-started"><a href="getting-started/" target="_blank" rel="noopener noreferrer">Getting Started</a>
 <a class="anchor" href="#getting-started">#</a></h3>
-<p>Learn how to install, configure, and start using UnisonDB.</p>
+<p>Step-by-step installation and quick-start setup for UnisonDB, including <strong>replicator</strong> and <strong>relayer</strong> modes.</p>
 <h3 id="architecture"><a href="architecture/" target="_blank" rel="noopener noreferrer">Architecture</a>
 <a class="anchor" href="#architecture">#</a></h3>
-<p>Understand the internal design and components of UnisonDB.</p>
+<p>Dive into UnisonDB’s core concepts — <strong>log-native storage</strong>, <strong>WAL streaming replication</strong>, and <strong>edge-first design</strong>.</p>
 <h3 id="deployment"><a href="deployment/" target="_blank" rel="noopener noreferrer">Deployment</a>
 <a class="anchor" href="#deployment">#</a></h3>
-<p>Deployment topologies, configurations, and operational best practices.</p>
+<p>Explore deployment topologies and <strong>best practices</strong> for production, including <strong>hub-and-spoke</strong> and <strong>multi-region</strong> setups.</p>
 <h3 id="api-reference"><a href="api/" target="_blank" rel="noopener noreferrer">API Reference</a>
 <a class="anchor" href="#api-reference">#</a></h3>
-<p>Complete reference for HTTP and gRPC APIs.</p>
+<p>Detailed <strong>HTTP</strong> documentation for integrating UnisonDB with your applications and services.</p>
 </article>
  
       

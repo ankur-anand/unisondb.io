@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn how to design a write-ahead log (WAL) that supports thousands of concurrent readers, streaming replication, and real-time data pipelines — without slowing down writes or losing durability.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/posts/fast-multi-reader-write-ahead-log/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes">
+  <meta property="og:description" content="Learn how to design a write-ahead log (WAL) that supports thousands of concurrent readers, streaming replication, and real-time data pipelines — without slowing down writes or losing durability.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2025-11-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-11-09T00:00:00+00:00">
+    <meta property="article:tag" content="Write-Ahead Log">
+    <meta property="article:tag" content="WAL">
+    <meta property="article:tag" content="Replication">
+    <meta property="article:tag" content="Database Internals">
+    <meta property="article:tag" content="Streaming">
+    <meta property="article:tag" content="Log-Native">
+    <meta property="og:image" content="http://localhost:1313/images/walfs_diagram.png">
+
+
+  <meta itemprop="name" content="How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes">
+  <meta itemprop="description" content="Learn how to design a write-ahead log (WAL) that supports thousands of concurrent readers, streaming replication, and real-time data pipelines — without slowing down writes or losing durability.">
+  <meta itemprop="datePublished" content="2025-11-09T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-09T00:00:00+00:00">
+  <meta itemprop="wordCount" content="258">
+  <meta itemprop="image" content="http://localhost:1313/images/walfs_diagram.png">
+  <meta itemprop="keywords" content="multi-reader write-ahead log,WAL performance,streaming replication,edge database,log-native architecture,real-time replication,high fanout replication,UnisonDB WAL">
+
+<title>How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/posts/fast-multi-reader-write-ahead-log/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.0448eb35fd89301f2896767faa96b50a0af7425705c60d81ca44149a5c0bfe1e.js" integrity="sha256-BEjrNf2JMB8olnZ/qpa1Cgr3QlcFxg2BykQUmlwL/h4=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="multi-reader write-ahead log, WAL performance, streaming replication, edge database, log-native architecture, real-time replication, high fanout replication, UnisonDB WAL">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/walfs_diagram.png">
+  <meta name="twitter:title" content="How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes">
+  <meta name="twitter:description" content="Learn how to design a write-ahead log (WAL) that supports thousands of concurrent readers, streaming replication, and real-time data pipelines — without slowing down writes or losing durability.">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Learn how to design a write-ahead log (WAL) that supports thousands of concurrent readers, streaming replication, and real-time data pipelines — without slowing down writes or losing durability.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/posts/" class="">
+      Blog Posts</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/posts/fast-multi-reader-write-ahead-log/" class="active">
+      How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-build-a-fast-multi-reader-write-ahead-log-without-sacrificing-writes">How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes</a>
+      <ul>
+        <li><a href="#1-the-challenge-when-your-wal-becomes-a-stream">1. The Challenge: When Your WAL Becomes a Stream</a></li>
+        <li><a href="#2-the-design-goals">2. The Design Goals</a></li>
+        <li><a href="#3-segment-based-architecture">3. Segment-Based Architecture</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="how-to-build-a-fast-multi-reader-write-ahead-log-without-sacrificing-writes">How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes<a class="anchor" href="#how-to-build-a-fast-multi-reader-write-ahead-log-without-sacrificing-writes">#</a></h1>
+<p>Most databases treat the <strong>Write-Ahead Log (WAL)</strong> as an implementation detail — a recovery mechanism that quietly ensures durability in the background.</p>
+<p>But when your system needs to serve <strong>thousands of readers</strong>, <strong>real-time replication</strong>, and <strong>streaming analytics</strong>, the traditional WAL becomes a bottleneck.</p>
+<p>At UnisonDB, we set out to design a WAL that could <strong>scale to hundreds of concurrent readers</strong> while maintaining <strong>millions of sequential writes per second</strong> — without sacrificing durability or consistency.</p>
+<hr>
+<h2 id="1-the-challenge-when-your-wal-becomes-a-stream">1. The Challenge: When Your WAL Becomes a Stream<a class="anchor" href="#1-the-challenge-when-your-wal-becomes-a-stream">#</a></h2>
+<p>Traditional write-ahead logs were built for <strong>crash recovery</strong>, not <strong>continuous consumption</strong>.</p>
+<p>But modern systems — databases, event stores, and edge platforms — rely on real-time data movement. The WAL now feeds:</p>
+<ul>
+<li><strong>Replicators and relayers</strong> streaming logs across regions</li>
+<li><strong>Change Data Capture (CDC)</strong> pipelines</li>
+<li><strong>Analytics engines</strong> consuming continuous deltas</li>
+<li><strong>Event-driven applications</strong> watching updates</li>
+</ul>
+<p>This transforms the WAL from a persistence detail into the <strong>core replication fabric</strong>.</p>
+<p>So the question becomes:</p>
+<blockquote class='book-hint '>
+<p>How do you support <em>thousands of concurrent readers</em> without hurting write performance?</p>
+</blockquote><hr>
+<h2 id="2-the-design-goals">2. The Design Goals<a class="anchor" href="#2-the-design-goals">#</a></h2>
+<p>A high-performance, multi-reader Write-Ahead Log must achieve:</p>
+<ol>
+<li><strong>Single fast writer</strong> — sequential appends only</li>
+<li><strong>Zero reader contention</strong> — readers don’t block writes</li>
+<li><strong>Durability</strong> — data is never acknowledged before fsync</li>
+<li><strong>Isolation</strong> — each reader tracks its own offset</li>
+<li><strong>Observability</strong> — every record is addressable by <code>{segment, offset, LSN}</code></li>
+</ol>
+<p>In UnisonDB, these constraints led to a <strong>segmented, mmap-backed WAL</strong> that allows readers and writers to share memory safely.</p>
+<hr>
+<h2 id="3-segment-based-architecture">3. Segment-Based Architecture<a class="anchor" href="#3-segment-based-architecture">#</a></h2>
+<p>A segmented architecture keeps the log <strong>append-only and bounded</strong>:</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/docs/posts/wal.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/posts/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Blog Posts</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/examples/" class="flex align-center">
+        <span>Examples</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-build-a-fast-multi-reader-write-ahead-log-without-sacrificing-writes">How to Build a Fast, Multi-Reader Write-Ahead Log Without Sacrificing Writes</a>
+      <ul>
+        <li><a href="#1-the-challenge-when-your-wal-becomes-a-stream">1. The Challenge: When Your WAL Becomes a Stream</a></li>
+        <li><a href="#2-the-design-goals">2. The Design Goals</a></li>
+        <li><a href="#3-segment-based-architecture">3. Segment-Based Architecture</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

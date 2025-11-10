@@ -1,24 +1,37 @@
 ---
-title: "Documentation"
+title: "UnisonDB Documentation"
 weight: 1
 bookFlatSection: false
 bookCollapseSection: false
+description: "Official UnisonDB documentation — learn how to install, configure, deploy, and integrate the log-native database for Edge AI, real-time data replication, and streaming systems."
+keywords: [
+  "UnisonDB documentation",
+  "UnisonDB guide",
+  "UnisonDB setup",
+  "log-native database",
+  "Edge AI database",
+  "real-time replication",
+  "streaming database",
+  "Go database",
+  "edge computing",
+  "distributed systems"
+]
 ---
 
 # UnisonDB Documentation
 
-Welcome to the UnisonDB documentation! This guide will help you understand, deploy, and use UnisonDB effectively.
+This guide covers everything you need to install, configure, and operate UnisonDB at scale.
 
 ## Documentation Sections
 
 ### [Getting Started](getting-started/)
-Learn how to install, configure, and start using UnisonDB.
+Step-by-step installation and quick-start setup for UnisonDB, including **replicator** and **relayer** modes.
 
 ### [Architecture](architecture/)
-Understand the internal design and components of UnisonDB.
+Dive into UnisonDB’s core concepts — **log-native storage**, **WAL streaming replication**, and **edge-first design**.
 
 ### [Deployment](deployment/)
-Deployment topologies, configurations, and operational best practices.
+Explore deployment topologies and **best practices** for production, including **hub-and-spoke** and **multi-region** setups.
 
 ### [API Reference](api/)
-Complete reference for HTTP and gRPC APIs.
+Detailed **HTTP** documentation for integrating UnisonDB with your applications and services.
