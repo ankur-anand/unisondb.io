@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Corruption-Proof Write-Ahead Log in Go</title>
+  <desc id="desc">Diagram showing the layered protections in the UnisonDB WAL: alignment, CRC32C, trailer marker, fsync with directory sync, and conservative recovery.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .frame { fill: #fff; stroke: #e2e8f0; stroke-width: 1.5px; }
+      .frame-strong { fill: #eff6ff; stroke: #2563eb; stroke-width: 1.6px; }
+      .title { font: 700 24px "Inter", "Segoe UI", Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 14px "Inter", "Segoe UI", Arial, sans-serif; fill: #475569; }
+      .label { font: 700 14px "Inter", "Segoe UI", Arial, sans-serif; fill: #0f172a; }
+      .body { font: 500 12px "Inter", "Segoe UI", Arial, sans-serif; fill: #334155; }
+      .note { font: 600 11px "Inter", "Segoe UI", Arial, sans-serif; fill: #1f2937; }
+      .muted { font: 500 11px "Inter", "Segoe UI", Arial, sans-serif; fill: #475569; }
+      .badge { fill: #2563eb; }
+      .badge-text { font: 700 12px "Inter", "Segoe UI", Arial, sans-serif; fill: #fff; }
+      .chip { fill: #dbeafe; stroke: #2563eb; stroke-width: 1px; }
+      .chip-text { font: 700 11px "Inter", "Segoe UI", Arial, sans-serif; fill: #1d4ed8; }
+      .header { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.2px; }
+      .data { fill: #e2e8f0; stroke: #cbd5e1; stroke-width: 1px; }
+      .trailer { fill: #fef3c7; stroke: #f59e0b; stroke-width: 1.2px; }
+      .padding { fill: #f1f5f9; stroke: #e2e8f0; stroke-width: 1px; }
+      .arrow { stroke: #2563eb; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .checkpoint { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.3px; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="720" rx="18" ry="18"/>
+  <rect class="frame" x="20" y="20" width="1160" height="680" rx="14" ry="14"/>
+
+  <text class="title" x="60" y="70">Corruption-Proof Write-Ahead Log (Go)</text>
+  <text class="subtitle" x="60" y="95">Layered defenses from append → storage → crash recovery</text>
+
+  <!-- Write Path Column -->
+  <g>
+    <text class="label" x="60" y="135">Write path safeguards</text>
+
+    <rect class="frame" x="60" y="150" width="260" height="70" rx="12" ry="12"/>
+    <circle class="badge" cx="80" cy="185" r="16"/>
+    <text class="badge-text" x="76" y="189">1</text>
+    <text class="label" x="110" y="178">Frame to 8 bytes</text>
+    <text class="body" x="110" y="198">Keep header + data inside a single aligned frame.</text>
+
+    <rect class="frame" x="60" y="230" width="260" height="70" rx="12" ry="12"/>
+    <circle class="badge" cx="80" cy="265" r="16"/>
+    <text class="badge-text" x="76" y="269">2</text>
+    <text class="label" x="110" y="258">CRC32C the payload</text>
+    <text class="body" x="110" y="278">Checksum header[4:] + data before writing.</text>
+
+    <rect class="frame" x="60" y="310" width="260" height="70" rx="12" ry="12"/>
+    <circle class="badge" cx="80" cy="345" r="16"/>
+    <text class="badge-text" x="76" y="349">3</text>
+    <text class="label" x="110" y="338">Trailer canary</text>
+    <text class="body" x="110" y="358">Append 0xDEADBEEFFEEDFACE as the commit marker.</text>
+
+    <rect class="frame" x="60" y="390" width="260" height="70" rx="12" ry="12"/>
+    <circle class="badge" cx="80" cy="425" r="16"/>
+    <text class="badge-text" x="76" y="429">4</text>
+    <text class="label" x="110" y="418">Pad &amp; count bytes</text>
+    <text class="body" x="110" y="438">Zero-pad to the aligned size and advance offsets.</text>
+
+    <rect class="frame" x="60" y="470" width="260" height="90" rx="12" ry="12"/>
+    <circle class="badge" cx="80" cy="515" r="16"/>
+    <text class="badge-text" x="76" y="519">5</text>
+    <text class="label" x="110" y="502">Durability calls</text>
+    <text class="body" x="110" y="522">msync/fsync segment; fsync directory after rotations</text>
+    <text class="body" x="110" y="542">so WAL files remain discoverable after crashes.</text>
+  </g>
+
+  <!-- Arrow to center -->
+  <path class="arrow" d="M325 330 C 360 330, 360 330, 360 330"/>
+
+  <!-- Central WAL Segment -->
+  <g>
+    <rect class="frame-strong" x="360" y="130" width="480" height="430" rx="16" ry="16"/>
+    <text class="label" x="380" y="160">Aligned WAL segment (mmap)</text>
+    <text class="body" x="380" y="180">Each record is a self-contained frame with guard rails.</text>
+
+    <!-- Record 1 -->
+    <rect class="frame" x="380" y="200" width="440" height="90" rx="10" ry="10"/>
+    <rect class="header" x="390" y="215" width="90" height="60" rx="6" ry="6"/>
+    <text class="note" x="400" y="238">CRC32C</text>
+    <text class="muted" x="400" y="256">length field</text>
+
+    <rect class="data" x="485" y="215" width="190" height="60" rx="6" ry="6"/>
+    <text class="note" x="495" y="238">Payload</text>
+    <text class="muted" x="495" y="256">user bytes</text>
+
+    <rect class="trailer" x="680" y="215" width="80" height="60" rx="6" ry="6"/>
+    <text class="note" x="690" y="238">Trailer</text>
+    <text class="muted" x="690" y="256">0xDEADBEEF…</text>
+
+    <rect class="padding" x="765" y="215" width="45" height="60" rx="6" ry="6"/>
+    <text class="muted" x="770" y="248">pad</text>
+    <text class="chip-text" x="790" y="274">8B</text>
+
+    <!-- Record 2 -->
+    <rect class="frame" x="380" y="310" width="440" height="90" rx="10" ry="10"/>
+    <rect class="header" x="390" y="325" width="90" height="60" rx="6" ry="6"/>
+    <rect class="data" x="485" y="325" width="160" height="60" rx="6" ry="6"/>
+    <rect class="trailer" x="650" y="325" width="80" height="60" rx="6" ry="6"/>
+    <rect class="padding" x="735" y="325" width="85" height="60" rx="6" ry="6"/>
+    <text class="note" x="392" y="348">Header</text>
+    <text class="note" x="492" y="348">Data</text>
+    <text class="note" x="662" y="348">Trailer</text>
+    <text class="muted" x="742" y="348">Aligned frame</text>
+
+    <!-- Record 3 -->
+    <rect class="frame" x="380" y="420" width="440" height="90" rx="10" ry="10"/>
+    <rect class="header" x="390" y="435" width="90" height="60" rx="6" ry="6"/>
+    <rect class="data" x="485" y="435" width="140" height="60" rx="6" ry="6"/>
+    <rect class="trailer" x="630" y="435" width="80" height="60" rx="6" ry="6"/>
+    <rect class="padding" x="715" y="435" width="95" height="60" rx="6" ry="6"/>
+    <text class="muted" x="388" y="504">next offset →</text>
+
+    <!-- Checks inside segment -->
+    <rect class="chip" x="520" y="520" width="120" height="28" rx="14" ry="14"/>
+    <text class="chip-text" x="540" y="538">MSync / FSync</text>
+    <rect class="chip" x="655" y="520" width="150" height="28" rx="14" ry="14"/>
+    <text class="chip-text" x="670" y="538">Directory Sync on rotation</text>
+  </g>
+
+  <!-- Arrow to recovery -->
+  <path class="arrow" d="M840 330 C 880 330, 880 330, 900 330"/>
+
+  <!-- Recovery Column -->
+  <g>
+    <text class="label" x="910" y="135">Crash recovery</text>
+
+    <rect class="frame" x="910" y="150" width="240" height="80" rx="12" ry="12"/>
+    <circle class="badge" cx="930" cy="190" r="16"/>
+    <text class="badge-text" x="926" y="194">A</text>
+    <text class="label" x="960" y="180">Stop at first gap</text>
+    <text class="body" x="960" y="200">Recovery halts when a frame is incomplete.</text>
+
+    <rect class="frame" x="910" y="240" width="240" height="80" rx="12" ry="12"/>
+    <circle class="badge" cx="930" cy="280" r="16"/>
+    <text class="badge-text" x="925" y="284">B</text>
+    <text class="label" x="960" y="270">Validate guard</text>
+    <text class="body" x="960" y="290">Trailer marker proves the write finished.</text>
+
+    <rect class="frame" x="910" y="330" width="240" height="80" rx="12" ry="12"/>
+    <circle class="badge" cx="930" cy="370" r="16"/>
+    <text class="badge-text" x="925" y="374">C</text>
+    <text class="label" x="960" y="360">Recompute CRC32C</text>
+    <text class="body" x="960" y="380">Sealed segments double-check for bit rot.</text>
+
+    <rect class="frame" x="910" y="420" width="240" height="90" rx="12" ry="12"/>
+    <circle class="badge" cx="930" cy="465" r="16"/>
+    <text class="badge-text" x="925" y="469">D</text>
+    <text class="label" x="960" y="448">Directory survives</text>
+    <text class="body" x="960" y="468">Directory fsync keeps rotated segments discoverable</text>
+    <text class="body" x="960" y="488">so replay sees every committed record.</text>
+  </g>
+
+  <!-- Summary strip -->
+  <rect class="checkpoint" x="60" y="590" width="1090" height="70" rx="12" ry="12"/>
+  <text class="label" x="80" y="620">Invariant guardrails</text>
+  <text class="body" x="80" y="642">Aligned frames prevent torn headers · CRC32C detects flipped bits · Trailer canary differentiates written vs. finished · msync/fsync + directory sync make segments durable · Recovery replays only contiguous, proven-good records.</text>
+</svg>

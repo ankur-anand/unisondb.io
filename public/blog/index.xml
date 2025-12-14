@@ -6,6 +6,14 @@
     <description>Recent content in Blog Posts on UnisonDB</description>
     <generator>Hugo</generator>
     <language>en-US</language>
+    <lastBuildDate>Sun, 14 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Corruption-Proof Write-Ahead Log in Go</title>
+      <link>http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/</link>
+      <pubDate>Sun, 14 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/</guid>
+      <description>Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.</description>
+    </item>
   </channel>
 </rss>

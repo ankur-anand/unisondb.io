@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="Building a Corruption-Proof Write-Ahead Log in Go">
+  <meta property="og:description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-12-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-12-14T00:00:00+00:00">
+    <meta property="og:image" content="http://localhost:1313/images/wal_fs.png">
+
+
+  <meta itemprop="name" content="Building a Corruption-Proof Write-Ahead Log in Go">
+  <meta itemprop="description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
+  <meta itemprop="datePublished" content="2025-12-14T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-12-14T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2190">
+  <meta itemprop="image" content="http://localhost:1313/images/wal_fs.png">
+  <meta itemprop="keywords" content="Go,Golang,Write-Ahead Log,WAL,Database Engineering,Data Reliability,System Programming,UnisonDB,fsync,mmap">
+
+<title>Building a Corruption-Proof Write-Ahead Log in Go | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.93e86dd413f38dd334dc7a7d7414f71e1712f4b8f8737105e6f7e1abcb1b739a.js" integrity="sha256-k&#43;ht1BPzjdM03Hp9dBT3HhcS9Lj4c3EF5vfhq8sbc5o=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="Go, Golang, Write-Ahead Log, WAL, Database Engineering, Data Reliability, System Programming, UnisonDB, fsync, mmap">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/wal_fs.png">
+  <meta name="twitter:title" content="Building a Corruption-Proof Write-Ahead Log in Go">
+  <meta name="twitter:description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-blog">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+        
+  <ul>
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+        
+  <ul>
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+
+
+
+
+  <li class="book-section-flat"  class="book-section-collapse" >
+    
+  
+  
+
+  
+    <input type="checkbox" id="section-9a540b355eab634b7d2d40f68ad2c4e6" class="toggle" checked />
+    <label for="section-9a540b355eab634b7d2d40f68ad2c4e6" class="flex">
+      <a role="button" class="">
+        Blog Posts</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+    
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/blog/building-corruption-proof-write-ahead-log-in-go/" class="active">
+      Building a Corruption-Proof Write-Ahead Log in Go</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+  </li>
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener" class="book-github-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </svg>
+      GitHub
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener" class="book-discussions-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Discussions
+    </a>
+  </li>
+</ul>
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Building a Corruption-Proof Write-Ahead Log in Go</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-problem">The Problem</a></li>
+        <li><a href="#the-stakes-streaming-replication">The Stakes: Streaming Replication</a></li>
+        <li><a href="#the-record-format">The Record Format</a></li>
+        <li><a href="#layer-1-crc32-castagnoli">Layer 1: CRC32 (Castagnoli)</a></li>
+        <li><a href="#layer-2-the-trailer-canary">Layer 2: The Trailer Canary</a>
+          <ul>
+            <li><a href="#why-the-trailer">Why the Trailer?</a></li>
+            <li><a href="#why-this-specific-value">Why This Specific Value?</a></li>
+          </ul>
+        </li>
+        <li><a href="#layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">Layer 3: WAL Alignment: What It Guarantees (and What It Doesn’t)</a>
+          <ul>
+            <li><a href="#the-real-problem-torn-headers-not-torn-payloads">The Real Problem: Torn Headers, Not Torn Payloads</a></li>
+            <li><a href="#what-alignment-does-not-guarantee">What Alignment Does Not Guarantee</a></li>
+          </ul>
+        </li>
+        <li><a href="#each-layer-protects-a-different-invariant">Each layer protects a different invariant</a></li>
+        <li><a href="#layer-4-directory-sync">Layer 4: Directory Sync</a>
+          <ul>
+            <li><a href="#why-directory-sync">Why Directory Sync?</a></li>
+          </ul>
+        </li>
+        <li><a href="#layer-5-conservative-recovery">Layer 5: Conservative Recovery</a></li>
+        <li><a href="#write">Write</a></li>
+        <li><a href="#read">Read</a></li>
+        <li><a href="#lessons-learned">Lessons Learned</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#appendix-some-discussions">Appendix: Some Discussions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>Building a Corruption-Proof Write-Ahead Log in Go</h1>
+
+  
+  <div class="book-post-header-meta" style="margin: 1rem 0 2rem 0; padding-bottom: 1.5rem; border-bottom: 2px solid var(--gray-200, #e5e7eb); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; color: var(--gray-600, #6b7280);">
+    
+    <div class="flex align-center text-small book-post-date" style="display: flex; align-items: center; gap: 0.5rem;">
+      <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+      <time datetime="2025-12-14">
+        December 14, 2025
+      </time>
+    </div>
+    
+
+    
+  </div>
+
+  
+  
+  <div class="book-post-summary" style="margin: 0 0 2rem 0; padding: 1.25rem 1.5rem; background: var(--gray-100, #f3f4f6); border-left: 4px solid var(--color-link, #0055bb); border-radius: 0.25rem; font-style: italic; color: var(--gray-700, #374151); line-height: 1.6;">
+    Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.
+  </div>
+  
+
+  
+  <div class="book-post-content markdown-inner">
+    <img src="/images/wal_fs.svg" alt="Diagram of UnisonDB's corruption-proof WAL path" />
+<h2 id="the-problem">The Problem<a class="anchor" href="#the-problem">#</a></h2>
+<p>Every database promises durability. Write your data, get an acknowledgment, sleep well. But what happens between the <a href="https://man7.org/linux/man-pages/man2/write.2.html" target="_blank" rel="noopener noreferrer"><code>write()</code></a>
+ syscall (or a memory-mapped store) and the moment electrons finally settle on persistent media?</p>
+<p>There is a long, leaky pipeline — and every layer can betray you. A lot can go wrong:</p>
+<ol>
+<li><strong>Power failure mid-write</strong> — The system crashes while writing, so only part of your data reaches disk.</li>
+<li><strong>Bit flips</strong> — Hardware issues or random errors can silently change stored data.</li>
+<li><strong>False success signals</strong> — The operating system may report success even though data is still in memory.</li>
+<li><strong>Filesystem limits</strong> — Journaling keeps files intact, not your data’s meaning. WAL-on-WAL is not correctness — it’s wishful thinking.</li>
+<li><strong>Torn writes</strong> — A single 4KB write can span multiple sectors, and only some of them may commit.</li>
+</ol>
+<blockquote class='book-hint '>
+<p>The purpose of a <a href="https://en.wikipedia.org/wiki/Write-ahead_logging" target="_blank" rel="noopener noreferrer">Write-ahead logging</a>
+ is not just to record writes in order, but to make correctness provable. After a crash, the database treats the log as evidence, replaying only records that can be proven complete and correct.</p>
+</blockquote><h2 id="the-stakes-streaming-replication">The Stakes: Streaming Replication<a class="anchor" href="#the-stakes-streaming-replication">#</a></h2>
+<p><a href="https://unisondb.io" target="_blank" rel="noopener noreferrer">UnisonDB</a>
+ WAL isn&rsquo;t just a recovery mechanism—it&rsquo;s the <strong>primary source for replication</strong>. Followers continuously read from the leader&rsquo;s WAL segments, applying records as they arrive.</p>
+<pre tabindex="0"><code>┌─────────┐     WAL Segments      ┌──────────┐
+│ Leader  │ ──────────────────▶   │ Follower │
+│         │   (streaming read)    │          │
+└─────────┘                       └──────────┘</code></pre><p>This means:</p>
+<ul>
+<li><strong>Corruption propagates</strong> - A bad record on the leader poisons followers</li>
+</ul>
+<p>The WAL is our single source of truth. It had better be correct.</p>
+<hr>
+<h2 id="the-record-format">The Record Format<a class="anchor" href="#the-record-format">#</a></h2>
+<p>Every record in our WAL has this structure:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────────────────┐
+│                         WAL Record                               │
+├──────────┬──────────┬─────────────────────┬─────────────────────┤
+│  CRC32   │  Length  │        Data         │       Trailer       │
+│ 4 bytes  │ 4 bytes  │     N bytes         │      8 bytes        │
+├──────────┴──────────┴─────────────────────┴─────────────────────┤
+│                    Padded to 8-byte boundary                     │
+└─────────────────────────────────────────────────────────────────┘</code></pre><h2 id="layer-1-crc32-castagnoli">Layer 1: CRC32 (Castagnoli)<a class="anchor" href="#layer-1-crc32-castagnoli">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// CRC covers everything except itself</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">crc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">Checksum</span>(<span style="color:#a6e22e">buf</span>[<span style="color:#ae81ff">4</span>:], <span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">MakeTable</span>(<span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">Castagnoli</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint32</span>(<span style="color:#a6e22e">buf</span>[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">4</span>], <span style="color:#a6e22e">crc</span>)</span></span></code></pre></div><p>CRC catches:</p>
+<ul>
+<li>Random bit flips</li>
+<li>Sector read errors</li>
+<li>Truncated data</li>
+</ul>
+<p>CRC doesn&rsquo;t catch:</p>
+<ul>
+<li><strong>Incomplete writes</strong> - If we crash mid-write, the CRC might be valid for the partial data</li>
+</ul>
+<blockquote class='book-hint '>
+<p>Garbage data is worse than missing data. Missing data can be retried or ignored; garbage data looks valid and gets applied. Once that happens, corruption spreads.</p>
+</blockquote><hr>
+<h2 id="layer-2-the-trailer-canary">Layer 2: The Trailer Canary<a class="anchor" href="#layer-2-the-trailer-canary">#</a></h2>
+<p>This is where <code>0xDEADBEEFFEEDFACE</code> enters the story.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">recordTrailer</span> <span style="color:#66d9ef">uint64</span> = <span style="color:#ae81ff">0xDEADBEEFFEEDFACE</span></span></span></code></pre></div><p>Every record ends with this 8-byte magic value. During recovery, we verify it.</p>
+<blockquote class='book-hint '>
+<p>A trailer marker makes correctness provable by separating “written” from “finished.”</p>
+</blockquote><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">seg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Segment</span>) <span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">offset</span> <span style="color:#66d9ef">int64</span>) ([]<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">RecordPosition</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// validating  the trailer before reading data</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// we are ensuring no oob access even if length is corrupted.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">trailerOffset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">recordHeaderSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">dataSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">end</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">trailerOffset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">recordTrailerMarkerSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">end</span> &gt; <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapSize</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrIncompleteChunk</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">next</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h3 id="why-the-trailer">Why the Trailer?<a class="anchor" href="#why-the-trailer">#</a></h3>
+<p>Consider this crash scenario:</p>
+<pre tabindex="0"><code>Write sequence:
+1. Write CRC (4 bytes)     - persisted
+2. Write Length (4 bytes)  - persisted
+3. Write Data (N bytes)    - CRASH - only 50% written
+4. Write Trailer           - never reached</code></pre><p>Without the trailer, recovery sees:</p>
+<ul>
+<li>Valid CRC (for partial data? unlikely but possible)</li>
+<li>Valid length field</li>
+<li>Garbage data</li>
+</ul>
+<p>With the trailer, recovery sees:</p>
+<ul>
+<li>Trailer missing or wrong → <strong>incomplete write, ignore this record</strong></li>
+</ul>
+<p>This pattern was inspired by a real etcd bug (<a href="https://github.com/etcd-io/etcd/issues/6191" target="_blank" rel="noopener noreferrer">#6191</a>
+) where torn writes corrupted the WAL. The trailer acts as a &ldquo;commit marker&rdquo; for each record.</p>
+<h3 id="why-this-specific-value">Why This Specific Value?<a class="anchor" href="#why-this-specific-value">#</a></h3>
+<p><a href="https://en.wikipedia.org/wiki/Deadbeef" target="_blank" rel="noopener noreferrer"><code>0xDEADBEEFFEEDFACE</code></a>
+ is:</p>
+<ul>
+<li>Unlikely to appear in real data (it&rsquo;s a known debug pattern)</li>
+<li>Easy to spot in hex dumps</li>
+</ul>
+<hr>
+<h2 id="layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">Layer 3: WAL Alignment: What It Guarantees (and What It Doesn’t)<a class="anchor" href="#layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">#</a></h2>
+<p>UnisonDB aligns every WAL record to an <strong>8-byte boundary</strong>. The goal isn’t to “make disk writes atomic”.
+The goal is to make <strong>WAL parsing and recovery safe</strong>.</p>
+<p>The dangerous failure mode isn’t a torn payload (CRC can catch that).
+It’s a torn or corrupted <strong>header</strong>:</p>
+<h3 id="the-real-problem-torn-headers-not-torn-payloads">The Real Problem: Torn Headers, Not Torn Payloads<a class="anchor" href="#the-real-problem-torn-headers-not-torn-payloads">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>[ CRC32 (4 bytes) | Length (4 bytes) ]</span></span></code></pre></div><p>This 8-byte header controls how the rest of the log is parsed:</p>
+<ul>
+<li>how many bytes to read</li>
+<li>where the next record begins</li>
+<li>when recovery should stop</li>
+</ul>
+<p>If this header is partially written or misinterpreted, recovery can:</p>
+<ul>
+<li>read past the end of the file</li>
+<li>allocate unbounded memory</li>
+<li>crash before corruption is detected</li>
+</ul>
+<p>That is catastrophic failure. So the core question is:</p>
+<blockquote class='book-hint '>
+<p>How do we ensure WAL control metadata is either read correctly or rejected—never misinterpreted?</p>
+</blockquote><p>The Invariant Enforced.</p>
+<blockquote class='book-hint '>
+<p>Every WAL record starts at an offset divisible by 8.</p>
+</blockquote><p>This is implemented directly in the write path:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">alignUp</span>(<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">int64</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">n</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>) <span style="color:#f92672">&amp;</span> ^<span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Every record’s total size (header + payload + trailer) is rounded up using alignUp, and the write offset is advanced by that aligned size. As a result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">writeOffset</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span></span></span></code></pre></div><p><strong>What 8-Byte Alignment Guarantees</strong></p>
+<ol>
+<li>
+<p><strong>Headers Never Straddle Physical Boundaries</strong>
+Since 512 and 4096 are multiples of 8, an 8-byte header starting at an 8-byte offset <strong>cannot</strong> cross a sector or page boundary. It effectively lives inside a single atomic write unit. This makes &ldquo;torn headers&rdquo; mathematically impossible.</p>
+</li>
+<li>
+<p><strong>Corruption is Detectable, Not Fatal</strong>
+Without alignment, a torn header introduces &ldquo;phantom&rdquo; valid records—random bytes interpreted as a massive length field, causing OOMs or wild seeks. With alignment, a header is either correct or obviously invalid (failed CRC). We never interpret garbage metadata as valid control instructions.</p>
+</li>
+<li>
+<p><strong>Safe Termination</strong>
+Recovery becomes a simple state machine: read until the first error, then stop. Because the <em>structure</em> of the log remains intact, the reader never crashes while trying to determine where the log ends. It makes recovery deterministic.</p>
+</li>
+</ol>
+<h3 id="what-alignment-does-not-guarantee">What Alignment Does Not Guarantee<a class="anchor" href="#what-alignment-does-not-guarantee">#</a></h3>
+<p>8-byte alignment does not:</p>
+<ul>
+<li>guarantee atomic disk writes</li>
+<li>make payload writes safe</li>
+<li>replace fsync / msync</li>
+<li>eliminate the need for trailers or CRCs</li>
+</ul>
+<p>Alignment protects interpretation, not persistence. Without alignment, a corrupted length field can crash recovery before corruption is detected. With alignment, corruption is contained:</p>
+<ul>
+<li>recovery either proceeds correctly</li>
+<li>or stops safely</li>
+</ul>
+<blockquote class='book-hint '>
+<p>This does not guarantee atomicity—but it dramatically reduces risk.</p>
+</blockquote><h2 id="each-layer-protects-a-different-invariant">Each layer protects a different invariant<a class="anchor" href="#each-layer-protects-a-different-invariant">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Layer</th>
+          <th>Protects Against</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Alignment</td>
+          <td>Partially written headers and invalid length fields</td>
+      </tr>
+      <tr>
+          <td>CRC32</td>
+          <td>Data corruption from bit flips or torn payload reads</td>
+      </tr>
+      <tr>
+          <td>Trailer</td>
+          <td>Records that were not fully written before a crash</td>
+      </tr>
+  </tbody>
+</table>
+<p>Together, they ensure that:</p>
+<ul>
+<li>We never read beyond intended bounds</li>
+<li>We can detect corruption</li>
+<li>We can safely stop at the first incomplete record</li>
+</ul>
+<hr>
+<h2 id="layer-4-directory-sync">Layer 4: Directory Sync<a class="anchor" href="#layer-4-directory-sync">#</a></h2>
+<h3 id="why-directory-sync">Why Directory Sync?<a class="anchor" href="#why-directory-sync">#</a></h3>
+<p>On Linux, calling <a href="https://man7.org/linux/man-pages/man2/fsync.2.html" target="_blank" rel="noopener noreferrer">fsync()</a>
+ on a file only guarantees that the file’s data and metadata are durable. It does not guarantee that the filesystem has persisted the directory entry that makes the file visible.</p>
+<p>As the Linux manual explicitly warns:</p>
+<blockquote class='book-hint '>
+<p>Calling fsync() does not necessarily ensure that the entry in the directory containing the file has also reached disk. For that, an explicit fsync() on a file descriptor for the directory is also needed.</p>
+</blockquote><p>If the system crashes at the wrong moment:</p>
+<ul>
+<li>The WAL segment was written</li>
+<li>The file itself was fsync’d</li>
+<li>But the directory update was never persisted</li>
+</ul>
+<p>Consider this crash scenario without directory sync:</p>
+<pre tabindex="0"><code>1. Create new segment file     - file exists in memory
+2. Write segment header        - data in page cache
+3. fsync segment file          - data on disk
+4. [CRASH]
+5. Recovery: &#34;where&#39;s segment 3?&#34; - directory entry never persisted!</code></pre><p>After recovery, the file simply does not exist.</p>
+<p>This is especially dangerous for systems with automatic WAL segment rotation, where new segment files are created continuously as the log grows. Losing a segment file during rotation means losing part of the log — even though all writes were “successful”</p>
+<p>With directory sync:</p>
+<pre tabindex="0"><code>1. Create new segment file     - file exists in memory
+2. Write segment header        - data in page cache
+3. fsync segment file          - data on disk
+4. fsync directory             - directory entry on disk
+5. [CRASH]
+6. Recovery: segment 3 exists and is valid</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DirectorySyncer</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">dirFd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DirectorySyncer</span>) <span style="color:#a6e22e">Sync</span>() <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">dirFd</span>.<span style="color:#a6e22e">Sync</span>()  <span style="color:#75715e">// fsync on directory fd</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>By calling fsync() on the directory:</p>
+<ul>
+<li>The filesystem is forced to persist directory entries</li>
+<li>Newly created segment files are guaranteed to exist after a crash</li>
+<li>Segment rotation becomes crash-safe</li>
+</ul>
+<p>When we use directory sync</p>
+<p>We only need this at structural boundaries, such as:</p>
+<ul>
+<li>Creating a new WAL segment</li>
+<li>Finalizing segment rotation</li>
+<li>Renaming or deleting segment files</li>
+</ul>
+<p>This keeps the hot write path fast while ensuring the WAL layout itself is durable.</p>
+<hr>
+<h2 id="layer-5-conservative-recovery">Layer 5: Conservative Recovery<a class="anchor" href="#layer-5-conservative-recovery">#</a></h2>
+<p>Our recovery philosophy: <strong>when in doubt, stop</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WALog</span>) <span style="color:#a6e22e">recoverSegments</span>() <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">segments</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">listSegmentFiles</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">dir</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">Sort</span>(<span style="color:#a6e22e">segments</span>)  <span style="color:#75715e">// By segment ID</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">seg</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">segments</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">seg</span>.recover(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Don&#39;t try to be clever - stop at first corruption</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#e6db74">&#34;segment corrupt, truncating&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;segment&#34;</span>, <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">ID</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">truncateAtLastGoodRecord</span>()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>We don&rsquo;t try to skip corrupted records and continue. Why?</p>
+<ol>
+<li><strong>Ordering matters</strong> - A gap in the log might hide a critical transaction</li>
+<li><strong>Corruption often spreads</strong> - If one record is bad, neighbors might be too</li>
+<li><strong>Raft requires contiguity</strong> - Log indices must be sequential</li>
+</ol>
+<hr>
+<h2 id="write">Write<a class="anchor" href="#write">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">seg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Segment</span>) <span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">logIndex</span> <span style="color:#66d9ef">uint64</span>) (<span style="color:#a6e22e">RecordPosition</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">closed</span>.<span style="color:#a6e22e">Load</span>() <span style="color:#f92672">||</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">Load</span>() <span style="color:#f92672">!=</span> <span style="color:#a6e22e">StateOpen</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrClosed</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">writeMu</span>.<span style="color:#a6e22e">Lock</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">writeMu</span>.<span style="color:#a6e22e">Unlock</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">flags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">Uint32</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">40</span>:<span style="color:#ae81ff">44</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">IsSealed</span>(<span style="color:#a6e22e">flags</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrSegmentSealed</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">offset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">writeOffset</span>.<span style="color:#a6e22e">Load</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">writeFirstIndexEntry</span>(<span style="color:#a6e22e">logIndex</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">headerSize</span> <span style="color:#f92672">:=</span> int64(<span style="color:#a6e22e">recordHeaderSize</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dataSize</span> <span style="color:#f92672">:=</span> int64(len(<span style="color:#a6e22e">data</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">trailerSize</span> <span style="color:#f92672">:=</span> int64(<span style="color:#a6e22e">recordTrailerMarkerSize</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">rawSize</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">headerSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">dataSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">trailerSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">entrySize</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">alignUp</span>(<span style="color:#a6e22e">rawSize</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">entrySize</span> &gt; <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapSize</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;write exceeds Segment size&#34;</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint32</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">header</span>[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">8</span>], uint32(len(<span style="color:#a6e22e">data</span>)))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">crc32Checksum</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">header</span>[<span style="color:#ae81ff">4</span>:], <span style="color:#a6e22e">data</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint32</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">header</span>[:<span style="color:#ae81ff">4</span>], <span style="color:#a6e22e">sum</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	copy(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">offset</span>:], <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">header</span>[:])
+</span></span><span style="display:flex;"><span>	copy(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">recordHeaderSize</span>:], <span style="color:#a6e22e">data</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">canaryOffset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">headerSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">dataSize</span>
+</span></span><span style="display:flex;"><span>	copy(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">canaryOffset</span>:], <span style="color:#a6e22e">trailerMarker</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">paddingStart</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rawSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">paddingEnd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">entrySize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// ensuring alignment to 8 bytes</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">paddingStart</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">paddingEnd</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">newOffset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">entrySize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">writeOffset</span>.<span style="color:#a6e22e">Store</span>(<span style="color:#a6e22e">newOffset</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint32</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">24</span>:<span style="color:#ae81ff">32</span>], uint32(<span style="color:#a6e22e">newOffset</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">prevCount</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">Uint64</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">32</span>:<span style="color:#ae81ff">40</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint64</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">32</span>:<span style="color:#ae81ff">40</span>], <span style="color:#a6e22e">prevCount</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint64</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">16</span>:<span style="color:#ae81ff">24</span>], uint64(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>()))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">crc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">Checksum</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">56</span>], <span style="color:#a6e22e">crcTable</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">PutUint32</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#ae81ff">56</span>:<span style="color:#ae81ff">60</span>], <span style="color:#a6e22e">crc</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">appendIndexEntry</span>(<span style="color:#a6e22e">offset</span>, uint32(len(<span style="color:#a6e22e">data</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// MSync if option is set</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">syncOption</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">MsyncOnWrite</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>.<span style="color:#a6e22e">Flush</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;mmap flush error after write: %w&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">RecordPosition</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">SegmentID</span>: <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">id</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Offset</span>:    <span style="color:#a6e22e">offset</span>,
+</span></span><span style="display:flex;"><span>	}, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="read">Read<a class="anchor" href="#read">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">seg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Segment</span>) <span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">offset</span> <span style="color:#66d9ef">int64</span>) ([]<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">RecordPosition</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">closed</span>.<span style="color:#a6e22e">Load</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrClosed</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">recordHeaderSize</span> &gt; <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapSize</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">EOF</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">header</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">offset</span> : <span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">recordHeaderSize</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">length</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">Uint32</span>(<span style="color:#a6e22e">header</span>[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">8</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dataSize</span> <span style="color:#f92672">:=</span> int64(<span style="color:#a6e22e">length</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">rawSize</span> <span style="color:#f92672">:=</span> int64(<span style="color:#a6e22e">recordHeaderSize</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">dataSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">recordTrailerMarkerSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">entrySize</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">alignUp</span>(<span style="color:#a6e22e">rawSize</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">length</span> &gt; uint32(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">WriteOffset</span>()<span style="color:#f92672">-</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">-</span><span style="color:#a6e22e">recordHeaderSize</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrCorruptHeader</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">entrySize</span> &gt; <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">WriteOffset</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">EOF</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// validating  the trailer before reading data</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// we are ensuring no oob access even if length is corrupted.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">trailerOffset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">recordHeaderSize</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">dataSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">end</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">trailerOffset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">recordTrailerMarkerSize</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">end</span> &gt; <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapSize</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrIncompleteChunk</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// previously we were doing byte which did show in pprof as runtime.memequal</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// switching to uint64 comparison removed it altogether.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">word</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">Uint64</span>(<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">trailerOffset</span>:<span style="color:#a6e22e">end</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// validating trailer marker to detect torn/incomplete writes.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">word</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">trailerWord</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrIncompleteChunk</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">mmapData</span>[<span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">recordHeaderSize</span> : <span style="color:#a6e22e">offset</span><span style="color:#f92672">+</span><span style="color:#a6e22e">recordHeaderSize</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dataSize</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// sealed segments are immutable and may have been recovered</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// from disk after a crash or shutdown. CRC validation ensures that data</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// persisted to disk is still intact and wasn&#39;t partially written or corrupted.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// for active segment, we do one validation at start if not sealed, else it&#39;s in the</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// same process memory, so having corruption of the same byte is very unlikely, until</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// done from some external forces.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// doing this in the hot-path is CPU intensive and most of the read are towards the tail.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">isSealed</span>.<span style="color:#a6e22e">Load</span>() <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">inMemorySealed</span>.<span style="color:#a6e22e">Load</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">savedSum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>.<span style="color:#a6e22e">Uint32</span>(<span style="color:#a6e22e">header</span>[:<span style="color:#ae81ff">4</span>])
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">computedSum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">crc32Checksum</span>(<span style="color:#a6e22e">header</span>[<span style="color:#ae81ff">4</span>:], <span style="color:#a6e22e">data</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">savedSum</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">computedSum</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">NilRecordPosition</span>, <span style="color:#a6e22e">ErrInvalidCRC</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">next</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">RecordPosition</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">SegmentID</span>: <span style="color:#a6e22e">seg</span>.<span style="color:#a6e22e">id</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Offset</span>:    <span style="color:#a6e22e">offset</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">entrySize</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">next</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><hr>
+<h2 id="lessons-learned">Lessons Learned<a class="anchor" href="#lessons-learned">#</a></h2>
+<ol>
+<li><strong>CRC alone isn&rsquo;t enough</strong> - You need to detect incomplete writes too</li>
+<li><strong>fsync isn&rsquo;t enough</strong> - You need directory sync for metadata</li>
+<li><strong>mmap is tricky</strong> - msync semantics vary by OS; always fsync the fd</li>
+<li><strong>Alignment matters</strong> - 8-byte alignment reduces torn write risk</li>
+<li><strong>Be conservative in recovery</strong> - Stop at first corruption, don&rsquo;t guess</li>
+<li><strong>Test failure modes</strong> - If you haven&rsquo;t tested it, it doesn&rsquo;t work</li>
+</ol>
+<hr>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion">#</a></h2>
+<p>A WAL is deceptively simple: append bytes, sync, done. The complexity hides in the failure modes:</p>
+<ul>
+<li>What if the write is torn?</li>
+<li>What if the sync lies?</li>
+<li>What if a bit flips?</li>
+<li>What if the directory entry isn&rsquo;t persisted?</li>
+</ul>
+<p>Each layer of our design—CRC, trailer, alignment, header checksum, directory sync, conservative recovery—addresses a specific failure we&rsquo;ve either experienced or studied in others&rsquo; post-mortems.</p>
+<p>The <code>0xDEADBEEFFEEDFACE</code> trailer is a perfect metaphor: it looks like a joke, but it&rsquo;s deadly serious. In distributed systems, the boundary between working and broken is measured in these small details.</p>
+<p>Build your WAL like you don&rsquo;t trust anything—because you shouldn&rsquo;t.</p>
+<p>Github: <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">https://github.com/ankur-anand/unisondb</a>
+</p>
+<hr>
+<h2 id="appendix-some-discussions">Appendix: Some Discussions<a class="anchor" href="#appendix-some-discussions">#</a></h2>
+<ol>
+<li><a href="https://stackoverflow.com/questions/2009063/are-disk-sector-writes-atomic" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/2009063/are-disk-sector-writes-atomic</a>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Solid-state_drive" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Solid-state_drive</a>
+</li>
+<li><a href="https://news.ycombinator.com/item?id=36570264" target="_blank" rel="noopener noreferrer">HN Discussion: Every HDD since the 1980s has guaranteed atomic sector writes</a>
+ - LMDB Author has posted some interesting insights on this.</li>
+</ol>
+<hr>
+<p><em>The UnisonDB WAL is open source. Star us on GitHub if this saved you from learning these lessons the hard way.</em></p>
+
+  </div>
+
+  
+  
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/blog/building-corruption-proof-write-ahead-log-in-go.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-problem">The Problem</a></li>
+        <li><a href="#the-stakes-streaming-replication">The Stakes: Streaming Replication</a></li>
+        <li><a href="#the-record-format">The Record Format</a></li>
+        <li><a href="#layer-1-crc32-castagnoli">Layer 1: CRC32 (Castagnoli)</a></li>
+        <li><a href="#layer-2-the-trailer-canary">Layer 2: The Trailer Canary</a>
+          <ul>
+            <li><a href="#why-the-trailer">Why the Trailer?</a></li>
+            <li><a href="#why-this-specific-value">Why This Specific Value?</a></li>
+          </ul>
+        </li>
+        <li><a href="#layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">Layer 3: WAL Alignment: What It Guarantees (and What It Doesn’t)</a>
+          <ul>
+            <li><a href="#the-real-problem-torn-headers-not-torn-payloads">The Real Problem: Torn Headers, Not Torn Payloads</a></li>
+            <li><a href="#what-alignment-does-not-guarantee">What Alignment Does Not Guarantee</a></li>
+          </ul>
+        </li>
+        <li><a href="#each-layer-protects-a-different-invariant">Each layer protects a different invariant</a></li>
+        <li><a href="#layer-4-directory-sync">Layer 4: Directory Sync</a>
+          <ul>
+            <li><a href="#why-directory-sync">Why Directory Sync?</a></li>
+          </ul>
+        </li>
+        <li><a href="#layer-5-conservative-recovery">Layer 5: Conservative Recovery</a></li>
+        <li><a href="#write">Write</a></li>
+        <li><a href="#read">Read</a></li>
+        <li><a href="#lessons-learned">Lessons Learned</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#appendix-some-discussions">Appendix: Some Discussions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

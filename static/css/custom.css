@@ -1,0 +1,468 @@
+/* ========================================
+   UnisonDB Documentation Custom Styles
+   ======================================== */
+
+/* Typography Enhancements */
+.markdown {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 2em;
+  margin-bottom: 0.8em;
+  line-height: 1.3;
+}
+
+.markdown h1 {
+  font-size: 2.25em;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5em;
+}
+
+.markdown h2 {
+  font-size: 1.75em;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 0.3em;
+}
+
+.markdown h3 {
+  font-size: 1.4em;
+}
+
+.markdown p {
+  margin-bottom: 1em;
+}
+
+/* Code Block Enhancements */
+.markdown pre {
+  background: #1e293b !important;
+  border-radius: 8px;
+  padding: 1.25em;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 1.5em 0;
+  border: 1px solid #334155;
+}
+
+.markdown code {
+  background: #f1f5f9;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  color: #e11d48;
+}
+
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+  color: #e2e8f0;
+  font-size: 0.875em;
+}
+
+/* Link Enhancements */
+.markdown a {
+  color: #2563eb;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.markdown a:hover {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+/* Table Enhancements */
+.markdown table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 2em 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.markdown table thead {
+  background: #f8fafc;
+}
+
+.markdown table th {
+  padding: 0.75em 1em;
+  text-align: left;
+  font-weight: 600;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.markdown table td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.markdown table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.markdown table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Blockquote Enhancements */
+.markdown blockquote {
+  border-left: 4px solid #3b82f6;
+  background: #eff6ff;
+  padding: 1em 1.5em;
+  margin: 1.5em 0;
+  border-radius: 0 6px 6px 0;
+  color: #1e293b;
+}
+
+.markdown blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* List Enhancements */
+.markdown ul,
+.markdown ol {
+  margin-bottom: 1.5em;
+  padding-left: 1.75em;
+}
+
+.markdown li {
+  margin-bottom: 0.5em;
+  line-height: 1.7;
+}
+
+.markdown ul ul,
+.markdown ol ul,
+.markdown ul ol,
+.markdown ol ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Navigation Enhancements */
+.book-menu nav ul li a {
+  transition: all 0.2s ease;
+  padding: 0.5em 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.book-menu nav ul li a:hover {
+  background: #f1f5f9;
+  padding-left: 0.5em;
+}
+
+.book-menu nav ul li a.active {
+  color: #2563eb;
+  font-weight: 600;
+  background: #eff6ff;
+  padding-left: 0.5em;
+}
+
+/* GitHub & Discussion Links Styling */
+.book-github-link,
+.book-discussions-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.75em 1em !important;
+  margin: 0.25em 0;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.book-github-link:hover,
+.book-discussions-link:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.book-github-link svg,
+.book-discussions-link svg {
+  flex-shrink: 0;
+}
+
+/* Horizontal Rule */
+.markdown hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+  margin: 0.5em 0;
+}
+
+/* Image Enhancements */
+.markdown img {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 1.5em 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Alert/Callout Boxes */
+.markdown .alert,
+.markdown .note,
+.markdown .warning,
+.markdown .tip {
+  padding: 1em 1.5em;
+  margin: 1.5em 0;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.markdown .note {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.markdown .warning {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.markdown .tip {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+/* Search Box Enhancement */
+.book-search input {
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.75em 1em;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+}
+
+.book-search input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Content Wrapper */
+.book-page {
+  max-width: 48rem;
+  padding: 2em;
+}
+
+/* Table of Contents Enhancement */
+.book-toc nav > ul {
+  border-left: 2px solid #e5e7eb;
+  padding-left: 1em;
+}
+
+.book-toc nav a {
+  display: block;
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.book-toc nav a:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+/* Badge Styling */
+.markdown .badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.875em;
+  font-weight: 600;
+  border-radius: 4px;
+  background: #dbeafe;
+  color: #1e40af;
+  margin: 0 0.25em;
+}
+
+/* Footer Enhancement */
+.book-footer {
+  margin-top: 3em;
+  padding-top: 2em;
+  border-top: 1px solid #e5e7eb;
+  color: #64748b;
+  font-size: 0.875em;
+}
+
+/* Print Styles */
+@media print {
+  .book-menu,
+  .book-toc,
+  .book-header,
+  .book-search,
+  .book-github-link,
+  .book-discussions-link {
+    display: none !important;
+  }
+
+  .markdown {
+    max-width: 100%;
+  }
+
+  .markdown a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .markdown pre {
+    border: 1px solid #e5e7eb;
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .markdown h1 {
+    font-size: 1.875em;
+  }
+
+  .markdown h2 {
+    font-size: 1.5em;
+  }
+
+  .markdown h3 {
+    font-size: 1.25em;
+  }
+
+  .book-page {
+    padding: 1em;
+  }
+
+  .markdown pre {
+    padding: 1em;
+    font-size: 0.875em;
+  }
+
+  .markdown table {
+    font-size: 0.875em;
+  }
+}
+
+/* Accessibility Enhancements */
+.markdown a:focus,
+.book-menu a:focus,
+.book-github-link:focus,
+.book-discussions-link:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Loading Animation for Images */
+.markdown img {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Copy Button for Code Blocks (if implemented) */
+.code-copy-button {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  padding: 0.5em 0.75em;
+  background: #475569;
+  color: #e2e8f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75em;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.markdown pre:hover .code-copy-button {
+  opacity: 1;
+}
+
+.code-copy-button:hover {
+  background: #334155;
+}
+
+/* Keyboard Navigation Hint */
+kbd {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  font-size: 0.875em;
+  font-family: monospace;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Post Metadata Spacing Fixes */
+.book-post {
+  margin-bottom: 1em;
+}
+
+.book-post p {
+  margin-bottom: 0.5em !important;
+  line-height: 1.5;
+}
+
+.book-post-meta,
+.book-post-info {
+  margin: 0.5em 0;
+  padding: 0;
+}
+
+/* Reduce spacing for post header elements */
+article header,
+.post-header,
+.book-header {
+  margin-bottom: 1.5em;
+}
+
+article header p,
+.post-header p {
+  margin-bottom: 0.5em !important;
+  margin-top: 0.5em !important;
+}
+
+/* Fix book-post-header-meta spacing */
+.book-post-header-meta {
+  margin-top: 0.5em !important;
+  margin-bottom: 0.75em !important;
+  padding-top: 0.25em !important;
+  padding-bottom: 0.5em !important;
+}
+
+.book-post-header-meta p {
+  margin: 0.25em 0 !important;
+}

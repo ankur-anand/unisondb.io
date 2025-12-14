@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155.65 591.64">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 22.21px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13 {
+        font-family: ArialMT, Arial;
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-3, .cls-4, .cls-5, .cls-6, .cls-8 {
+        fill: #485669;
+      }
+
+      .cls-14 {
+        fill: #fef3c8;
+        stroke: #f39e1e;
+      }
+
+      .cls-14, .cls-15 {
+        stroke-width: 1.2px;
+      }
+
+      .cls-2 {
+        font-size: 25.97px;
+      }
+
+      .cls-2, .cls-7, .cls-9, .cls-10 {
+        fill: #202a37;
+      }
+
+      .cls-3 {
+        font-size: 28.44px;
+      }
+
+      .cls-4 {
+        font-size: 28.25px;
+      }
+
+      .cls-16, .cls-17, .cls-15 {
+        stroke: #4466b0;
+      }
+
+      .cls-16, .cls-15 {
+        fill: #dde9f7;
+      }
+
+      .cls-5 {
+        font-size: 27.49px;
+      }
+
+      .cls-17 {
+        fill: #f0f5fc;
+        stroke-width: 1.6px;
+      }
+
+      .cls-18 {
+        fill: #f1f5f9;
+      }
+
+      .cls-18, .cls-19 {
+        stroke: #e2e8f0;
+      }
+
+      .cls-6 {
+        font-size: 24.31px;
+      }
+
+      .cls-7 {
+        font-size: 23.72px;
+      }
+
+      .cls-8 {
+        font-size: 20.22px;
+      }
+
+      .cls-9 {
+        font-size: 26.08px;
+      }
+
+      .cls-20 {
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        font-size: 26.96px;
+      }
+
+      .cls-11 {
+        font-size: 18.45px;
+      }
+
+      .cls-11, .cls-12, .cls-13 {
+        fill: #3e5aa9;
+      }
+
+      .cls-12 {
+        font-size: 22.74px;
+      }
+
+      .cls-13 {
+        font-size: 25.4px;
+      }
+
+      .cls-21 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-22 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-23 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-19 {
+        fill: #fff;
+        stroke-width: 1.5px;
+      }
+
+      .cls-24 {
+        fill: #e2e8f0;
+        stroke: #ccd5e1;
+      }
+    </style>
+  </defs>
+  <rect class="cls-17" x=".8" y=".8" width="1154.05" height="590.04" rx="16" ry="16"/>
+  <rect class="cls-19" x="48.89" y="96.85" width="1057.88" height="123.5" rx="10" ry="10"/>
+  <rect class="cls-15" x="72.93" y="117.44" width="216.38" height="82.33" rx="6" ry="6"/>
+  <text class="cls-7" transform="translate(96.97 146.64) scale(1.22 1)"><tspan x="0" y="0">CRC32C</tspan></text>
+  <text class="cls-3" transform="translate(96.97 183.97) scale(1.01 1)"><tspan x="0" y="0">length field</tspan></text>
+  <rect class="cls-24" x="301.33" y="117.44" width="456.81" height="82.33" rx="6" ry="6"/>
+  <text class="cls-10" transform="translate(325.38 145.59) scale(1.07 1)"><tspan x="0" y="0">Payload</tspan></text>
+  <text class="cls-4" transform="translate(325.38 183.81) scale(1.02 1)"><tspan x="0" y="0">user bytes</tspan></text>
+  <rect class="cls-14" x="770.17" y="117.44" width="192.34" height="82.33" rx="6" ry="6"/>
+  <text class="cls-2" transform="translate(794.21 145.91) scale(1.11 1)"><tspan class="cls-23" x="0" y="0">T</tspan><tspan x="14.9" y="0">railer</tspan></text>
+  <text class="cls-8" transform="translate(794.21 176.92) scale(1.06 1)"><tspan x="0" y="0">0xDEADBEEF…</tspan></text>
+  <rect class="cls-18" x="974.53" y="117.44" width="108.19" height="82.33" rx="6" ry="6"/>
+  <text class="cls-6" transform="translate(986.55 169.45) scale(1.32 1)"><tspan x="0" y="0">pad</tspan></text>
+  <text class="cls-11" transform="translate(1037.83 192.98) scale(1.56 1)"><tspan x="0" y="0">8B</tspan></text>
+  <rect class="cls-19" x="48.89" y="247.79" width="1057.88" height="123.5" rx="10" ry="10"/>
+  <rect class="cls-15" x="72.93" y="268.38" width="216.38" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-24" x="301.33" y="268.38" width="384.68" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-14" x="698.04" y="268.38" width="192.34" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-18" x="902.4" y="268.38" width="193.62" height="82.33" rx="6" ry="6"/>
+  <text class="cls-9" transform="translate(77.74 308.19) scale(1.11 1)"><tspan x="0" y="0">Header</tspan></text>
+  <text class="cls-9" transform="translate(318.16 308.19) scale(1.11 1)"><tspan x="0" y="0">Data</tspan></text>
+  <text class="cls-9" transform="translate(726.89 308.19) scale(1.11 1)"><tspan class="cls-22" x="0" y="0">T</tspan><tspan x="14.96" y="0">railer</tspan></text>
+  <text class="cls-5" transform="translate(919.23 307.41) scale(.92 1)"><tspan x="0" y="0">Aligned frame</tspan></text>
+  <rect class="cls-19" x="48.89" y="398.74" width="1057.88" height="123.5" rx="10" ry="10"/>
+  <rect class="cls-15" x="72.93" y="419.32" width="216.38" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-24" x="301.33" y="419.32" width="336.6" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-14" x="649.95" y="419.32" width="192.34" height="82.33" rx="6" ry="6"/>
+  <rect class="cls-18" x="854.32" y="419.32" width="228.41" height="82.33" rx="6" ry="6"/>
+  <text class="cls-1" transform="translate(84.95 542.9) scale(1.3 1)"><tspan x="0" y="0">next o</tspan><tspan class="cls-21" x="60.49" y="0">f</tspan><tspan class="cls-20" x="66.26" y="0">fset</tspan></text>
+  <path class="cls-16" d="M419.14,535.95h221.19c18.59,0,33.66,8.6,33.66,19.21h0c0,10.61-15.07,19.21-33.66,19.21h-221.19c-18.59,0-33.66-8.6-33.66-19.21h0c0-10.61,15.07-19.21,33.66-19.21Z"/>
+  <text class="cls-13" transform="translate(433.57 563.75) scale(1.04 1)"><tspan x="0" y="0">MSync / FSync</tspan></text>
+  <path class="cls-16" d="M743.72,535.95h293.32c18.59,0,33.66,8.6,33.66,19.21h0c0,10.61-15.07,19.21-33.66,19.21h-293.32c-18.59,0-33.66-8.6-33.66-19.21h0c0-10.61,15.07-19.21,33.66-19.21Z"/>
+  <text class="cls-12" transform="translate(755.13 561.92) scale(1.06 1)"><tspan x="0" y="0">Directory Sync on rotation</tspan></text>
+</svg>
