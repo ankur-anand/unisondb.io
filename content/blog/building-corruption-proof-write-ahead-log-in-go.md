@@ -71,9 +71,7 @@ CRC catches:
 - Truncated data
 
 CRC doesn't catch:
-- **Incomplete writes** - If we crash mid-write, the CRC might be valid for the partial data
-
-> Garbage data is worse than missing data. Missing data can be retried or ignored; garbage data looks valid and gets applied. Once that happens, corruption spreads.
+- **The "Wild Read" Problem** - If the length header is corrupt (e.g., claiming 1GB size), a CRC check forces you to read that garbage before failing.
 
 ---
 
