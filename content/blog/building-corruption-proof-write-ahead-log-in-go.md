@@ -26,7 +26,7 @@ There is a long, leaky pipeline — and every layer can betray you. A lot can go
 
 ## The Stakes: Streaming Replication
 
-[UnisonDB](https://unisondb.io) WAL isn't just a recovery mechanism—it's the **primary source for replication**. Followers continuously read from the leader's WAL segments, applying records as they arrive.
+In [UnisonDB](https://unisondb.io), the WAL serves as the **primary source for replication** in addition to its traditional role in recovery. Followers continuously read from the leader's WAL segments, applying records as they arrive.
 
 ```
 ┌─────────┐     WAL Segments      ┌──────────┐
@@ -48,12 +48,12 @@ Every record in our WAL has this structure:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         WAL Record                               │
+│                         WAL Record                              │
 ├──────────┬──────────┬─────────────────────┬─────────────────────┤
 │  CRC32   │  Length  │        Data         │       Trailer       │
 │ 4 bytes  │ 4 bytes  │     N bytes         │      8 bytes        │
 ├──────────┴──────────┴─────────────────────┴─────────────────────┤
-│                    Padded to 8-byte boundary                     │
+│                    Padded to 8-byte boundary                    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -137,11 +137,9 @@ This pattern was inspired by a real etcd bug ([#6191](https://github.com/etcd-io
 
 ## Layer 3: WAL Alignment: What It Guarantees (and What It Doesn’t)
 
-UnisonDB aligns every WAL record to an **8-byte boundary**. The goal isn’t to “make disk writes atomic”.
-The goal is to make **WAL parsing and recovery safe**.
+UnisonDB aligns every WAL record to an **8-byte boundary**. We do this specifically to ensure **WAL parsing and recovery are safe**, not to force atomic disk writes.
 
-The dangerous failure mode isn’t a torn payload (CRC can catch that).
-It’s a torn or corrupted **header**:
+The primary danger we are avoiding is a **torn or corrupted header**. While CRCs catch torn payloads, a bad header is structural damage that can confuse the parser.
 
 ### The Real Problem: Torn Headers, Not Torn Payloads
 ```txt
@@ -203,15 +201,15 @@ Alignment protects interpretation, not persistence. Without alignment, a corrupt
 * recovery either proceeds correctly
 * or stops safely
 
-> This does not guarantee atomicity—but it dramatically reduces risk.
+> Alignment doesn't prevent failure, but it downgrades a catastrophic crash into a handleable error.
 
 ## Each layer protects a different invariant
 
 | Layer     | Protects Against                                          |
 |-----------|-----------------------------------------------------------|
 | Alignment | Partially written headers and invalid length fields       |
-| CRC32    | Data corruption from bit flips or torn payload reads      |
-| Trailer  | Records that were not fully written before a crash        |
+| CRC32    | Data corruption from bit flips or torn payload reads       |
+| Trailer  | Records that were not fully written before a crash         |
 
 Together, they ensure that:
 * We never read beyond intended bounds
