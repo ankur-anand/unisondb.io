@@ -4,7 +4,7 @@ weight: 3
 bookCollapseSection: false
 images: ["/images/deployment_topologies.png"]
 description: "Learn how to deploy UnisonDB — a log-native, real-time database for AI and Edge Computing — across single-server, primary-replica, hub-and-spoke, multi-hop, and hybrid topologies for distributed systems."
-keywords: ["UnisonDB deployment", "Edge Computing database", "real-time replication", "distributed database", "primary replica topology", "hub and spoke architecture", "multi-hop replication", "edge AI data sync", "UnisonDB relayer", "UnisonDB replicator"]
+keywords: ["UnisonDB deployment", "Edge Computing database", "real-time replication", "distributed database", "primary replica topology", "hub and spoke architecture", "multi-hop replication", "edge AI data sync", "UnisonDB replica", "UnisonDB server"]
 linkTitle: "Deployment Topologies"
 ---
 
@@ -21,11 +21,11 @@ Replicate, stream, and sync data effortlessly across edge and cloud environments
 
 ## Overview
 
-UnisonDB uses a **dual-mode architecture** — **Server (Replicator)** for writes and **Relayer** for reads — allowing flexible, distributed deployments.  
+UnisonDB uses a **dual-mode architecture** — **Server** for writes and **Replica** for reads — allowing flexible, distributed deployments.  
 
 ### Core Components
-- **Replicator Mode** – Primary node responsible for writes and WAL-based streaming
-- **Relayer Mode** – Read-only node replicating from one or more upstreams
+- **Server Mode** – Primary node responsible for writes and WAL-based streaming
+- **Replica Mode** – Read-only node replicating from one or more upstreams
 - **Watch API** – Real-time notifications for local apps or edge devices
 - **gRPC Replication** – Durable WAL streaming protocol for replication and recovery
 
@@ -38,7 +38,7 @@ Simplest deployment for development, testing, or small standalone applications.
 ```
 ┌──────────────────────────┐
 │   UnisonDB Server        │
-│  (Replicator Mode)       │
+│  (Server Mode)           │
 │                          │
 │   • HTTP API :8080       │
 │   • gRPC API :9090       │
@@ -88,13 +88,13 @@ curl http://localhost:8080/stats/watch
 
 ---
 
-## 2. Replicator + Read Replicas
+## 2. Server + Read Replicas
 
 Replicator handles writes, replicas provide read scalability and geographic distribution.
 
 ```
        ┌─────────────────────┐
-       │   Replicator Server │  (Replicator Mode)
+       │   Primary Server    │  (Server Mode)
        │   US-East           │
        │   • Writes          │
        │   • Reads           │
@@ -103,7 +103,7 @@ Replicator handles writes, replicas provide read scalability and geographic dist
          ┌────────┼────────┬────────┐
          ↓        ↓        ↓        ↓
     ┌────────┐┌────────┐┌────────┐┌────────┐
-    │Relayer ││Relayer ││Relayer ││Relayer │
+    │Replica ││Replica ││Replica ││Replica │
     │US-West ││Europe  ││Asia    ││Canada  │
     │        ││        ││        ││        │
     │Read-   ││Read-   ││Read-   ││Read-   │
@@ -113,7 +113,7 @@ Replicator handles writes, replicas provide read scalability and geographic dist
 
 ### Configuration
 
-**Replicator server** (`primary.toml`):
+**Primary server** (`primary.toml`):
 ```toml
 [server]
 mode = "server"
@@ -133,14 +133,14 @@ bind_addr = "tcp://*:5555"
 buffer_size = 10000
 ```
 
-**Relayer** (`relayer-us-west.toml`):
+**Replica** (`replica-us-west.toml`):
 ```toml
 [server]
-mode = "relayer"
+mode = "replica"
 data_dir = "/data/unisondb"
 http_addr = "0.0.0.0:8080"
 
-[relayer]
+[replica]
 upstreams = [
   "primary.us-east.example.com:9090"
 ]
@@ -148,7 +148,7 @@ tls_cert = "/etc/unisondb/tls/client.crt"
 tls_key = "/etc/unisondb/tls/client.key"
 tls_ca = "/etc/unisondb/tls/ca.crt"
 
-# Relayer can also publish local watch events
+# Replica can also publish local watch events
 [watch]
 enabled = true
 bind_addr = "tcp://*:5555"
@@ -162,7 +162,7 @@ Central hub replicates to many edge nodes, each serving local applications.
 
 ```
                  ┌──────────────────┐
-                 │   Central Hub    │  (Replicator Mode)
+                 │   Central Hub    │  (Server Mode)
                  │   (Cloud/DC)     │
                  │   • All writes   │
                  └────────┬─────────┘
@@ -170,7 +170,7 @@ Central hub replicates to many edge nodes, each serving local applications.
          ┌────────────────┼────────────────┐
          ↓                ↓                ↓
     ┌─────────┐      ┌─────────┐      ┌─────────┐
-    │ Edge 1  │      │ Edge 2  │      │ Edge 3  │  (Relayers)
+    │ Edge 1  │      │ Edge 2  │      │ Edge 3  │  (Replicas)
     │ Store A │      │ Store B │      │ Store C │
     └────┬────┘      └────┬────┘      └────┬────┘
          │ Watch API      │ Watch API      │ Watch API
@@ -184,7 +184,7 @@ Central hub replicates to many edge nodes, each serving local applications.
 
 ### Configuration
 
-**Hub (central Replicator server)**:
+**Hub (central server)**:
 ```toml
 [server]
 mode = "server"
@@ -204,20 +204,20 @@ tls_enabled = true
 max_connections = 1000  # Support many edge nodes
 ```
 
-**Edge relayer** (`edge-store-001.toml`):
+**Edge replica** (`edge-store-001.toml`):
 ```toml
 [server]
-mode = "relayer"
+mode = "replica"
 data_dir = "/data/unisondb"
 http_addr = "127.0.0.1:8080"  # Local only
 
-[relayer]
+[replica]
 upstreams = ["hub.central.example.com:9090"]
 tls_enabled = true
 reconnect_interval = "5s"
 buffer_size = "100MB"  # Handle disconnections
 
-# Edge nodes publish local watch events
+# Replica nodes publish local watch events
 [watch]
 enabled = true
 namespaces = ["inventory", "orders"]  # Only needed namespaces
@@ -233,26 +233,26 @@ Hierarchical replication for deep edge deployments or bandwidth-constrained netw
 
 ```
          ┌──────────────┐
-         │   Primary    │  (Replicator Mode - Cloud)
+         │   Primary    │  (Server Mode - Cloud)
          │   (Cloud)    │
          └──────┬───────┘
                 │ gRPC
                 ↓
          ┌──────────────┐
-         │  Tier 1      │  (Relayer - Regional DC)
+         │  Tier 1      │  (Replica - Regional DC)
          │  Regional    │
          └──────┬───────┘
                 │ gRPC
         ┌───────┴────────┐
         ↓                ↓
    ┌─────────┐      ┌─────────┐
-   │ Tier 2  │      │ Tier 2  │  (Relayer - Edge Cluster)
+   │ Tier 2  │      │ Tier 2  │  (Replica - Edge Cluster)
    │ West    │      │ East    │
    └────┬────┘      └────┬────┘
         │                │
     ┌───┴───┐        ┌───┴───┐
     ↓       ↓        ↓       ↓
-  Tier 3  Tier 3   Tier 3  Tier 3  (Relayer - Leaf Nodes)
+  Tier 3  Tier 3   Tier 3  Tier 3  (Replica - Leaf Nodes)
   Store1  Store2   Store3  Store4
     ↓       ↓        ↓       ↓
   Local   Local    Local   Local
@@ -261,43 +261,43 @@ Hierarchical replication for deep edge deployments or bandwidth-constrained netw
 
 ### Configuration
 
-**Tier 1 (Regional relayer)**:
+**Tier 1 (Regional replica)**:
 ```toml
 [server]
-mode = "relayer"
+mode = "replica"
 data_dir = "/data/unisondb"
 grpc_addr = "0.0.0.0:9090"  # Accept downstream connections
 
-[relayer]
+[replica]
 upstreams = ["primary.cloud.example.com:9090"]
-# This relayer can also relay to downstream
+# This replica can also relay to downstream
 enable_relay = true
 tls_enabled = true
 ```
 
-**Tier 2 (Edge cluster relayer)**:
+**Tier 2 (Edge cluster replica)**:
 ```toml
 [server]
-mode = "relayer"
+mode = "replica"
 data_dir = "/data/unisondb"
 grpc_addr = "0.0.0.0:9090"
 
-[relayer]
+[replica]
 upstreams = ["tier1-regional.example.com:9090"]
-enable_relay = true  # Relay to Tier 3
+enable_relay = true  # Forward to Tier 3
 tls_enabled = true
 ```
 
-**Tier 3 (Leaf relayer)**:
+**Tier 3 (Leaf replica)**:
 ```toml
 [server]
-mode = "relayer"
+mode = "replica"
 data_dir = "/data/unisondb"
 http_addr = "127.0.0.1:8080"
 
-[relayer]
+[replica]
 upstreams = ["tier2-west.example.com:9090"]
-enable_relay = false  # Leaf node, no downstream
+enable_relay = false  # Leaf node, no forwarding
 tls_enabled = true
 
 [watch]
@@ -313,8 +313,8 @@ Combines durable replication with local event-driven applications.
 
 ```
 ┌───────────────────────────────────┐
-│        Replicator Server          │
-│        (Replicator Mode)          │
+│        Primary Server             │
+│        (Server Mode)              │
 │                                   │
 │   ┌───────────────────┐           │
 │   │   Storage Engine  │           │
@@ -330,7 +330,7 @@ Combines durable replication with local event-driven applications.
      ↓                         ↓
 ┌─────────┐            ┌─────────────┐
 │ Remote  │            │ Local Apps  │
-│Relayers │            │             │
+│Replicas │            │             │
 └─────────┘            │ • Cache     │
                        │ • Analytics │
                        │ • Audit Log │

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -11,30 +11,30 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="Learn how UnisonDB’s log-native architecture unifies database durability and message-bus replication — designed for AI agents, edge computing, and real-time data streaming.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/architecture/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/docs/architecture/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="Architecture Overview – Log-Native Database for Edge and AI Systems">
   <meta property="og:description" content="Learn how UnisonDB’s log-native architecture unifies database durability and message-bus replication — designed for AI agents, edge computing, and real-time data streaming.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
-    <meta property="og:image" content="http://localhost:1313/images/unisondb_architecture.png">
+    <meta property="og:image" content="http://localhost:1314/images/unisondb_architecture.png">
 
 
   <meta itemprop="name" content="Architecture Overview – Log-Native Database for Edge and AI Systems">
   <meta itemprop="description" content="Learn how UnisonDB’s log-native architecture unifies database durability and message-bus replication — designed for AI agents, edge computing, and real-time data streaming.">
   <meta itemprop="wordCount" content="1570">
-  <meta itemprop="image" content="http://localhost:1313/images/unisondb_architecture.png">
+  <meta itemprop="image" content="http://localhost:1314/images/unisondb_architecture.png">
   <meta itemprop="keywords" content="UnisonDB architecture,log-native database,edge AI database,edge computing database,AI agents database,real-time replication,write-ahead log,WAL streaming replication,multi-model storage engine,local-first database,distributed database design,reactive database architecture,gRPC replication,B&#43;Tree storage engine,database for AI and edge computing">
 
 <title>Architecture Overview | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/architecture/">
+<link rel="canonical" href="http://localhost:1314/docs/architecture/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.93e86dd413f38dd334dc7a7d7414f71e1712f4b8f8737105e6f7e1abcb1b739a.js" integrity="sha256-k&#43;ht1BPzjdM03Hp9dBT3HhcS9Lj4c3EF5vfhq8sbc5o=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.d17dc9f8d796258208051f49c3cd56bf1f018f2cc043167555ff4ba36b9c2714.js" integrity="sha256-0X3J&#43;NeWJYIIBR9Jw81Wvx8BjyzAQxZ1Vf9Lo2ucJxQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -46,9 +46,9 @@ https://github.com/alex-shpak/hugo-book
   gtag('config', 'G-GXZKSVMHYJ');
 </script>
 
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/architecture/index.xml" title="UnisonDB" />
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1314/docs/architecture/index.xml" title="UnisonDB" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1314/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
@@ -59,7 +59,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="http://localhost:1313/images/unisondb_architecture.png">
+  <meta name="twitter:image" content="http://localhost:1314/images/unisondb_architecture.png">
   <meta name="twitter:title" content="Architecture Overview – Log-Native Database for Edge and AI Systems">
   <meta name="twitter:description" content="Learn how UnisonDB’s log-native architecture unifies database durability and message-bus replication — designed for AI agents, edge computing, and real-time data streaming.">
 
@@ -526,7 +526,7 @@ https://github.com/alex-shpak/hugo-book
       </tr>
       <tr>
           <td><strong>Deployment Modes</strong></td>
-          <td>Replicator (writable primary) &amp; Relayer (read-only replica)</td>
+          <td>Server (writable primary) &amp; Replica (read-only replica)</td>
       </tr>
   </tbody>
 </table>
@@ -541,25 +541,25 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <h3 id="2-operational-modes">2. Operational Modes<a class="anchor" href="#2-operational-modes">#</a></h3>
 <p>UnisonDB instances run in one of two modes:</p>
-<h4 id="replicator-mode-primary">Replicator Mode (Primary)<a class="anchor" href="#replicator-mode-primary">#</a></h4>
+<h4 id="server-mode-primary">Server Mode (Primary)<a class="anchor" href="#server-mode-primary">#</a></h4>
 <p>Writable instance that maintains the authoritative WAL.</p>
 <pre tabindex="0"><code>┌─────────────────────────────────────┐
-│     Replicator Mode Instance        │
+│       Server Mode Instance          │
 │                                     │
 │  • Accepts writes (HTTP API)        │
 │  • Maintains authoritative WAL      │
-│  • Streams to relayers (gRPC)       │
+│  • Streams to replicas (gRPC)       │
 │  • Publishes watch events (local)   │
 │  • Serves reads from local storage  │
-└─────────────────────────────────────┘</code></pre><h4 id="relayer-mode-replica">Relayer Mode (Replica)<a class="anchor" href="#relayer-mode-replica">#</a></h4>
-<p>Read-only instance that streams changes from upstream replicators.</p>
+└─────────────────────────────────────┘</code></pre><h4 id="replica-mode-read-only">Replica Mode (Read-Only)<a class="anchor" href="#replica-mode-read-only">#</a></h4>
+<p>Read-only instance that streams changes from upstream servers.</p>
 <pre tabindex="0"><code>┌─────────────────────────────────────┐
-│        Relayer Mode Instance        │
+│       Replica Mode Instance         │
 │                                     │
 │  • Connects to upstream (gRPC)      │
 │  • Receives WAL segment streams     │
 │  • Applies to local storage (RO)    │
-│  • Can relay to downstream nodes    │
+│  • Can relay to downstream replicas │
 │  • Publishes watch events (local)   │
 │  • Serves reads (data locality)     │
 └─────────────────────────────────────┘</code></pre><h3 id="3-dual-communication-channels">3. Dual Communication Channels<a class="anchor" href="#3-dual-communication-channels">#</a></h3>
@@ -616,13 +616,13 @@ https://github.com/alex-shpak/hugo-book
 ├────────────────────────────────────────────────────────────────────┤
 │  Distribution Layer                                                │
 │  ┌──────────────────────┐     ┌──────────────────────┐             │
-│  │  gRPC Replicator     │     │  Watch API           │             │
+│  │  gRPC Replication    │     │  Watch API           │             │
 │  │  • WAL streaming     │     │  • Change events     │             │
 │  │  • TLS/mTLS          │     │  • Per-namespace     │             │
 │  │  • At-least-once     │     │  • At-most-once      │             │
 │  └──────────┬───────────┘     └──────────┬───────────┘             │
 │             v                            v                         │
-│      Remote Relayers              Local Applications               │
+│      Remote Replicas              Local Applications               │
 └────────────────────────────────────────────────────────────────────┘</code></pre><h2 id="core-components">Core Components<a class="anchor" href="#core-components">#</a></h2>
 <h3 id="write-ahead-log-wal">Write-Ahead Log (WAL)<a class="anchor" href="#write-ahead-log-wal">#</a></h3>
 <p>Append-only transaction log that serves as the source of truth.</p>
@@ -692,15 +692,15 @@ https://github.com/alex-shpak/hugo-book
 Wide-Column:    &lt;rowKey&gt;:&lt;colName&gt; -&gt; &lt;colValue&gt;
 Large Object:   &lt;objectKey&gt;:chunk:&lt;N&gt; -&gt; &lt;chunk_data&gt;</code></pre><h3 id="replication-system">Replication System<a class="anchor" href="#replication-system">#</a></h3>
 <p>gRPC-based WAL streaming with bidirectional flow control.</p>
-<p><strong>Replicator Role</strong> (Primary):</p>
+<p><strong>Server Role</strong> (Primary):</p>
 <ul>
-<li>Streams WAL segments to connected relayers</li>
+<li>Streams WAL segments to connected replicas</li>
 </ul>
-<p><strong>Relayer Role</strong> (Replica):</p>
+<p><strong>Replica Role</strong> (Read-Only):</p>
 <ul>
 <li>Consumes from one or more upstream servers</li>
 <li>Applies segments in order to local storage</li>
-<li>Can fan-out to downstream relayers (multi-hop)</li>
+<li>Can fan-out to downstream replicas (multi-hop)</li>
 </ul>
 <p><strong>Guarantees</strong>:</p>
 <ul>
@@ -803,15 +803,15 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
 <h3 id="edge-first-topology">Edge-First Topology<a class="anchor" href="#edge-first-topology">#</a></h3>
 <p>Designed for hub-and-spoke, multi-hop replication with data locality:</p>
 <pre tabindex="0"><code>          ┌──────────────┐
-          │   Primary    │  (Repliactor Mode - accepts writes)
+          │   Primary    │  (Server Mode - accepts writes)
           │   (US-East)  │
           └──────┬───────┘
                  │ gRPC (durable replication)
         ┌────────┼────────┐
         ↓        ↓        ↓
     ┌───────┐┌───────┐┌───────┐
-    │Europe ││ Asia  ││US-West│  (Relayer Mode - read replicas)
-    │Relayer││Relayer││Relayer│
+    │Europe ││ Asia  ││US-West│  (Replica Mode - read replicas)
+    │Replica││Replica││Replica│
     └───┬───┘└───┬───┘└───┬───┘
         │        │        │ Watch API (local events)
         ↓        ↓        ↓
@@ -840,7 +840,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
                             └───────┬───────┘
                                     ↓
                             Merge &amp; Response</code></pre><h3 id="replication-flow-grpc">Replication Flow (gRPC)<a class="anchor" href="#replication-flow-grpc">#</a></h3>
-<pre tabindex="0"><code>Replicator (Primary)                     Relayer (Replica)
+<pre tabindex="0"><code>Server (Primary)                         Replica (Read-Only)
       │                                      │
       │ ─── WAL Segment (gRPC stream) ────→  |
       │     [metadata + binary + CRC]        │
@@ -887,11 +887,11 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
   <tbody>
       <tr>
           <td><strong>Writes</strong></td>
-          <td>Single primary (Replicator Mode) for linearizability</td>
+          <td>Single primary (Server Mode) for linearizability</td>
       </tr>
       <tr>
           <td><strong>Reads</strong></td>
-          <td>Eventually consistent across relayers</td>
+          <td>Eventually consistent across replicas</td>
       </tr>
       <tr>
           <td><strong>Replication</strong></td>
@@ -911,7 +911,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
 <li>Validate checkpoint consistency</li>
 <li>Resume operations</li>
 </ol>
-<p><strong>Replication Recovery</strong> (Relayer Mode):</p>
+<p><strong>Replication Recovery</strong> (Replica Mode):</p>
 <ol>
 <li>Determine last applied segment from checkpoint</li>
 <li>Reconnect to upstream at last offset</li>
@@ -929,13 +929,13 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
 </strong> for detailed configurations and examples.</p>
 <h3 id="example-hub-and-spoke">Example: Hub-and-Spoke<a class="anchor" href="#example-hub-and-spoke">#</a></h3>
 <pre tabindex="0"><code>           ┌──────────┐
-           │   Hub    │ (Replicator Mode)
+           │   Hub    │ (Server Mode)
            └────┬─────┘
                 │ gRPC (durable replication)
      ┌──────────┼──────────┐
      ↓          ↓          ↓
   ┌──────┐  ┌──────┐  ┌──────┐
-  │Edge 1│  │Edge 2│  │Edge 3│ (Relayers)
+  │Edge 1│  │Edge 2│  │Edge 3│ (Replicas)
   └──┬───┘  └──┬───┘  └──┬───┘
      │         │         │ Watch API (local events)
      ↓         ↓         ↓
@@ -943,7 +943,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
   Apps      Apps      Apps</code></pre><p><strong>Key characteristics:</strong></p>
 <ul>
 <li>Central hub accepts all writes</li>
-<li>Edge relayers provide data locality</li>
+<li>Edge replicas provide data locality</li>
 <li>Local applications subscribe to watch events</li>
 </ul>
 <p>For detailed configurations, monitoring, and operational guidance, see the <strong><a href="../deployment/" target="_blank" rel="noopener noreferrer">Deployment Topologies Guide</a>
@@ -966,7 +966,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
       </tr>
       <tr>
           <td><strong>Read Consistency</strong></td>
-          <td>Eventual consistency on relayers</td>
+          <td>Eventual consistency on replicas</td>
           <td>Enables high read scalability and data locality</td>
       </tr>
       <tr>
@@ -984,7 +984,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
 <h3 id="current-limitations">Current Limitations<a class="anchor" href="#current-limitations">#</a></h3>
 <ol>
 <li><strong>Write Scaling</strong>: Single primary per namespace (no multi-master)</li>
-<li><strong>Consistency</strong>: No strong consistency guarantees for relayer reads</li>
+<li><strong>Consistency</strong>: No strong consistency guarantees for replica reads</li>
 <li><strong>Transactions</strong>: Limited to single-namespace operations</li>
 <li><strong>Query Model</strong>: No complex queries (no SQL, joins, aggregations)</li>
 <li><strong>Schema</strong>: Schema-less (application-managed structure)</li>
@@ -1011,7 +1011,7 @@ Applications B, C, D receive notification and react</code></pre><h2 id="design-p
 <ol>
 <li><strong>Log-Native Design</strong>: WAL as first-class citizen (replication = log streaming)</li>
 <li><strong>Dual Communication</strong>: gRPC for distribution, Watch API for local reactivity</li>
-<li><strong>Dual Modes</strong>: Server (writable primary) and Relayer (read replicas)</li>
+<li><strong>Dual Modes</strong>: Server (writable primary) and Replica (read replicas)</li>
 <li><strong>Multi-Modal Storage</strong>: Key-Value, Wide-Column, Large Objects on shared B+Tree</li>
 </ol>
 <p><strong>Architecture Strengths</strong>:</p>

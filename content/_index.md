@@ -149,8 +149,8 @@ cd unisondb
 # Build
 go build -o unisondb ./cmd/unisondb
 
-# Run in replicator mode (primary)
-./unisondb --config config.toml replicator
+# Run in server mode (primary)
+./unisondb server --config config.toml
 
 # Use the HTTP API
 curl -X PUT http://localhost:4000/api/v1/default/kv/mykey \

@@ -19,17 +19,17 @@ keywords: [
 
 # Configuration Guide
 
-UnisonDB uses [TOML](https://en.wikipedia.org/wiki/TOML) for configuration. This guide covers all available configuration options for both replicator and relayer modes.
+UnisonDB uses [TOML](https://en.wikipedia.org/wiki/TOML) for configuration. This guide covers all available configuration options for server, replica, and relay modes.
 
 ## Table of Contents
 
-- [Replicator Mode](#Replicator-mode)
-- [Relayer Mode](#relayer-mode)
+- [Server Mode](#server-mode)
+- [Replica Mode](#replica-mode)
 - [Configuration Reference](#configuration-reference)
 
-## Replicator Mode
+## Server Mode
 
-Replicator mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here's a complete example:
+Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here's a complete example:
 
 ```toml
 ## Port of the http server
@@ -105,9 +105,9 @@ startup_delay = "10s"
 enable_read_ops = false
 ```
 
-## Relayer Mode
+## Replica Mode
 
-Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.
+Replica mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.
 
 ```toml
 ## Port of the http server
@@ -120,17 +120,17 @@ key_path = "../../certs/server.key"
 ca_path = "../../certs/ca.crt"
 
 [storage_config]
-base_dir = "/tmp/unisondb/relayer"
+base_dir = "/tmp/unisondb/replica"
 namespaces = ["default", "tenant_1", "tenant_2"]
 bytes_per_sync = "1MB"
 ## IMPORTANT: segment_size must match upstream server!
 segment_size = "16MB"
 arena_size = "4MB"
 
-## Relayer configuration - can have multiple upstreams
-[relayer_config]
+## Replica configuration - can have multiple upstreams
+[replica_config]
 
-[relayer_config.relayer1]
+[replica_config.replica1]
 namespaces = ["default", "tenant_1", "tenant_2"]
 cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
@@ -141,8 +141,8 @@ allow_insecure = false
 # Optional: custom gRPC service config JSON
 grpc_service_config = ""
 
-## Optional: Add more relayers for different upstream sources
-[relayer_config.relayer2]
+## Optional: Add more replicas for different upstream sources
+[replica_config.replica2]
 namespaces = ["tenant_3"]
 cert_path = "../../certs/client2.crt"
 key_path = "../../certs/client2.key"
@@ -270,7 +270,7 @@ disable_entry_type_check = false
 - **Valid Units**: `KB`, `MB`, `GB`
 - **Range**: `1MB` to `1GB`
 - **Description**: Size of each WAL segment file
-- **Important**: Must match across server and relayer!
+- **Important**: Must match across server and replica!
 
 #### `arena_size`
 - **Type**: String (with unit)
@@ -402,17 +402,21 @@ while True:
 
 ---
 
-### Relayer Configuration
+### Replica Configuration
 
-Relayer configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:
+Replica configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:
 - **Read scaling**: Run multiple read replicas
 - **Data locality**: Keep data close to consumers in different regions
 - **Backup**: Maintain hot standbys
 
-```toml
-[relayer_config]
+**Note**: The same configuration can be started with either command:
+- `unisondb replica --config replica.toml` — Read-only replica (cannot serve downstream)
+- `unisondb relay --config replica.toml` — Relay mode (can serve downstream replicas via gRPC)
 
-[relayer_config.relayer1]
+```toml
+[replica_config]
+
+[replica_config.replica1]
 namespaces = ["default", "tenant_1"]
 cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
@@ -423,10 +427,10 @@ allow_insecure = false
 grpc_service_config = ""
 ```
 
-#### Map Key (e.g., `relayer1`)
+#### Map Key (e.g., `replica1`)
 - **Type**: String
-- **Description**: Unique identifier for this relayer connection
-- **Note**: Multiple relayers can be configured with different keys
+- **Description**: Unique identifier for this replica connection
+- **Note**: Multiple replicas can be configured with different keys
 
 #### `namespaces`
 - **Type**: Array of Strings
@@ -566,10 +570,10 @@ enable_read_ops = false
 - **Default**: `50`
 - **Description**: Number of concurrent workers per namespace
 
-#### `local_relayer_count`
+#### `local_replica_count`
 - **Type**: Integer
 - **Default**: `1000`
-- **Description**: Number of local relayer goroutines to simulate
+- **Description**: Number of local replica goroutines to simulate
 
 #### `startup_delay`
 - **Type**: String (duration)

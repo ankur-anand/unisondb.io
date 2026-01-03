@@ -40,7 +40,7 @@ UnisonDB is a **log-native, real-time database** that replicates like a message 
 | **Watch API** | Best-effort change notifications (per-namespace) |
 | **Consistency** | Single-primary writes, eventual consistency for replicas |
 | **Durability** | WAL-first with configurable fsync |
-| **Deployment Modes** | Replicator (writable primary) & Relayer (read-only replica) |
+| **Deployment Modes** | Server (writable primary) & Replica (read-only replica) |
 
 ## Core Concepts
 
@@ -57,32 +57,32 @@ The Write-Ahead Log (WAL) is a **first-class citizen**, not just a recovery mech
 
 UnisonDB instances run in one of two modes:
 
-#### Replicator Mode (Primary)
+#### Server Mode (Primary)
 Writable instance that maintains the authoritative WAL.
 
 ```
 ┌─────────────────────────────────────┐
-│     Replicator Mode Instance        │
+│       Server Mode Instance          │
 │                                     │
 │  • Accepts writes (HTTP API)        │
 │  • Maintains authoritative WAL      │
-│  • Streams to relayers (gRPC)       │
+│  • Streams to replicas (gRPC)       │
 │  • Publishes watch events (local)   │
 │  • Serves reads from local storage  │
 └─────────────────────────────────────┘
 ```
 
-#### Relayer Mode (Replica)
-Read-only instance that streams changes from upstream replicators.
+#### Replica Mode (Read-Only)
+Read-only instance that streams changes from upstream servers.
 
 ```
 ┌─────────────────────────────────────┐
-│        Relayer Mode Instance        │
+│       Replica Mode Instance         │
 │                                     │
 │  • Connects to upstream (gRPC)      │
 │  • Receives WAL segment streams     │
 │  • Applies to local storage (RO)    │
-│  • Can relay to downstream nodes    │
+│  • Can relay to downstream replicas │
 │  • Publishes watch events (local)   │
 │  • Serves reads (data locality)     │
 └─────────────────────────────────────┘
@@ -126,13 +126,13 @@ UnisonDB separates **distribution** from **local reactivity**:
 ├────────────────────────────────────────────────────────────────────┤
 │  Distribution Layer                                                │
 │  ┌──────────────────────┐     ┌──────────────────────┐             │
-│  │  gRPC Replicator     │     │  Watch API           │             │
+│  │  gRPC Replication    │     │  Watch API           │             │
 │  │  • WAL streaming     │     │  • Change events     │             │
 │  │  • TLS/mTLS          │     │  • Per-namespace     │             │
 │  │  • At-least-once     │     │  • At-most-once      │             │
 │  └──────────┬───────────┘     └──────────┬───────────┘             │
 │             v                            v                         │
-│      Remote Relayers              Local Applications               │
+│      Remote Replicas              Local Applications               │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -181,13 +181,13 @@ Large Object:   <objectKey>:chunk:<N> -> <chunk_data>
 
 gRPC-based WAL streaming with bidirectional flow control.
 
-**Replicator Role** (Primary):
-- Streams WAL segments to connected relayers
+**Server Role** (Primary):
+- Streams WAL segments to connected replicas
 
-**Relayer Role** (Replica):
+**Replica Role** (Read-Only):
 - Consumes from one or more upstream servers
 - Applies segments in order to local storage
-- Can fan-out to downstream relayers (multi-hop)
+- Can fan-out to downstream replicas (multi-hop)
 
 **Guarantees**:
 - **Consistency Model**: Eventual (all replicas converge)
@@ -260,15 +260,15 @@ Designed for hub-and-spoke, multi-hop replication with data locality:
 
 ```
           ┌──────────────┐
-          │   Primary    │  (Repliactor Mode - accepts writes)
+          │   Primary    │  (Server Mode - accepts writes)
           │   (US-East)  │
           └──────┬───────┘
                  │ gRPC (durable replication)
         ┌────────┼────────┐
         ↓        ↓        ↓
     ┌───────┐┌───────┐┌───────┐
-    │Europe ││ Asia  ││US-West│  (Relayer Mode - read replicas)
-    │Relayer││Relayer││Relayer│
+    │Europe ││ Asia  ││US-West│  (Replica Mode - read replicas)
+    │Replica││Replica││Replica│
     └───┬───┘└───┬───┘└───┬───┘
         │        │        │ Watch API (local events)
         ↓        ↓        ↓
@@ -313,7 +313,7 @@ Read Request → API Handler → Storage Engine
 ### Replication Flow (gRPC)
 
 ```
-Replicator (Primary)                     Relayer (Replica)
+Server (Primary)                         Replica (Read-Only)
       │                                      │
       │ ─── WAL Segment (gRPC stream) ────→  |
       │     [metadata + binary + CRC]        │
@@ -367,8 +367,8 @@ data/
 
 | Aspect | Guarantee |
 |--------|-----------|
-| **Writes** | Single primary (Replicator Mode) for linearizability |
-| **Reads** | Eventually consistent across relayers |
+| **Writes** | Single primary (Server Mode) for linearizability |
+| **Reads** | Eventually consistent across replicas |
 | **Replication** | At-least-once delivery, ordered segments |
 | **Isolation** | Per-namespace (independent namespaces) |
 
@@ -380,7 +380,7 @@ data/
 3. Validate checkpoint consistency
 4. Resume operations
 
-**Replication Recovery** (Relayer Mode):
+**Replication Recovery** (Replica Mode):
 1. Determine last applied segment from checkpoint
 2. Reconnect to upstream at last offset
 3. Request missing segments (gap detection)
@@ -399,13 +399,13 @@ UnisonDB supports various deployment patterns. See the **[Deployment Guide](../d
 
 ```
            ┌──────────┐
-           │   Hub    │ (Replicator Mode)
+           │   Hub    │ (Server Mode)
            └────┬─────┘
                 │ gRPC (durable replication)
      ┌──────────┼──────────┐
      ↓          ↓          ↓
   ┌──────┐  ┌──────┐  ┌──────┐
-  │Edge 1│  │Edge 2│  │Edge 3│ (Relayers)
+  │Edge 1│  │Edge 2│  │Edge 3│ (Replicas)
   └──┬───┘  └──┬───┘  └──┬───┘
      │         │         │ Watch API (local events)
      ↓         ↓         ↓
@@ -415,7 +415,7 @@ UnisonDB supports various deployment patterns. See the **[Deployment Guide](../d
 
 **Key characteristics:**
 - Central hub accepts all writes
-- Edge relayers provide data locality
+- Edge replicas provide data locality
 - Local applications subscribe to watch events
 
 For detailed configurations, monitoring, and operational guidance, see the **[Deployment Topologies Guide](../deployment/)**.
@@ -427,14 +427,14 @@ For detailed configurations, monitoring, and operational guidance, see the **[De
 | Aspect | Tradeoff | Rationale |
 |--------|----------|-----------|
 | **Write Scalability** | Single primary per namespace | Ensures linearizable writes, simplifies conflict resolution |
-| **Read Consistency** | Eventual consistency on relayers | Enables high read scalability and data locality |
+| **Read Consistency** | Eventual consistency on replicas | Enables high read scalability and data locality |
 | **Replication Model** | At-least-once delivery | Prioritizes availability over exactly-once semantics |
 | **Watch Events** | At-most-once, best-effort | Minimizes latency, lightweight notification for non-critical use cases |
 
 ### Current Limitations
 
 1. **Write Scaling**: Single primary per namespace (no multi-master)
-2. **Consistency**: No strong consistency guarantees for relayer reads
+2. **Consistency**: No strong consistency guarantees for replica reads
 3. **Transactions**: Limited to single-namespace operations
 4. **Query Model**: No complex queries (no SQL, joins, aggregations)
 5. **Schema**: Schema-less (application-managed structure)
@@ -461,7 +461,7 @@ UnisonDB combines **database semantics** with **streaming mechanics** through:
 
 1. **Log-Native Design**: WAL as first-class citizen (replication = log streaming)
 2. **Dual Communication**: gRPC for distribution, Watch API for local reactivity
-3. **Dual Modes**: Server (writable primary) and Relayer (read replicas)
+3. **Dual Modes**: Server (writable primary) and Replica (read replicas)
 4. **Multi-Modal Storage**: Key-Value, Wide-Column, Large Objects on shared B+Tree
 
 **Architecture Strengths**:

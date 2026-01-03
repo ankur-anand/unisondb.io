@@ -566,6 +566,6 @@ aws s3 ls s3://backups/unison/users/snapshots/ | sort | tail -2
 
 ## Next Steps
 
-- [Deployment Topologies](../deployment/) - High availability with relayers
+- [Deployment Topologies](../deployment/) - High availability with replicas
 - [Monitoring](../monitoring/) - Tracking backup health
 - [HTTP API Reference](../api/http-api/) - Complete API documentation

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -11,7 +11,7 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/examples/multi-dc-crdt/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/docs/examples/multi-dc-crdt/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
   <meta property="og:description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
@@ -20,7 +20,7 @@ https://github.com/alex-shpak/hugo-book
     <meta property="article:section" content="docs">
     <meta property="article:published_time" content="2025-11-02T00:00:00+00:00">
     <meta property="article:modified_time" content="2025-11-02T00:00:00+00:00">
-    <meta property="og:image" content="http://localhost:1313/images/multi_dc_crdt.png">
+    <meta property="og:image" content="http://localhost:1314/images/multi_dc_crdt.png">
 
 
   <meta itemprop="name" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
@@ -28,18 +28,18 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
   <meta itemprop="wordCount" content="1505">
-  <meta itemprop="image" content="http://localhost:1313/images/multi_dc_crdt.png">
+  <meta itemprop="image" content="http://localhost:1314/images/multi_dc_crdt.png">
   <meta itemprop="keywords" content="UnisonDB,CRDT,Replication,Edge Computing,ZeroMQ,Go">
 
 <title>Multi-DC CRDT Replication | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/examples/multi-dc-crdt/">
+<link rel="canonical" href="http://localhost:1314/docs/examples/multi-dc-crdt/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.93e86dd413f38dd334dc7a7d7414f71e1712f4b8f8737105e6f7e1abcb1b739a.js" integrity="sha256-k&#43;ht1BPzjdM03Hp9dBT3HhcS9Lj4c3EF5vfhq8sbc5o=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.d17dc9f8d796258208051f49c3cd56bf1f018f2cc043167555ff4ba36b9c2714.js" integrity="sha256-0X3J&#43;NeWJYIIBR9Jw81Wvx8BjyzAQxZ1Vf9Lo2ucJxQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -52,7 +52,7 @@ https://github.com/alex-shpak/hugo-book
 </script>
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1314/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
@@ -63,7 +63,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="http://localhost:1313/images/multi_dc_crdt.png">
+  <meta name="twitter:image" content="http://localhost:1314/images/multi_dc_crdt.png">
   <meta name="twitter:title" content="How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB">
   <meta name="twitter:description" content="Learn how to build globally distributed, conflict-free applications using CRDTs, real-time replication, and ZeroMQ notifications in UnisonDB.">
 
@@ -552,7 +552,7 @@ https://github.com/alex-shpak/hugo-book
                                   |
                                   v
                         +---------------------+
-                        |      Relayer        |
+                        |      Replica        |
                         |     (Read-Only)     |
                         |                     |
                         |  HTTP: 8003         |
@@ -596,7 +596,7 @@ https://github.com/alex-shpak/hugo-book
           <td>-</td>
       </tr>
       <tr>
-          <td><strong>Relayer</strong></td>
+          <td><strong>Replica</strong></td>
           <td>Read-only replica</td>
           <td><code>ad-campaign-dc1</code>, <code>ad-campaign-dc2</code></td>
           <td>8003</td>
@@ -621,9 +621,9 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go build -tags zeromq ./cmd/unisondb</span></span></code></pre></div><h3 id="step-2-start-the-multi-dc-cluster">Step 2: Start the Multi-DC Cluster<a class="anchor" href="#step-2-start-the-multi-dc-cluster">#</a></h3>
 <p>Open <strong>three separate terminal windows</strong> and run:</p>
 <p><strong>Terminal 1: Start Datacenter 1</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml replicator</span></span></code></pre></div><p><strong>Terminal 2: Start Datacenter 2</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml replicator</span></span></code></pre></div><p><strong>Terminal 3: Start Relayer</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml relayer</span></span></code></pre></div><p>You should see output indicating each node is ready:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb server -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml</span></span></code></pre></div><p><strong>Terminal 2: Start Datacenter 2</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb server -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml</span></span></code></pre></div><p><strong>Terminal 3: Start Replica</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./unisondb replica -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml</span></span></code></pre></div><p>You should see output indicating each node is ready:</p>
 <pre tabindex="0"><code>INFO: HTTP server listening on :8001
 INFO: gRPC server listening on :4001
 INFO: Namespace &#39;ad-campaign-dc1&#39; initialized</code></pre><h3 id="step-3-start-the-crdt-client">Step 3: Start the CRDT Client<a class="anchor" href="#step-3-start-the-crdt-client">#</a></h3>

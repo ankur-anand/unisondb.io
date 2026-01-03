@@ -25,7 +25,7 @@ This guide covers everything you need to install, configure, and operate UnisonD
 ## Documentation Sections
 
 ### [Getting Started](getting-started/)
-Step-by-step installation and quick-start setup for UnisonDB, including **replicator** and **relayer** modes.
+Step-by-step installation and quick-start setup for UnisonDB, including **server**, **replica**, and **relay** modes.
 
 ### [Architecture](architecture/)
 Dive into UnisonDB’s core concepts — **log-native storage**, **WAL streaming replication**, and **edge-first design**.

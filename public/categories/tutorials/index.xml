@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tutorials on UnisonDB</title>
-    <link>http://localhost:1313/categories/tutorials/</link>
+    <link>http://localhost:1314/categories/tutorials/</link>
     <description>Recent content in Tutorials on UnisonDB</description>
     <generator>Hugo</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 02 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/tutorials/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1314/categories/tutorials/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to Build Conflict-Free Multi-Datacenter Systems with CRDTs and UnisonDB</title>
-      <link>http://localhost:1313/docs/examples/multi-dc-crdt/</link>
+      <link>http://localhost:1314/docs/examples/multi-dc-crdt/</link>
       <pubDate>Sun, 02 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/examples/multi-dc-crdt/</guid>
-      <description>&lt;img src=&#34;http://localhost:1313/images/multi_dc_crdt.svg&#34; alt=&#34;Multi DC CRDT&#34; /&gt;&#xA;&lt;h2 id=&#34;introduction-the-challenge-of-distributed-state-management&#34;&gt;Introduction: The Challenge of Distributed State Management&lt;a class=&#34;anchor&#34; href=&#34;#introduction-the-challenge-of-distributed-state-management&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Imagine you&amp;rsquo;re building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;&lt;strong&gt;Conflict-free Replicated Data Types (CRDTs)&lt;/strong&gt;&lt;/a&gt;&#xA; offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with &lt;strong&gt;edge notifications&lt;/strong&gt;, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.&lt;/p&gt;</description>
+      <guid>http://localhost:1314/docs/examples/multi-dc-crdt/</guid>
+      <description>&lt;img src=&#34;http://localhost:1314/images/multi_dc_crdt.svg&#34; alt=&#34;Multi DC CRDT&#34; /&gt;&#xA;&lt;h2 id=&#34;introduction-the-challenge-of-distributed-state-management&#34;&gt;Introduction: The Challenge of Distributed State Management&lt;a class=&#34;anchor&#34; href=&#34;#introduction-the-challenge-of-distributed-state-management&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Imagine you&amp;rsquo;re building a globally distributed application where users across different continents need to see consistent data think user presence status, live dashboards, or real-time collaboration features. Traditional databases force you to choose between consistency and availability, but what if there was a better way?&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;&lt;strong&gt;Conflict-free Replicated Data Types (CRDTs)&lt;/strong&gt;&lt;/a&gt;&#xA; offer a mathematical approach to distributed state management where conflicts are resolved automatically through well-defined merge operations. When combined with &lt;strong&gt;edge notifications&lt;/strong&gt;, you get a powerful pattern: write anywhere, replicate everywhere, and get notified of changes in real-time.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

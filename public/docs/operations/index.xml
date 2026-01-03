@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Operations on UnisonDB</title>
-    <link>http://localhost:1313/docs/operations/</link>
+    <link>http://localhost:1314/docs/operations/</link>
     <description>Recent content in Operations on UnisonDB</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <atom:link href="http://localhost:1313/docs/operations/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1314/docs/operations/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Backup and Restore</title>
-      <link>http://localhost:1313/docs/operations/backup-restore/</link>
+      <link>http://localhost:1314/docs/operations/backup-restore/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/operations/backup-restore/</guid>
+      <guid>http://localhost:1314/docs/operations/backup-restore/</guid>
       <description>&lt;h1 id=&#34;backup-and-restore&#34;&gt;Backup and Restore&lt;a class=&#34;anchor&#34; href=&#34;#backup-and-restore&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;UnisonDB provides HTTP APIs for creating durable backups of both Write-Ahead Log (WAL) segments and B-Tree snapshots.&lt;/p&gt;&#xA;&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;a class=&#34;anchor&#34; href=&#34;#overview&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;UnisonDB&amp;rsquo;s backup system is designed around two complementary artifacts:&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;Component&lt;/th&gt;&#xA;          &lt;th&gt;Purpose&lt;/th&gt;&#xA;          &lt;th&gt;Recovery Capability&lt;/th&gt;&#xA;          &lt;th&gt;Storage Size&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;WAL Segments&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Incremental transaction logs&lt;/td&gt;&#xA;          &lt;td&gt;Point-in-time recovery&lt;/td&gt;&#xA;          &lt;td&gt;Small (append-only)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;B-Tree Snapshots&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Full database state&lt;/td&gt;&#xA;          &lt;td&gt;Fast baseline restore&lt;/td&gt;&#xA;          &lt;td&gt;Larger (full state)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;&lt;strong&gt;Key Principles:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Namespace isolation&lt;/strong&gt;: Each namespace has its own backup root (&lt;code&gt;&amp;lt;dataDir&amp;gt;/backups/{namespace}&lt;/code&gt;)&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Crash-consistent&lt;/strong&gt;: All backups are atomic and immediately usable&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;BYO tooling&lt;/strong&gt;: UnisonDB emits raw files; you control compression, encryption, and storage&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;: Relative paths only—no directory traversal or cross-namespace access&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;backup-apis&#34;&gt;Backup APIs&lt;a class=&#34;anchor&#34; href=&#34;#backup-apis&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;wal-segment-backup&#34;&gt;WAL Segment Backup&lt;a class=&#34;anchor&#34; href=&#34;#wal-segment-backup&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;Copies sealed WAL segments to a backup directory for incremental archival.&lt;/p&gt;</description>
     </item>
   </channel>

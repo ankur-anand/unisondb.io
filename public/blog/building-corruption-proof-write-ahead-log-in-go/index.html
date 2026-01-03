@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -11,7 +11,7 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/blog/building-corruption-proof-write-ahead-log-in-go/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="Building a Corruption-Proof Write-Ahead Log in Go">
   <meta property="og:description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
@@ -20,26 +20,26 @@ https://github.com/alex-shpak/hugo-book
     <meta property="article:section" content="blog">
     <meta property="article:published_time" content="2025-12-14T00:00:00+00:00">
     <meta property="article:modified_time" content="2025-12-14T00:00:00+00:00">
-    <meta property="og:image" content="http://localhost:1313/images/wal_fs.png">
+    <meta property="og:image" content="http://localhost:1314/images/wal_fs.png">
 
 
   <meta itemprop="name" content="Building a Corruption-Proof Write-Ahead Log in Go">
   <meta itemprop="description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
   <meta itemprop="datePublished" content="2025-12-14T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-12-14T00:00:00+00:00">
-  <meta itemprop="wordCount" content="2190">
-  <meta itemprop="image" content="http://localhost:1313/images/wal_fs.png">
+  <meta itemprop="wordCount" content="2197">
+  <meta itemprop="image" content="http://localhost:1314/images/wal_fs.png">
   <meta itemprop="keywords" content="Go,Golang,Write-Ahead Log,WAL,Database Engineering,Data Reliability,System Programming,UnisonDB,fsync,mmap">
 
 <title>Building a Corruption-Proof Write-Ahead Log in Go | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/blog/building-corruption-proof-write-ahead-log-in-go/">
+<link rel="canonical" href="http://localhost:1314/blog/building-corruption-proof-write-ahead-log-in-go/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.93e86dd413f38dd334dc7a7d7414f71e1712f4b8f8737105e6f7e1abcb1b739a.js" integrity="sha256-k&#43;ht1BPzjdM03Hp9dBT3HhcS9Lj4c3EF5vfhq8sbc5o=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.d17dc9f8d796258208051f49c3cd56bf1f018f2cc043167555ff4ba36b9c2714.js" integrity="sha256-0X3J&#43;NeWJYIIBR9Jw81Wvx8BjyzAQxZ1Vf9Lo2ucJxQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -52,7 +52,7 @@ https://github.com/alex-shpak/hugo-book
 </script>
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1314/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
@@ -63,7 +63,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="http://localhost:1313/images/wal_fs.png">
+  <meta name="twitter:image" content="http://localhost:1314/images/wal_fs.png">
   <meta name="twitter:title" content="Building a Corruption-Proof Write-Ahead Log in Go">
   <meta name="twitter:description" content="Learn how to build a crash-safe Write-Ahead Log (WAL) in Go, and why CRC32 alone is not enough. We explore the durability layers UnisonDB uses to prevent corruption after crashes.">
 
@@ -509,8 +509,8 @@ https://github.com/alex-shpak/hugo-book
 <p>The purpose of a <a href="https://en.wikipedia.org/wiki/Write-ahead_logging" target="_blank" rel="noopener noreferrer">Write-ahead logging</a>
  is not just to record writes in order, but to make correctness provable. After a crash, the database treats the log as evidence, replaying only records that can be proven complete and correct.</p>
 </blockquote><h2 id="the-stakes-streaming-replication">The Stakes: Streaming Replication<a class="anchor" href="#the-stakes-streaming-replication">#</a></h2>
-<p><a href="https://unisondb.io" target="_blank" rel="noopener noreferrer">UnisonDB</a>
- WAL isn&rsquo;t just a recovery mechanism—it&rsquo;s the <strong>primary source for replication</strong>. Followers continuously read from the leader&rsquo;s WAL segments, applying records as they arrive.</p>
+<p>In <a href="https://unisondb.io" target="_blank" rel="noopener noreferrer">UnisonDB</a>
+, the WAL serves as the <strong>primary source for replication</strong> in addition to its traditional role in recovery. Followers continuously read from the leader&rsquo;s WAL segments, applying records as they arrive.</p>
 <pre tabindex="0"><code>┌─────────┐     WAL Segments      ┌──────────┐
 │ Leader  │ ──────────────────▶   │ Follower │
 │         │   (streaming read)    │          │
@@ -523,12 +523,12 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="the-record-format">The Record Format<a class="anchor" href="#the-record-format">#</a></h2>
 <p>Every record in our WAL has this structure:</p>
 <pre tabindex="0"><code>┌─────────────────────────────────────────────────────────────────┐
-│                         WAL Record                               │
+│                         WAL Record                              │
 ├──────────┬──────────┬─────────────────────┬─────────────────────┤
 │  CRC32   │  Length  │        Data         │       Trailer       │
 │ 4 bytes  │ 4 bytes  │     N bytes         │      8 bytes        │
 ├──────────┴──────────┴─────────────────────┴─────────────────────┤
-│                    Padded to 8-byte boundary                     │
+│                    Padded to 8-byte boundary                    │
 └─────────────────────────────────────────────────────────────────┘</code></pre><h2 id="layer-1-crc32-castagnoli">Layer 1: CRC32 (Castagnoli)<a class="anchor" href="#layer-1-crc32-castagnoli">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// CRC covers everything except itself</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">crc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">Checksum</span>(<span style="color:#a6e22e">buf</span>[<span style="color:#ae81ff">4</span>:], <span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">MakeTable</span>(<span style="color:#a6e22e">crc32</span>.<span style="color:#a6e22e">Castagnoli</span>))
@@ -540,11 +540,9 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <p>CRC doesn&rsquo;t catch:</p>
 <ul>
-<li><strong>Incomplete writes</strong> - If we crash mid-write, the CRC might be valid for the partial data</li>
+<li><strong>The &ldquo;Wild Read&rdquo; Problem</strong> - If the length header is corrupt (e.g., claiming 1GB size), a CRC check forces you to read that garbage before failing.</li>
 </ul>
-<blockquote class='book-hint '>
-<p>Garbage data is worse than missing data. Missing data can be retried or ignored; garbage data looks valid and gets applied. Once that happens, corruption spreads.</p>
-</blockquote><hr>
+<hr>
 <h2 id="layer-2-the-trailer-canary">Layer 2: The Trailer Canary<a class="anchor" href="#layer-2-the-trailer-canary">#</a></h2>
 <p>This is where <code>0xDEADBEEFFEEDFACE</code> enters the story.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">recordTrailer</span> <span style="color:#66d9ef">uint64</span> = <span style="color:#ae81ff">0xDEADBEEFFEEDFACE</span></span></span></code></pre></div><p>Every record ends with this 8-byte magic value. During recovery, we verify it.</p>
@@ -589,10 +587,8 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <hr>
 <h2 id="layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">Layer 3: WAL Alignment: What It Guarantees (and What It Doesn’t)<a class="anchor" href="#layer-3-wal-alignment-what-it-guarantees-and-what-it-doesnt">#</a></h2>
-<p>UnisonDB aligns every WAL record to an <strong>8-byte boundary</strong>. The goal isn’t to “make disk writes atomic”.
-The goal is to make <strong>WAL parsing and recovery safe</strong>.</p>
-<p>The dangerous failure mode isn’t a torn payload (CRC can catch that).
-It’s a torn or corrupted <strong>header</strong>:</p>
+<p>UnisonDB aligns every WAL record to an <strong>8-byte boundary</strong>. We do this specifically to ensure <strong>WAL parsing and recovery are safe</strong>, not to force atomic disk writes.</p>
+<p>The primary danger we are avoiding is a <strong>torn or corrupted header</strong>. While CRCs catch torn payloads, a bad header is structural damage that can confuse the parser.</p>
 <h3 id="the-real-problem-torn-headers-not-torn-payloads">The Real Problem: Torn Headers, Not Torn Payloads<a class="anchor" href="#the-real-problem-torn-headers-not-torn-payloads">#</a></h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>[ CRC32 (4 bytes) | Length (4 bytes) ]</span></span></code></pre></div><p>This 8-byte header controls how the rest of the log is parsed:</p>
 <ul>
@@ -645,7 +641,7 @@ Recovery becomes a simple state machine: read until the first error, then stop. 
 <li>or stops safely</li>
 </ul>
 <blockquote class='book-hint '>
-<p>This does not guarantee atomicity—but it dramatically reduces risk.</p>
+<p>Alignment doesn&rsquo;t prevent failure, but it downgrades a catastrophic crash into a handleable error.</p>
 </blockquote><h2 id="each-layer-protects-a-different-invariant">Each layer protects a different invariant<a class="anchor" href="#each-layer-protects-a-different-invariant">#</a></h2>
 <table>
   <thead>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -11,31 +11,31 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/getting-started/configurations/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/docs/getting-started/configurations/">
   <meta property="og:site_name" content="UnisonDB">
   <meta property="og:title" content="UnisonDB Configuration Guide">
   <meta property="og:description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+    <meta property="og:image" content="http://localhost:1314/images/og-image.png">
 
 
   <meta itemprop="name" content="UnisonDB Configuration Guide">
   <meta itemprop="description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
-  <meta itemprop="wordCount" content="1599">
-  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="wordCount" content="1632">
+  <meta itemprop="image" content="http://localhost:1314/images/og-image.png">
   <meta itemprop="keywords" content="UnisonDB configuration,UnisonDB setup guide,configure UnisonDB,database configuration file,UnisonDB WAL settings,UnisonDB replication config,edge database tuning,distributed database configuration,UnisonDB performance optimization,Watch API configuration">
 
 <title>Configuration | UnisonDB</title>
 <link rel="icon" href="/images/logo.svg" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/getting-started/configurations/">
+<link rel="canonical" href="http://localhost:1314/docs/getting-started/configurations/">
 <link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.93e86dd413f38dd334dc7a7d7414f71e1712f4b8f8737105e6f7e1abcb1b739a.js" integrity="sha256-k&#43;ht1BPzjdM03Hp9dBT3HhcS9Lj4c3EF5vfhq8sbc5o=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.d17dc9f8d796258208051f49c3cd56bf1f018f2cc043167555ff4ba36b9c2714.js" integrity="sha256-0X3J&#43;NeWJYIIBR9Jw81Wvx8BjyzAQxZ1Vf9Lo2ucJxQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -48,7 +48,7 @@ https://github.com/alex-shpak/hugo-book
 </script>
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1314/images/apple-touch-icon.png">
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
@@ -59,7 +59,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:image" content="http://localhost:1314/images/og-image.png">
   <meta name="twitter:title" content="UnisonDB Configuration Guide">
   <meta name="twitter:description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
 
@@ -422,15 +422,15 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#configuration-guide">Configuration Guide</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#replicator-mode">Replicator Mode</a></li>
-        <li><a href="#relayer-mode">Relayer Mode</a></li>
+        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#replica-mode">Replica Mode</a></li>
         <li><a href="#configuration-reference">Configuration Reference</a>
           <ul>
             <li><a href="#server-configuration">Server Configuration</a></li>
             <li><a href="#storage-configuration">Storage Configuration</a></li>
             <li><a href="#write-notification-configuration">Write Notification Configuration</a></li>
             <li><a href="#zeromq-notifier-configuration">ZeroMQ Notifier Configuration</a></li>
-            <li><a href="#relayer-configuration">Relayer Configuration</a></li>
+            <li><a href="#replica-configuration">Replica Configuration</a></li>
             <li><a href="#logging-configuration">Logging Configuration</a></li>
             <li><a href="#pprof-configuration">PProf Configuration</a></li>
             <li><a href="#fuzzer-configuration">Fuzzer Configuration</a></li>
@@ -452,18 +452,18 @@ https://github.com/alex-shpak/hugo-book
       
   <article class="markdown book-article"><h1 id="configuration-guide">Configuration Guide<a class="anchor" href="#configuration-guide">#</a></h1>
 <p>UnisonDB uses <a href="https://en.wikipedia.org/wiki/TOML" target="_blank" rel="noopener noreferrer">TOML</a>
- for configuration. This guide covers all available configuration options for both replicator and relayer modes.</p>
+ for configuration. This guide covers all available configuration options for server, replica, and relay modes.</p>
 <h2 id="table-of-contents">Table of Contents<a class="anchor" href="#table-of-contents">#</a></h2>
 <ul>
-<li><a href="#Replicator-mode" target="_blank" rel="noopener noreferrer">Replicator Mode</a>
+<li><a href="#server-mode" target="_blank" rel="noopener noreferrer">Server Mode</a>
 </li>
-<li><a href="#relayer-mode" target="_blank" rel="noopener noreferrer">Relayer Mode</a>
+<li><a href="#replica-mode" target="_blank" rel="noopener noreferrer">Replica Mode</a>
 </li>
 <li><a href="#configuration-reference" target="_blank" rel="noopener noreferrer">Configuration Reference</a>
 </li>
 </ul>
-<h2 id="replicator-mode">Replicator Mode<a class="anchor" href="#replicator-mode">#</a></h2>
-<p>Replicator mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p>
+<h2 id="server-mode">Server Mode<a class="anchor" href="#server-mode">#</a></h2>
+<p>Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here&rsquo;s a complete example:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Port of the http server</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">4000</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen_ip</span> = <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>
@@ -534,8 +534,8 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">workers_per_namespace</span> = <span style="color:#ae81ff">50</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">local_relayer_count</span> = <span style="color:#ae81ff">1000</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">startup_delay</span> = <span style="color:#e6db74">&#34;10s&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_read_ops</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h2 id="relayer-mode">Relayer Mode<a class="anchor" href="#relayer-mode">#</a></h2>
-<p>Relayer mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.</p>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">enable_read_ops</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h2 id="replica-mode">Replica Mode<a class="anchor" href="#replica-mode">#</a></h2>
+<p>Replica mode runs UnisonDB as a replica that streams changes from one or more upstream servers. This provides read scalability and data locality.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e">## Port of the http server</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">http_port</span> = <span style="color:#ae81ff">6000</span>
 </span></span><span style="display:flex;"><span>
@@ -546,17 +546,17 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">ca_path</span> = <span style="color:#e6db74">&#34;../../certs/ca.crt&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>]
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;/tmp/unisondb/relayer&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">base_dir</span> = <span style="color:#e6db74">&#34;/tmp/unisondb/replica&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>, <span style="color:#e6db74">&#34;tenant_2&#34;</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## IMPORTANT: segment_size must match upstream server!</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Relayer configuration - can have multiple upstreams</span>
-</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Replica configuration - can have multiple upstreams</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer1</span>]
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>.<span style="color:#a6e22e">replica1</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>, <span style="color:#e6db74">&#34;tenant_2&#34;</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client.crt&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client.key&#34;</span>
@@ -567,8 +567,8 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Optional: custom gRPC service config JSON</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_service_config</span> = <span style="color:#e6db74">&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Optional: Add more relayers for different upstream sources</span>
-</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer2</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Optional: Add more replicas for different upstream sources</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>.<span style="color:#a6e22e">replica2</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;tenant_3&#34;</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client2.crt&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client2.key&#34;</span>
@@ -686,7 +686,7 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li>
 <li><strong>Range</strong>: <code>1MB</code> to <code>1GB</code></li>
 <li><strong>Description</strong>: Size of each WAL segment file</li>
-<li><strong>Important</strong>: Must match across server and relayer!</li>
+<li><strong>Important</strong>: Must match across server and replica!</li>
 </ul>
 <h4 id="arena_size"><code>arena_size</code><a class="anchor" href="#arena_size">#</a></h4>
 <ul>
@@ -805,16 +805,21 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
 </span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>recv()
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Received change notification: </span><span style="color:#e6db74">{</span>message<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div><hr>
-<h3 id="relayer-configuration">Relayer Configuration<a class="anchor" href="#relayer-configuration">#</a></h3>
-<p>Relayer configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:</p>
+<h3 id="replica-configuration">Replica Configuration<a class="anchor" href="#replica-configuration">#</a></h3>
+<p>Replica configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:</p>
 <ul>
 <li><strong>Read scaling</strong>: Run multiple read replicas</li>
 <li><strong>Data locality</strong>: Keep data close to consumers in different regions</li>
 <li><strong>Backup</strong>: Maintain hot standbys</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>]
+<p><strong>Note</strong>: The same configuration can be started with either command:</p>
+<ul>
+<li><code>unisondb replica --config replica.toml</code> — Read-only replica (cannot serve downstream)</li>
+<li><code>unisondb relay --config replica.toml</code> — Relay mode (can serve downstream replicas via gRPC)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">relayer_config</span>.<span style="color:#a6e22e">relayer1</span>]
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>.<span style="color:#a6e22e">replica1</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">namespaces</span> = [<span style="color:#e6db74">&#34;default&#34;</span>, <span style="color:#e6db74">&#34;tenant_1&#34;</span>]
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">cert_path</span> = <span style="color:#e6db74">&#34;../../certs/client.crt&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">key_path</span> = <span style="color:#e6db74">&#34;../../certs/client.key&#34;</span>
@@ -822,11 +827,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">upstream_address</span> = <span style="color:#e6db74">&#34;primary-server:4001&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_lag_threshold</span> = <span style="color:#ae81ff">100</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_insecure</span> = <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_service_config</span> = <span style="color:#e6db74">&#34;&#34;</span></span></span></code></pre></div><h4 id="map-key-eg-relayer1">Map Key (e.g., <code>relayer1</code>)<a class="anchor" href="#map-key-eg-relayer1">#</a></h4>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">grpc_service_config</span> = <span style="color:#e6db74">&#34;&#34;</span></span></span></code></pre></div><h4 id="map-key-eg-replica1">Map Key (e.g., <code>replica1</code>)<a class="anchor" href="#map-key-eg-replica1">#</a></h4>
 <ul>
 <li><strong>Type</strong>: String</li>
-<li><strong>Description</strong>: Unique identifier for this relayer connection</li>
-<li><strong>Note</strong>: Multiple relayers can be configured with different keys</li>
+<li><strong>Description</strong>: Unique identifier for this replica connection</li>
+<li><strong>Note</strong>: Multiple replicas can be configured with different keys</li>
 </ul>
 <h4 id="namespaces-1"><code>namespaces</code><a class="anchor" href="#namespaces-1">#</a></h4>
 <ul>
@@ -964,11 +969,11 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>Default</strong>: <code>50</code></li>
 <li><strong>Description</strong>: Number of concurrent workers per namespace</li>
 </ul>
-<h4 id="local_relayer_count"><code>local_relayer_count</code><a class="anchor" href="#local_relayer_count">#</a></h4>
+<h4 id="local_replica_count"><code>local_replica_count</code><a class="anchor" href="#local_replica_count">#</a></h4>
 <ul>
 <li><strong>Type</strong>: Integer</li>
 <li><strong>Default</strong>: <code>1000</code></li>
-<li><strong>Description</strong>: Number of local relayer goroutines to simulate</li>
+<li><strong>Description</strong>: Number of local replica goroutines to simulate</li>
 </ul>
 <h4 id="startup_delay"><code>startup_delay</code><a class="anchor" href="#startup_delay">#</a></h4>
 <ul>
@@ -1066,15 +1071,15 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#configuration-guide">Configuration Guide</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#replicator-mode">Replicator Mode</a></li>
-        <li><a href="#relayer-mode">Relayer Mode</a></li>
+        <li><a href="#server-mode">Server Mode</a></li>
+        <li><a href="#replica-mode">Replica Mode</a></li>
         <li><a href="#configuration-reference">Configuration Reference</a>
           <ul>
             <li><a href="#server-configuration">Server Configuration</a></li>
             <li><a href="#storage-configuration">Storage Configuration</a></li>
             <li><a href="#write-notification-configuration">Write Notification Configuration</a></li>
             <li><a href="#zeromq-notifier-configuration">ZeroMQ Notifier Configuration</a></li>
-            <li><a href="#relayer-configuration">Relayer Configuration</a></li>
+            <li><a href="#replica-configuration">Replica Configuration</a></li>
             <li><a href="#logging-configuration">Logging Configuration</a></li>
             <li><a href="#pprof-configuration">PProf Configuration</a></li>
             <li><a href="#fuzzer-configuration">Fuzzer Configuration</a></li>

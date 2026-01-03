@@ -89,7 +89,7 @@
   <rect class="cls-6" x="62" y="258.64" width="880" height="80" rx="4" ry="4"/>
   <text class="cls-3" transform="translate(77 278.64)"><tspan x="0" y="0">Start Server</tspan></text>
   <rect class="cls-9" x="77" y="285.64" width="850" height="43" rx="3" ry="3"/>
-  <text class="cls-2" transform="translate(87 300.64)"><tspan x="0" y="0">./unisondb --config server.toml replicator</tspan></text>
+  <text class="cls-2" transform="translate(87 300.64)"><tspan x="0" y="0">./unisondb server --config server.toml</tspan></text>
   <text class="cls-4" transform="translate(87 315.64)"><tspan x="0" y="0"># Server running on http://localhost:8080</tspan></text>
   <circle class="cls-8" cx="22" cy="385.64" r="22"/>
   <text class="cls-1" transform="translate(17.55 392.64)"><tspan x="0" y="0">4</tspan></text>

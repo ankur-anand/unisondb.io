@@ -52,7 +52,7 @@ Our demo system consists of three UnisonDB nodes:
                                   |
                                   v
                         +---------------------+
-                        |      Relayer        |
+                        |      Replica        |
                         |     (Read-Only)     |
                         |                     |
                         |  HTTP: 8003         |
@@ -75,7 +75,7 @@ Our demo system consists of three UnisonDB nodes:
 |-----------|------|-----------|-----------|-----------|-----------|
 | **DC1** | Primary (accepts writes) | `ad-campaign-dc1` | 8001 | 4001 | - |
 | **DC2** | Primary (accepts writes) | `ad-campaign-dc2` | 8002 | 4002 | - |
-| **Relayer** | Read-only replica | `ad-campaign-dc1`, `ad-campaign-dc2` | 8003 | - | 5555, 5556 |
+| **Replica** | Read-only replica | `ad-campaign-dc1`, `ad-campaign-dc2` | 8003 | - | 5555, 5556 |
 
 ## Building and Running UnisonDB
 
@@ -107,17 +107,17 @@ Open **three separate terminal windows** and run:
 
 **Terminal 1: Start Datacenter 1**
 ```bash
-./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml replicator
+./unisondb server -config ./cmd/examples/crdt-multi-dc/configs/dc1.toml
 ```
 
 **Terminal 2: Start Datacenter 2**
 ```bash
-./unisondb -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml replicator
+./unisondb server -config ./cmd/examples/crdt-multi-dc/configs/dc2.toml
 ```
 
-**Terminal 3: Start Relayer**
+**Terminal 3: Start Replica**
 ```bash
-./unisondb -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml relayer
+./unisondb replica -config ./cmd/examples/crdt-multi-dc/configs/relayer.toml
 ```
 
 You should see output indicating each node is ready:

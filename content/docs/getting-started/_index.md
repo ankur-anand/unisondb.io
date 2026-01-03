@@ -4,7 +4,7 @@ linkTitle: "Getting Started"
 weight: 1
 bookCollapseSection: false
 images: ["/images/getting_started.jpg"]
-description: "Step-by-step guide to install, configure, and run UnisonDB in under 5 minutes. Learn how to set up replicator and relayer modes for real-time data replication and edge deployment."
+description: "Step-by-step guide to install, configure, and run UnisonDB in under 5 minutes. Learn how to set up server and replica modes for real-time data replication and edge deployment."
 keywords: [
   "UnisonDB quick start",
   "install UnisonDB",
@@ -13,8 +13,8 @@ keywords: [
   "real-time replication database",
   "WAL-based database",
   "distributed database getting started",
-  "UnisonDB replicator mode",
-  "UnisonDB relayer mode",
+  "UnisonDB server mode",
+  "UnisonDB replica mode",
   "UnisonDB configuration guide"
 ]
 ---
@@ -24,11 +24,11 @@ keywords: [
 
 <img src="/images/getting_started.svg" alt="Getting Started with UnisonDB" style="max-width: 100%; height: auto;" />
 
-This guide will walk you through installing UnisonDB, configuring it, and running it in both Replicator and Relayer modes.
+This guide will walk you through installing UnisonDB, configuring it, and running it in both Server and Replica modes.
 
 ```
           ┌────────────────┐
-          │  Replicator    │
+          │    Server      │
           │  (Primary)     │
           │  Writes → WAL  │
           │  Streams gRPC  │
@@ -39,8 +39,8 @@ This guide will walk you through installing UnisonDB, configuring it, and runnin
    ┌─────────────┴──────────────┐
    ↓                            ↓
 ┌───────────┐              ┌───────────┐
-│ Relayer 1 │              │ Relayer 2 │
-│ (Replica) │              │ (Replica) │
+│ Replica 1 │              │ Replica 2 │
+│ (Reader)  │              │ (Reader)  │
 │ Local DB  │              │ Local DB  │
 │ Watch API │              │ Watch API │
 └───────────┘              └───────────┘
@@ -51,7 +51,7 @@ This guide will walk you through installing UnisonDB, configuring it, and runnin
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Running in Server Mode](#running-in-server-mode)
-- [Running in Relayer Mode](#running-in-relayer-mode)
+- [Running in Replica Mode](#running-in-replica-mode)
 
 ## Prerequisites
 
@@ -98,15 +98,15 @@ USAGE:
    unisondb [global options] command [command options]
 
 COMMANDS:
-   replicator  Run in replicator mode
-   relayer     Run in relayer mode
-   fuzzer      This is a testing-only feature (disabled in production builds)
+   server      Run in server mode (primary, accepts writes)
+   replica     Run in replica mode (read-only, streams from upstream)
+   relay       Run in relay mode (replica with gRPC for downstream)
+   fuzz        This is a testing-only feature (disabled in production builds)
    help, h     Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --config value, -c value  Path to TOML config file (default: "./config.toml") [$UNISON_CONFIG]
    --env value, -e value     Environment: dev, staging, prod (default: "dev") [$UNISON_ENV]
-   --grpc, -G                Enable gRPC server in Relayer Mode (default: false) [$UNISON_GRPC_ENABLED]
    --help, -h                show help
 ```
 
@@ -119,12 +119,12 @@ CGO_ENABLED=1 go build -tags fuzz -o unisondb ./cmd/unisondb
 ```
 
 **Note**: When built with `-tags fuzz`:
-- `fuzzer` command is available
-- `replicator` command is **disabled** for safety
+- `fuzz` command is available
+- `server` command is **disabled** for safety
 
 To run fuzzer mode:
 ```bash
-./unisondb --config config.toml fuzzer
+./unisondb fuzz --config config.toml
 ```
 
 ### Installation to System Path (Optional)
@@ -137,9 +137,9 @@ sudo mv unisondb /usr/local/bin/
 unisondb --help
 ```
 
-## Running in Replicator Mode
+## Running in Server Mode
 
-Replicator Mode runs UnisonDB as a **primary instance** that accepts writes and serves reads.
+Server Mode runs UnisonDB as a **primary instance** that accepts writes and serves reads.
 
 ### 1. Generate TLS Certificates (Recommended)
 
@@ -234,11 +234,11 @@ warn  = 100.0
 error = 100.0
 ```
 
-### 3. Start the Replicator Server
+### 3. Start the Server
 
-**Replicator Mode** (using `replicator` command):
+**Server Mode** (using `server` command):
 ```bash
-./unisondb --config server.toml replicator
+./unisondb server --config server.toml
 ```
 
 ### 4. Verify Server is Running
@@ -269,23 +269,23 @@ log_level = "debug"
 ```
 
 ```bash
-./unisondb --config server-dev.toml replicator
+./unisondb server --config server-dev.toml
 ```
 
-## Running in Relayer Mode
+## Running in Replica Mode
 
-Relayer Mode runs UnisonDB as a **replica** that streams changes from an upstream server.
+Replica Mode runs UnisonDB as a **read-only replica** that streams changes from an upstream server.
 
-### 1. Create Relayer Configuration
+### 1. Create Replica Configuration
 
-Create a `relayer.toml` configuration file:
+Create a `replica.toml` configuration file:
 
 ```toml
 ## HTTP API port (different from server)
 http_port = 5000
 listen_ip = "0.0.0.0"
 
-## gRPC config (can accept downstream relayers)
+## gRPC config (can accept downstream replicas)
 [grpc_config]
 listen_ip = "0.0.0.0"
 port = 5001
@@ -295,15 +295,15 @@ ca_path = "./certs/ca.crt"
 
 ## Storage configuration
 [storage_config]
-base_dir = "./data/relayer"
+base_dir = "./data/replica"
 namespaces = ["default", "users", "products"]
 bytes_per_sync = "1MB"
 # IMPORTANT: segment_size MUST match upstream server!
 segment_size = "16MB"
 arena_size = "4MB"
 
-## Relayer configuration - connects to upstream
-[relayer_config.primary]
+## Replica configuration - connects to upstream
+[replica_config.primary]
 namespaces = ["default", "users", "products"]
 cert_path = "./certs/client.crt"
 key_path = "./certs/client.key"
@@ -313,7 +313,7 @@ segment_lag_threshold = 100
 allow_insecure = false
 
 ## Optional: Connect to multiple upstreams
-# [relayer_config.secondary]
+# [replica_config.secondary]
 # namespaces = ["products"]
 # upstream_address = "other-server:4001"
 # cert_path = "./certs/client.crt"
@@ -337,26 +337,26 @@ warn  = 100.0
 error = 100.0
 ```
 
-### 2. Start the Relayer Server
+### 2. Start the Replica
 
-**Start relayer**:
+**Start replica**:
 ```bash
-./unisondb --config relayer.toml relayer
+./unisondb replica --config replica.toml
 ```
 
-### 3. Enable gRPC Server on Relayer (Multi-Hop)
+### 3. Enable Relay Mode (Multi-Hop)
 
-To allow downstream relayers to connect to this relayer:
+To allow downstream replicas to connect, use `relay` mode instead:
 
 ```bash
-./unisondb --config relayer.toml --grpc relayer
+./unisondb relay --config replica.toml
 ```
 
-This enables the relayer to act as both a **consumer** (from upstream) and a **producer** (to downstream).
+This enables the node to act as both a **consumer** (from upstream) and a **producer** (to downstream).
 
 ### Development Mode (Insecure)
 
-**relayer-dev.toml**:
+**replica-dev.toml**:
 ```toml
 http_port = 5000
 
@@ -364,11 +364,11 @@ http_port = 5000
 port = 5001
 
 [storage_config]
-base_dir = "./data/relayer"
+base_dir = "./data/replica"
 namespaces = ["default"]
 segment_size = "16MB"  # Must match server!
 
-[relayer_config.primary]
+[replica_config.primary]
 namespaces = ["default"]
 upstream_address = "localhost:4001"
 allow_insecure = true  # WARNING: Development only!
@@ -379,7 +379,7 @@ log_level = "debug"
 ```
 
 ```bash
-./unisondb --config relayer-dev.toml relayer
+./unisondb replica --config replica-dev.toml
 ```
 
 ## Basic Operations
@@ -417,7 +417,7 @@ curl -X POST http://localhost:4000/api/v1/namespaces/default/kv/batch \
 curl http://localhost:4000/api/v1/namespaces/default/kv/user:123
 ```
 
-**Read from Relayer** (same API):
+**Read from Replica** (same API):
 ```bash
 curl http://localhost:5000/api/v1/namespaces/default/kv/user:123
 ```
@@ -470,47 +470,47 @@ Now any writes to the `default` namespace will trigger notifications!
 
 ```bash
 # Terminal 1: Start server
-./unisondb --config server-dev.toml replicator
+./unisondb server --config server-dev.toml
 ```
 
-### 2. Server + Single Relayer (Read Scaling)
+### 2. Server + Single Replica (Read Scaling)
 
 ```bash
 # Terminal 1: Start server
-./unisondb --config server.toml replicator
+./unisondb server --config server.toml
 
-# Terminal 2: Start relayer
-./unisondb --config relayer.toml relayer
+# Terminal 2: Start replica
+./unisondb replica --config replica.toml
 ```
 
-### 3. Server + Multiple Relayers (Edge Computing)
+### 3. Server + Multiple Replicas (Edge Computing)
 
 ```bash
 # Terminal 1: Start server
-./unisondb --config server.toml replicator
+./unisondb server --config server.toml
 
-# Terminal 2: Start relayer 1
-./unisondb --config relayer1.toml relayer
+# Terminal 2: Start replica 1
+./unisondb replica --config replica1.toml
 
-# Terminal 3: Start relayer 2
-./unisondb --config relayer2.toml relayer
+# Terminal 3: Start replica 2
+./unisondb replica --config replica2.toml
 
-# Terminal 4: Start relayer 3
-./unisondb --config relayer3.toml relayer
+# Terminal 4: Start replica 3
+./unisondb replica --config replica3.toml
 ```
 
-### 4. Multi-Hop (Relayer → Relayer)
+### 4. Multi-Hop (Relay → Replica)
 
 ```bash
 # Terminal 1: Primary server
-./unisondb --config server.toml replicator
+./unisondb server --config server.toml
 
-# Terminal 2: L1 relayer (with gRPC enabled for downstream)
-./unisondb --config relayer-l1.toml --grpc relayer
+# Terminal 2: L1 relay (with gRPC for downstream)
+./unisondb relay --config relay-l1.toml
 
-# Terminal 3: L2 relayer (connects to L1)
-# Update relayer-l2.toml upstream_address to point to L1 (localhost:5001)
-./unisondb --config relayer-l2.toml relayer
+# Terminal 3: L2 replica (connects to L1)
+# Update replica-l2.toml upstream_address to point to L1 (localhost:5001)
+./unisondb replica --config replica-l2.toml
 ```
 
 Happy building with UnisonDB!
