@@ -29,7 +29,7 @@ UnisonDB uses [TOML](https://en.wikipedia.org/wiki/TOML) for configuration. This
 
 ## Server Mode
 
-Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Here's a complete example:
+Server mode runs UnisonDB as a primary instance that accepts writes and serves reads. Raft consensus is supported only in server mode. Here's a complete example:
 
 ```toml
 ## Port of the http server
@@ -63,6 +63,16 @@ interval = "5m"
 max_age = "1h"
 min_segments = 5
 max_segments = 10
+
+## Raft configuration (write servers only)
+[raft_config]
+enabled = true
+node_id = "server-1"
+bind_addr = "127.0.0.1:7000"
+bootstrap = true
+# serf_bind_addr = "127.0.0.1"
+# serf_bind_port = 7946
+# serf_peers = ["127.0.0.1:7946"]
 
 ## Write notify config - coalesces notifications from WAL writers to readers
 [write_notify_config]
@@ -136,7 +146,7 @@ cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
 ca_path = "../../certs/ca.crt"
 upstream_address = "localhost:4001"
-segment_lag_threshold = 100
+lsn_lag_threshold = 100
 allow_insecure = false
 # Optional: custom gRPC service config JSON
 grpc_service_config = ""
@@ -148,7 +158,7 @@ cert_path = "../../certs/client2.crt"
 key_path = "../../certs/client2.key"
 ca_path = "../../certs/ca.crt"
 upstream_address = "remote-server:4001"
-segment_lag_threshold = 100
+lsn_lag_threshold = 100
 
 [log_config]
 log_level = "info"
@@ -229,6 +239,125 @@ allow_insecure = false
 - **Default**: `false`
 - **Description**: Allow insecure connections without TLS
 - **Warning**: ONLY use in development! Always enable TLS in production
+
+---
+
+### Raft Configuration
+
+Raft configuration is only supported in **server mode** (write-enabled nodes).  
+Replica/relay modes are read-only and will error if Raft is enabled.
+
+```toml
+[raft_config]
+enabled = true
+node_id = "server-1"
+bind_addr = "127.0.0.1:7000"
+bootstrap = false
+
+## Optional: static peers (mutually exclusive with serf_* settings)
+[[raft_config.peers]]
+id = "server-2"
+address = "127.0.0.1:7001"
+
+## Timeouts
+heartbeat_timeout = "1s"
+election_timeout = "1s"
+commit_timeout = "50ms"
+apply_timeout = "10s"
+
+## Snapshot settings
+snapshot_interval = "30s"
+snapshot_threshold = 16384
+snapshot_retain = 2
+
+## Serf membership settings (auto-discovery)
+serf_bind_addr = "127.0.0.1"
+serf_bind_port = 7946
+serf_peers = ["127.0.0.1:7946"]
+serf_secret_key = ""
+```
+
+#### `enabled`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable Raft consensus for writes
+
+#### `node_id`
+- **Type**: String
+- **Default**: `""`
+- **Description**: Unique Raft server ID for this node
+- **Required**: Yes when Raft is enabled
+
+#### `bind_addr`
+- **Type**: String
+- **Default**: `""`
+- **Description**: Raft transport bind address (host:port)
+- **Required**: Yes when Raft is enabled
+
+#### `bootstrap`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Bootstrap a new cluster (use only on first node)
+
+#### `peers`
+- **Type**: Array of tables
+- **Description**: Static peer list for initial cluster join
+- **Note**: Mutually exclusive with `serf_bind_addr`/`serf_bind_port`
+
+#### `heartbeat_timeout`
+- **Type**: String (duration)
+- **Default**: `"1s"`
+- **Description**: Leader heartbeat interval
+
+#### `election_timeout`
+- **Type**: String (duration)
+- **Default**: `"1s"`
+- **Description**: Election timeout before a node starts campaigning
+
+#### `commit_timeout`
+- **Type**: String (duration)
+- **Default**: `"50ms"`
+- **Description**: Maximum time between commit attempts
+
+#### `apply_timeout`
+- **Type**: String (duration)
+- **Default**: `"10s"`
+- **Description**: Timeout for applying a write to the Raft log
+
+#### `snapshot_interval`
+- **Type**: String (duration)
+- **Default**: `"30s"`
+- **Description**: Minimum interval between snapshots
+
+#### `snapshot_threshold`
+- **Type**: Integer
+- **Default**: `16384`
+- **Description**: Number of new log entries since last snapshot before snapshotting
+
+#### `snapshot_retain`
+- **Type**: Integer
+- **Default**: `2`
+- **Description**: Number of snapshots to retain on disk
+
+#### `serf_bind_addr`
+- **Type**: String
+- **Default**: `""`
+- **Description**: Serf bind address for Raft membership discovery
+
+#### `serf_bind_port`
+- **Type**: Integer
+- **Default**: `0`
+- **Description**: Serf bind port for Raft membership discovery
+
+#### `serf_peers`
+- **Type**: Array of Strings
+- **Default**: `[]`
+- **Description**: Initial Serf peers to join
+
+#### `serf_secret_key`
+- **Type**: String
+- **Default**: `""`
+- **Description**: Base64-encoded Serf encryption key (optional)
 
 ---
 
@@ -422,7 +551,7 @@ cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
 ca_path = "../../certs/ca.crt"
 upstream_address = "primary-server:4001"
-segment_lag_threshold = 100
+lsn_lag_threshold = 100
 allow_insecure = false
 grpc_service_config = ""
 ```
@@ -459,10 +588,10 @@ grpc_service_config = ""
 - **Description**: Address of upstream gRPC server
 - **Format**: `host:port` (e.g., `"localhost:4001"`, `"10.0.1.5:4001"`)
 
-#### `segment_lag_threshold`
+#### `lsn_lag_threshold`
 - **Type**: Integer
 - **Default**: `100`
-- **Description**: Maximum segment lag before logging warnings
+- **Description**: Maximum LSN lag before logging warnings
 - **Note**: Helps monitor replication health
 
 #### `allow_insecure`
