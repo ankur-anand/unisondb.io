@@ -25,7 +25,7 @@ https://github.com/alex-shpak/hugo-book
   <meta itemprop="description" content="Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.">
   <meta itemprop="datePublished" content="2025-12-14T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-12-14T00:00:00+00:00">
-  <meta itemprop="wordCount" content="1012">
+  <meta itemprop="wordCount" content="1025">
   <meta itemprop="image" content="http://localhost:1314/images/og-image.png">
   <meta itemprop="keywords" content="UnisonDB,unison db,log-native database,reactive database,real-time database,AI database,AI agents,edge AI,edge computing,local-first database,distributed database,streaming replication,Go database,real-time replication,event-driven database,multimodal data storage">
 
@@ -509,11 +509,13 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="key-features">Key Features<a class="anchor" href="#key-features">#</a></h2>
 <p>UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.</p>
 <ul>
+<li><strong>High Availability Writes</strong>: <a href="https://raft.github.io/" target="_blank" rel="noopener noreferrer">Raft</a>
+ consensus on write servers (quorum acks).</li>
+<li><strong>Streaming Replication</strong> – In-sync replica (ISR)-based WAL replication with sub-second fan-out to 1000+ edge replicas ensures real-time data synchronization across distributed nodes.</li>
 <li><strong>Multi-Model Storage</strong> – Supports <a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database" target="_blank" rel="noopener noreferrer">Key-Value</a>
 , <a href="https://en.wikipedia.org/wiki/Wide-column_store" target="_blank" rel="noopener noreferrer">Wide-Column</a>
 , and <a href="https://en.wikipedia.org/wiki/Binary_large_object" target="_blank" rel="noopener noreferrer">Large Object (LOB)</a>
  data models — allowing flexible schema design for AI agents and edge systems.</li>
-<li><strong>Streaming Replication</strong> – WAL-based replication with sub-second fan-out to 100+ edge replicas ensures real-time data synchronization across distributed nodes.</li>
 <li><strong>Durable &amp; Fast</strong> – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.</li>
 <li><strong>Edge-First Architecture</strong> – Purpose-built for Edge Computing and local-first applications, ensuring near-device computation and reduced cloud dependency.</li>
 <li><strong>Namespace Isolation</strong> – Designed for multi-tenant environments, each namespace operates as an isolated database with independent replication streams and data consistency guarantees.</li>

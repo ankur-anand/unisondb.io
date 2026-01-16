@@ -43,8 +43,9 @@ It is a **reactive**, [**log-native**](https://www.unisondb.io/docs/architecture
 
 UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.  
 
+- **High Availability Writes**: [Raft](https://raft.github.io/) consensus on write servers (quorum acks).
+- **Streaming Replication** – In-sync replica (ISR)-based WAL replication with sub-second fan-out to 1000+ edge replicas ensures real-time data synchronization across distributed nodes.  
 - **Multi-Model Storage** – Supports [Key-Value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database), [Wide-Column](https://en.wikipedia.org/wiki/Wide-column_store), and [Large Object (LOB)](https://en.wikipedia.org/wiki/Binary_large_object) data models — allowing flexible schema design for AI agents and edge systems.  
-- **Streaming Replication** – WAL-based replication with sub-second fan-out to 100+ edge replicas ensures real-time data synchronization across distributed nodes.  
 - **Durable & Fast** – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.  
 - **Edge-First Architecture** – Purpose-built for Edge Computing and local-first applications, ensuring near-device computation and reduced cloud dependency.  
 - **Namespace Isolation** – Designed for multi-tenant environments, each namespace operates as an isolated database with independent replication streams and data consistency guarantees.
