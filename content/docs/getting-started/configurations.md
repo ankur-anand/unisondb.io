@@ -54,7 +54,14 @@ namespaces = ["default", "tenant_1", "tenant_2", "tenant_3", "tenant_4"]
 bytes_per_sync = "1MB"
 segment_size = "16MB"
 arena_size = "4MB"
+db_engine = "LMDB"
+btree_flush_interval = "0s"
 wal_fsync_interval = "1s"
+
+## B-tree configuration
+[storage_config.btree_config]
+no_sync = true
+mmap_size = "4GB"
 
 ## WAL cleanup configuration
 [storage_config.wal_cleanup_config]
@@ -136,6 +143,12 @@ bytes_per_sync = "1MB"
 ## IMPORTANT: segment_size must match upstream server!
 segment_size = "16MB"
 arena_size = "4MB"
+db_engine = "LMDB"
+btree_flush_interval = "0s"
+
+[storage_config.btree_config]
+no_sync = true
+mmap_size = "4GB"
 
 ## Replica configuration - can have multiple upstreams
 [replica_config]
@@ -370,8 +383,13 @@ namespaces = ["default", "app"]
 bytes_per_sync = "1MB"
 segment_size = "16MB"
 arena_size = "4MB"
+db_engine = "LMDB"
+btree_flush_interval = "0s"
 wal_fsync_interval = "1s"
-disable_entry_type_check = false
+
+[storage_config.btree_config]
+no_sync = true
+mmap_size = "4GB"
 ```
 
 #### `base_dir`
@@ -415,6 +433,37 @@ disable_entry_type_check = false
 - **Valid Units**: `ms`, `s`, `m`
 - **Description**: Interval for periodic WAL fsync
 - **Trade-off**: Lower = better durability, higher = better performance
+
+#### `db_engine`
+- **Type**: String
+- **Default**: `"LMDB"`
+- **Valid Values**: `"LMDB"`, `"BOLT"`
+- **Description**: Backing store used for the B-tree index
+
+#### `btree_flush_interval`
+- **Type**: String (duration)
+- **Default**: `"0s"` (disabled)
+- **Valid Units**: `ms`, `s`, `m`
+- **Description**: Interval for periodic B-tree fsync. When disabled, fsync happens after each memtable flush.
+
+#### B-tree Configuration
+
+```toml
+[storage_config.btree_config]
+no_sync = true
+mmap_size = "4GB"
+```
+
+##### `btree_config.no_sync`
+- **Type**: Boolean
+- **Default**: `true`
+- **Description**: Disable sync writes for the B-tree store
+
+##### `btree_config.mmap_size`
+- **Type**: String (with unit)
+- **Default**: `"4GB"`
+- **Valid Units**: `KB`, `MB`, `GB`
+- **Description**: Memory-mapped file size for the B-tree store (LMDB only; ignored for BOLT)
 
 #### WAL Cleanup Configuration
 
