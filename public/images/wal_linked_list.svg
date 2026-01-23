@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff3c9;
+        stroke: #f39e22;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke-width: 1.2px;
+      }
+
+      .cls-5 {
+        fill: #95a3b8;
+        font-family: CourierNewPSMT, 'Courier New';
+        font-size: 15.46px;
+      }
+
+      .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13 {
+        isolation: isolate;
+      }
+
+      .cls-6 {
+        font-size: 17px;
+      }
+
+      .cls-6, .cls-7, .cls-11, .cls-13 {
+        font-family: ArialMT, Arial;
+      }
+
+      .cls-6, .cls-13 {
+        fill: #495769;
+      }
+
+      .cls-7 {
+        fill: #66758c;
+        font-size: 20.1px;
+      }
+
+      .cls-2 {
+        fill: #f1f5f9;
+        stroke: #e2e8f0;
+      }
+
+      .cls-8 {
+        fill: #4667b0;
+      }
+
+      .cls-8, .cls-9, .cls-10 {
+        font-size: 18.55px;
+      }
+
+      .cls-8, .cls-9, .cls-10, .cls-12 {
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+
+      .cls-9 {
+        fill: #07976a;
+      }
+
+      .cls-10 {
+        fill: #b45626;
+      }
+
+      .cls-3 {
+        fill: #d5ecdf;
+        stroke: #07976a;
+      }
+
+      .cls-14 {
+        letter-spacing: 0em;
+      }
+
+      .cls-11 {
+        fill: #e02049;
+        font-size: 10px;
+      }
+
+      .cls-4 {
+        fill: #dee9f7;
+        stroke: #4667b0;
+      }
+
+      .cls-15 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-16 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-12 {
+        fill: #212a37;
+        font-size: 16px;
+      }
+
+      .cls-17 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-18 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-19 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-20 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-21 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-13 {
+        font-size: 11px;
+      }
+    </style>
+  </defs>
+  <text class="cls-12" transform="translate(57.03 38.49)"><tspan x="0" y="0">Linked List </tspan><tspan class="cls-19" x="88.9" y="0">W</tspan><tspan x="103.12" y="0">AL: </tspan><tspan class="cls-19" x="134.22" y="0">T</tspan><tspan x="143.11" y="0">ransaction Chain</tspan></text>
+  <text class="cls-7" transform="translate(44.35 168.9) scale(.85 1)"><tspan class="cls-21" x="0" y="0">W</tspan><tspan x="18.22" y="0">A</tspan><tspan class="cls-21" x="31.63" y="0">L</tspan><tspan class="cls-14" x="42.06" y="0" xml:space="preserve"> Sequential Log:</tspan></text>
+  <rect class="cls-2" x="44.35" y="192.09" width="105.06" height="139.13" rx="6" ry="6"/>
+  <text class="cls-6" transform="translate(78.82 230.73) scale(.85 1)"><tspan x="0" y="0">Other</tspan></text>
+  <text class="cls-6" transform="translate(84.84 253.92) scale(.85 1)"><tspan x="0" y="0">Txn</tspan></text>
+  <text class="cls-5" transform="translate(61.42 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 0</tspan></text>
+  <rect class="cls-3" x="175.68" y="192.09" width="157.6" height="139.13" rx="6" ry="6"/>
+  <text class="cls-9" transform="translate(229.52 230.73) scale(.85 1)"><tspan x="0" y="0">BEGIN</tspan></text>
+  <text class="cls-6" transform="translate(207.5 261.65) scale(.85 1)"><tspan x="0" y="0">TxnID: abc123</tspan></text>
+  <text class="cls-6" transform="translate(209.25 284.84) scale(.85 1)"><tspan x="0" y="0">PrevO</tspan><tspan class="cls-18" x="48.19" y="0">f</tspan><tspan x="52.61" y="0">fset: nil</tspan></text>
+  <text class="cls-5" transform="translate(211.13 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 100</tspan></text>
+  <rect class="cls-2" x="359.54" y="192.09" width="105.06" height="139.13" rx="6" ry="6"/>
+  <text class="cls-6" transform="translate(394.01 230.73) scale(.85 1)"><tspan x="0" y="0">Other</tspan></text>
+  <text class="cls-6" transform="translate(400.03 253.92) scale(.85 1)"><tspan x="0" y="0">Txn</tspan></text>
+  <text class="cls-5" transform="translate(368.73 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 220</tspan></text>
+  <rect class="cls-4" x="490.87" y="192.09" width="157.6" height="139.13" rx="6" ry="6"/>
+  <text class="cls-8" transform="translate(532.16 230.73) scale(.85 1)"><tspan x="0" y="0">PRE</tspan><tspan class="cls-15" x="38.14" y="0">P</tspan><tspan x="49.14" y="0">ARE</tspan></text>
+  <text class="cls-6" transform="translate(526.7 261.65) scale(.85 1)"><tspan x="0" y="0">Chunk 1 data</tspan></text>
+  <text class="cls-6" transform="translate(519.61 284.84) scale(.85 1)"><tspan x="0" y="0">PrevO</tspan><tspan class="cls-18" x="48.19" y="0">f</tspan><tspan x="52.61" y="0">fset: 100</tspan></text>
+  <text class="cls-5" transform="translate(526.32 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 300</tspan></text>
+  <rect class="cls-4" x="674.73" y="192.09" width="157.6" height="139.13" rx="6" ry="6"/>
+  <text class="cls-8" transform="translate(716.02 230.73) scale(.85 1)"><tspan x="0" y="0">PRE</tspan><tspan class="cls-15" x="38.14" y="0">P</tspan><tspan x="49.14" y="0">ARE</tspan></text>
+  <text class="cls-6" transform="translate(710.56 261.65) scale(.85 1)"><tspan x="0" y="0">Chunk 2 data</tspan></text>
+  <text class="cls-6" transform="translate(703.48 284.84) scale(.85 1)"><tspan x="0" y="0">PrevO</tspan><tspan class="cls-18" x="48.19" y="0">f</tspan><tspan x="52.61" y="0">fset: 300</tspan></text>
+  <text class="cls-5" transform="translate(710.18 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 420</tspan></text>
+  <rect class="cls-4" x="858.59" y="192.09" width="157.6" height="139.13" rx="6" ry="6"/>
+  <text class="cls-8" transform="translate(899.88 230.73) scale(.85 1)"><tspan x="0" y="0">PRE</tspan><tspan class="cls-15" x="38.14" y="0">P</tspan><tspan x="49.14" y="0">ARE</tspan></text>
+  <text class="cls-6" transform="translate(894.42 261.65) scale(.85 1)"><tspan x="0" y="0">Chunk 3 data</tspan></text>
+  <text class="cls-6" transform="translate(887.34 284.84) scale(.85 1)"><tspan x="0" y="0">PrevO</tspan><tspan class="cls-18" x="48.19" y="0">f</tspan><tspan x="52.61" y="0">fset: 420</tspan></text>
+  <text class="cls-5" transform="translate(894.05 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 540</tspan></text>
+  <rect class="cls-1" x="1042.46" y="192.09" width="118.2" height="139.13" rx="6" ry="6"/>
+  <text class="cls-10" transform="translate(1069.6 230.73) scale(.85 1)"><tspan x="0" y="0">COMMIT</tspan></text>
+  <text class="cls-6" transform="translate(1054.58 261.65) scale(.85 1)"><tspan x="0" y="0">TxnID: abc123</tspan></text>
+  <text class="cls-6" transform="translate(1051.5 284.84) scale(.85 1)"><tspan x="0" y="0">PrevO</tspan><tspan class="cls-18" x="48.19" y="0">f</tspan><tspan x="52.61" y="0">fset: 540</tspan></text>
+  <text class="cls-5" transform="translate(1058.21 315.76) scale(.85 1)"><tspan x="0" y="0">offset: 660</tspan></text>
+  <text class="cls-11" transform="translate(766.53 451.59)"><tspan x="0" y="0">PrevTxn</tspan><tspan class="cls-20" x="37.23" y="0">W</tspan><tspan x="46.3" y="0">alIndex (backward pointers form the chain)</tspan></text>
+  <g>
+    <rect class="cls-3" x="34.68" y="474.44" width="16" height="16" rx="3" ry="3"/>
+    <text class="cls-13" transform="translate(56.68 486.44)"><tspan x="0" y="0">BEGIN</tspan></text>
+    <rect class="cls-4" x="114.68" y="474.44" width="16" height="16" rx="3" ry="3"/>
+    <text class="cls-13" transform="translate(136.68 486.44)"><tspan x="0" y="0">PRE</tspan><tspan class="cls-16" x="22.62" y="0">P</tspan><tspan x="29.14" y="0">ARE</tspan></text>
+    <rect class="cls-1" x="204.68" y="474.44" width="16" height="16" rx="3" ry="3"/>
+    <text class="cls-13" transform="translate(226.68 486.44)"><tspan x="0" y="0">COMMI</tspan><tspan class="cls-17" x="37.88" y="0">T</tspan></text>
+    <rect class="cls-2" x="294.68" y="474.44" width="16" height="16" rx="3" ry="3"/>
+    <text class="cls-13" transform="translate(316.68 486.44)"><tspan x="0" y="0">Other</tspan><tspan class="cls-17" x="27.51" y="0"> </tspan><tspan x="30.37" y="0">Txn</tspan></text>
+  </g>
+</svg>

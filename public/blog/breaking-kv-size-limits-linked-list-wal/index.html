@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Key-Value size limits (512KB/1.5MB) are essential for cluster health. Learn how UnisonDB bypasses these constraints using a Linked List WAL without breaking atomicity.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/blog/breaking-kv-size-limits-linked-list-wal/">
+  <meta property="og:site_name" content="UnisonDB">
+  <meta property="og:title" content="Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes">
+  <meta property="og:description" content="Key-Value size limits (512KB/1.5MB) are essential for cluster health. Learn how UnisonDB bypasses these constraints using a Linked List WAL without breaking atomicity.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2026-01-23T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-01-23T00:00:00+00:00">
+    <meta property="og:image" content="http://localhost:1314/images/wal_linked_list.png">
+
+
+  <meta itemprop="name" content="Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes">
+  <meta itemprop="description" content="Key-Value size limits (512KB/1.5MB) are essential for cluster health. Learn how UnisonDB bypasses these constraints using a Linked List WAL without breaking atomicity.">
+  <meta itemprop="datePublished" content="2026-01-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1451">
+  <meta itemprop="image" content="http://localhost:1314/images/wal_linked_list.png">
+  <meta itemprop="keywords" content="Go,Golang,Write-Ahead Log,WAL,Database Engineering,Data Reliability,System Programming,UnisonDB,fsync,mmap,Multi-modal">
+
+<title>Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes | UnisonDB</title>
+<link rel="icon" href="/images/logo.svg" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1314/blog/breaking-kv-size-limits-linked-list-wal/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.16f885df0b4b63f180b3a871a873dc2752576b883f4af9961562197a06a7e417.js" integrity="sha256-FviF3wtLY/GAs6hxqHPcJ1JXa4g/SvmWFWIZegan5Bc=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXZKSVMHYJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXZKSVMHYJ');
+</script>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1314/images/apple-touch-icon.png">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<meta name="author" content="Ankur Anand">
+<meta name="keywords" content="Go, Golang, Write-Ahead Log, WAL, Database Engineering, Data Reliability, System Programming, UnisonDB, fsync, mmap, Multi-modal">
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1314/images/wal_linked_list.png">
+  <meta name="twitter:title" content="Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes">
+  <meta name="twitter:description" content="Key-Value size limits (512KB/1.5MB) are essential for cluster health. Learn how UnisonDB bypasses these constraints using a Linked List WAL without breaking atomicity.">
+
+
+
+<meta name="twitter:site" content="@in_aanand">
+<meta name="twitter:creator" content="@in_aanand">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://unisondb.io/#website",
+  "name": "UnisonDB",
+  "url": "https://unisondb.io/",
+  "inLanguage": "en-US",
+  "description": "Key-Value size limits (512KB\/1.5MB) are essential for cluster health. Learn how UnisonDB bypasses these constraints using a Linked List WAL without breaking atomicity.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://unisondb.io/#organization",
+    "name": "The UnisonDB Authors",
+    "url": "https://unisondb.io/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://unisondb.io/images/logo.svg"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://unisondb.io/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-blog">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><img src="/images/logo.svg" alt="Logo" /><span>UnisonDB</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/getting-started/" class="">
+      Getting Started</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/getting-started/configurations/" class="">
+      Configuration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/architecture/" class="">
+      Architecture Overview</a>
+  
+
+        
+  <ul>
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/api/" class="">
+      API Reference</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/api/http-api/" class="">
+      HTTP API Reference</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/deployment/" class="">
+      Deployment Topologies</a>
+  
+
+        
+  <ul>
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/operations/" class="">
+      Operations</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/operations/backup-restore/" class="">
+      Backup and Restore</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+    
+      <li>
+        
+  
+  
+
+  
+    <a href="/docs/examples/" class="">
+      Examples</a>
+  
+
+        
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/examples/multi-dc-crdt/" class="">
+      Multi-DC CRDT Replication</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+      </li>
+    
+  
+
+
+
+
+  <li class="book-section-flat"  class="book-section-collapse" >
+    
+  
+  
+
+  
+    <input type="checkbox" id="section-9a540b355eab634b7d2d40f68ad2c4e6" class="toggle" checked />
+    <label for="section-9a540b355eab634b7d2d40f68ad2c4e6" class="flex">
+      <a role="button" class="">
+        Blog Posts</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+    
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/blog/breaking-kv-size-limits-linked-list-wal/" class="active">
+      Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/blog/building-corruption-proof-write-ahead-log-in-go/" class="">
+      Building a Corruption-Proof Write-Ahead Log in Go</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+  </li>
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener" class="book-github-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </svg>
+      GitHub
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/ankur-anand/unisondb/discussions" target="_blank" rel="noopener" class="book-discussions-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="book-icon">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Discussions
+    </a>
+  </li>
+</ul>
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-hard-wall-of-distributed-systems">The &ldquo;Hard Wall&rdquo; of Distributed Systems</a></li>
+        <li><a href="#why-isr-edge-replication-changes-the-stakes">Why ISR Edge Replication Changes the Stakes</a></li>
+        <li><a href="#why-manual-chunking-fails">Why Manual Chunking Fails</a></li>
+        <li><a href="#unisondb-solution-a-wal-that-remembers-its-past">Unisondb Solution: A WAL That Remembers Its Past</a></li>
+        <li><a href="#the-flow-begin-prepare-commit">The Flow: BEGIN, PREPARE, COMMIT</a></li>
+        <li><a href="#seeing-it-in-the-code">Seeing it in the Code</a></li>
+        <li><a href="#the-recovery-walk">The Recovery Walk</a>
+          <ul>
+            <li><a href="#reconstructing-the-value">Reconstructing the Value</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown book-post">
+  <h1>Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes</h1>
+
+  
+  <div class="book-post-header-meta" style="margin: 1rem 0 2rem 0; padding-bottom: 1.5rem; border-bottom: 2px solid var(--gray-200, #e5e7eb); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; color: var(--gray-600, #6b7280);">
+    
+    <div class="flex align-center text-small book-post-date" style="display: flex; align-items: center; gap: 0.5rem;">
+      <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+      <time datetime="2026-01-23">
+        January 23, 2026
+      </time>
+    </div>
+    
+
+    
+  </div>
+
+  
+  
+  <div class="book-post-summary" style="margin: 0 0 2rem 0; padding: 1.25rem 1.5rem; background: var(--gray-100, #f3f4f6); border-left: 4px solid var(--color-link, #0055bb); border-radius: 0.25rem; font-style: italic; color: var(--gray-700, #374151); line-height: 1.6;">
+    In this post, we explore how UnisonDB uses standard size limits to protect itself, while providing a way to write large Key-Value, Wide-Column, and LOB data without sacrificing the atomicity promise.
+  </div>
+  
+
+  
+  <div class="book-post-content markdown-inner">
+    <img src="/images/wal_linked_list.svg" alt="Diagram of UnisonDB's corruption-proof WAL path" />
+<h2 id="the-hard-wall-of-distributed-systems">The &ldquo;Hard Wall&rdquo; of Distributed Systems<a class="anchor" href="#the-hard-wall-of-distributed-systems">#</a></h2>
+<p>The majority of distributed Key-Value systems have some kind of limit. This limit exists for a purpose: it prevents a single request from overwhelming memory or stalling replication.</p>
+<p>Whether it&rsquo;s the 512KB cap in <a href="https://developer.hashicorp.com/consul/docs/automate/kv" target="_blank" rel="noopener noreferrer">Consul</a>
+ or the 1.5MB default in <a href="https://etcd.io/docs/v3.6/dev-guide/limit/" target="_blank" rel="noopener noreferrer">etcd</a>
+, these boundaries are a survival mechanism. In a distributed cluster, every byte you write has to be replicated via protocols like Raft. If a single record is too large, it creates &ldquo;head-of-line blocking&rdquo;—the entire replication pipeline slows down just to move one massive object, potentially causing heartbeats to fail and nodes to drop out of the cluster.</p>
+<p>At UnisonDB, we respect these same limits to protect our own system health. We need to be even more cautious about this, as we are not just doing Raft replication for writes. We also have high-fanout ISR (in-sync-replica) based edge replicas, meaning a single write can propagate to many more nodes.</p>
+<h2 id="why-isr-edge-replication-changes-the-stakes">Why ISR Edge Replication Changes the Stakes<a class="anchor" href="#why-isr-edge-replication-changes-the-stakes">#</a></h2>
+<p>In our environment, the &ldquo;Hard Wall&rdquo; isn&rsquo;t just about protecting memory or Raft heartbeats within a small core cluster. It is about protecting the replication integrity and lag across a vast edge network.</p>
+<ul>
+<li>
+<p><strong>Heartbeat Fragility in Edge Environments</strong>: Edge networks often have variable latency and less reliable connections. If replication takes too long because of oversized records, the system might falsely flag an edge node as &ldquo;out of sync,&rdquo; triggering expensive and unnecessary full re-syncs, wasting bandwidth and compute.</p>
+</li>
+<li>
+<p><strong>Memory Pressure on Constrained Edge Nodes</strong>: Unlike robust core cluster nodes, edge replicas frequently run on more resource-constrained hardware. Pushing a 20MB block in a single request could easily cause an Out Of Memory (OOM) event on a smaller edge instance, leading to outages at the edge.</p>
+</li>
+</ul>
+<p>But even with these constraints, we also understand that the need for large Key-Value storage hasn&rsquo;t gone away—it has actually intensified. As an Edge-replicated, general-purpose Multi-Modal database, we see this constantly. Whether it&rsquo;s a massive JSON configuration or high-dimensional vectors for AI use cases, modern data frequently pushes past those old boundaries.</p>
+<p>This size pressure usually shows up in two ways:</p>
+<ol>
+<li><strong>Batch Writes</strong>: A single transaction involving multiple Key-Value pairs that, when grouped together, exceed the 1MB limit.</li>
+<li><strong>Wide-Column/Row Updates</strong>: A single row containing hundreds of columns where the aggregate size of the update blows past the ceiling.</li>
+</ol>
+<p>In both cases, the user will expects the same ironclad KV guarantees they get with a tiny 1KB write. You shouldn&rsquo;t have to sacrifice Atomicity just because your data model is complex.</p>
+<h2 id="why-manual-chunking-fails">Why Manual Chunking Fails<a class="anchor" href="#why-manual-chunking-fails">#</a></h2>
+<p>When engineers hit a size limit, the instinctive reaction is to &ldquo;chunk&rdquo; the data by splitting a 10MB write into ten separate 1MB requests. This is where things get dangerous. Without a specialized architecture, you lose the atomicity promise. If your connection drops after chunk seven, the database is left in a &ldquo;zombie&rdquo; state. You have a partial update that is neither the old version nor the new one. In a real database, the rule is absolute: it must be all or nothing.</p>
+<h2 id="unisondb-solution-a-wal-that-remembers-its-past">Unisondb Solution: A WAL That Remembers Its Past<a class="anchor" href="#unisondb-solution-a-wal-that-remembers-its-past">#</a></h2>
+<p>To solve this at UnisonDB, <strong>we stopped looking at the Write-Ahead Log (WAL) just as a flat, sequential file</strong>. Instead, we treated it as a backward-linked list.</p>
+<p>By adding a simple breadcrumb—a PrevTxnWalIndex—to every WAL record that are part of the same transaction, each chunk of data points back to the one that came before it. This allows us to stitch a single, massive transaction together across multiple physical writes without ever sending a request that exceeds the safety limit.</p>
+<h2 id="the-flow-begin-prepare-commit">The Flow: BEGIN, PREPARE, COMMIT<a class="anchor" href="#the-flow-begin-prepare-commit">#</a></h2>
+<p>This logic is the backbone of how we handle large multi-modal data. The lifecycle of a transaction in our dbkernel looks like this:</p>
+<ol>
+<li>
+<p><strong>BEGIN</strong>: We write an anchor record to the WAL. This initializes the transaction and generates a unique ID.</p>
+</li>
+<li>
+<p><strong>PREPARE</strong>: As you stream your data chunks, each one links back to the previous disk offset. Even if you send 50 chunks to stay under the limit, the database knows they belong to one chain.</p>
+</li>
+<li>
+<p><strong>COMMIT</strong>: This is the atomic switch. The final record acts as the seal.</p>
+</li>
+</ol>
+<blockquote class='book-hint '>
+<p>Nothing becomes visible to you the user until that COMMIT record is successfully flushed to disk. If the stream breaks halfway through, the database simply ignores those dangling fragments during the next recovery scan.</p>
+</blockquote><h2 id="seeing-it-in-the-code">Seeing it in the Code<a class="anchor" href="#seeing-it-in-the-code">#</a></h2>
+<p>The engine needs to know exactly where the previous piece of the puzzle lives on disk. We use physical disk offsets to create this chain.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">LogRecord</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">LSN</span>             <span style="color:#66d9ef">uint64</span>           
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">TxnID</span>           []<span style="color:#66d9ef">byte</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// BEGIN, PREPARE, or COMMIT           </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">TxnState</span>        <span style="color:#a6e22e">TransactionState</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The link back to the previous record&#39;s offset</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PrevTxnWalIndex</span> []<span style="color:#66d9ef">byte</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#75715e">// Payload: KV, Wide-Column, or LOB chunk          </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Data</span>            []<span style="color:#66d9ef">byte</span>          
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Here is how this looks inside the UnisonDB transaction engine. Notice how we track the prevOffset to build the link on the fly. In the AppendKVTxn function, we take the current prevOffset and bake it into the new log record before appending it to the WAL.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// AppendKVTxn appends a key and value to the WAL as part of a transaction.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Txn</span>) <span style="color:#a6e22e">AppendKVTxn</span>(<span style="color:#a6e22e">key</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">value</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// ..........</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">record</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">logcodec</span>.<span style="color:#a6e22e">LogRecord</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">LSN</span>:             <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">TxnID</span>:           <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">txnID</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">TxnState</span>:        <span style="color:#a6e22e">logrecord</span>.<span style="color:#a6e22e">TransactionStatePrepare</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// The Link: This points to the BEGIN record or the previous chunk</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">PrevTxnWalIndex</span>: <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">prevOffset</span>.<span style="color:#a6e22e">Encode</span>(), 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Entries</span>:         [][]<span style="color:#66d9ef">byte</span>{<span style="color:#a6e22e">kvEncoded</span>},
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Write to WAL and update the pointer for the next chunk</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">encoded</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">record</span>.<span style="color:#a6e22e">FBEncode</span>(len(<span style="color:#a6e22e">kvEncoded</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">128</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">offset</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">walIO</span>.<span style="color:#a6e22e">Append</span>(<span style="color:#a6e22e">encoded</span>, <span style="color:#a6e22e">index</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">prevOffset</span> = <span style="color:#a6e22e">offset</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">valuesCount</span><span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>When <code>commit</code> happens, the Commit function writes the final link. Only after the WAL confirms the commit do we flush the data to the in-memory MemTable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Txn</span>) <span style="color:#a6e22e">Commit</span>() <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ... ...</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Write the final Commit record to the WAL</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">record</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">logcodec</span>.<span style="color:#a6e22e">LogRecord</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">TxnState</span>:        <span style="color:#a6e22e">logrecord</span>.<span style="color:#a6e22e">TransactionStateCommit</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">TxnID</span>:           <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">txnID</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">PrevTxnWalIndex</span>: <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">prevOffset</span>.<span style="color:#a6e22e">Encode</span>(),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">CRC32Checksum</span>:   <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">checksum</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">offset</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">walIO</span>.<span style="color:#a6e22e">Append</span>(<span style="color:#a6e22e">record</span>.<span style="color:#a6e22e">FBEncode</span>(<span style="color:#ae81ff">128</span>), <span style="color:#a6e22e">index</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Now that the WAL is safe, make the data visible in memtable</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">memWriteFull</span>()
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><h2 id="the-recovery-walk">The Recovery Walk<a class="anchor" href="#the-recovery-walk">#</a></h2>
+<p>When UnisonDB reboots after a crash, the recovery process starts from the last known checkpoint. As the engine scans the log forward from that point, it looks specifically for COMMIT records. Because our transaction chunks are chained together using physical disk offsets, the engine has a clear map to follow.</p>
+<p>When a commit record is encountered, the engine uses the PrevTxnWalIndex to walk the chain of that specific transaction. It jumps from the commit record to the previous data chunk, and then to the one before that, continuing until it reaches the BEGIN record. This allows the engine to gather all the related pieces of a large Key-Value pair, Wide-Column row, or LOB without having to inspect unrelated transaction data that might be sitting in between those chunks.</p>
+<h3 id="reconstructing-the-value">Reconstructing the Value<a class="anchor" href="#reconstructing-the-value">#</a></h3>
+<p>The GetTransactionRecords function is what performs this backward walk. It takes the offset of the commit record and follows the trail until the chain is complete.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WalIO</span>) <span style="color:#a6e22e">GetTransactionRecords</span>(<span style="color:#a6e22e">startOffset</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Offset</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">logrecord</span>.<span style="color:#a6e22e">LogRecord</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">startOffset</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">records</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">logrecord</span>.<span style="color:#a6e22e">LogRecord</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nextOffset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">startOffset</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> {
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">walEntry</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">nextOffset</span>)
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;failed to read WAL: %w&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>       }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">payload</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">DecodeRecord</span>(<span style="color:#a6e22e">walEntry</span>)
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">||</span> len(<span style="color:#a6e22e">payload</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>       }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">record</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">logrecord</span>.<span style="color:#a6e22e">GetRootAsLogRecord</span>(<span style="color:#a6e22e">payload</span>, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">records</span> = append(<span style="color:#a6e22e">records</span>, <span style="color:#a6e22e">record</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// If there is no previous pointer, we have reached the BEGIN record</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">record</span>.<span style="color:#a6e22e">PrevTxnWalIndexLength</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>       }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">nextOffset</span> = <span style="color:#a6e22e">DecodeOffset</span>(<span style="color:#a6e22e">record</span>.<span style="color:#a6e22e">PrevTxnWalIndexBytes</span>())
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// replayed in the correct chronological order</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">slices</span>.<span style="color:#a6e22e">Reverse</span>(<span style="color:#a6e22e">records</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">records</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>By chaining the records this way, we ensure that a large value is only rebuilt if the final commit record exists. If the engine finds chunks that don&rsquo;t lead to a commit, it simply ignores them. This keeps the data consistent and ensures that the all or nothing promise is maintained for every data model we support.</p>
+<h2 id="conclusion">Conclusion<a class="anchor" href="#conclusion">#</a></h2>
+<p>Building a database is often a game of trade-offs. You want system stability, but you also want to support modern, heavy workloads like AI and complex multi-modal schemas.</p>
+<p>By treating the Write-Ahead Log as a linked list, we found a way to have both. We keep our network requests small and safe, but we allow our data to be as large as it needs to be.</p>
+<p>Whether it is a simple Key-Value pair, a massive Wide-Column row, or a Large Object, the atomicity promise remains unbroken.</p>
+<hr>
+<p>If you found this article helpful, or if you&rsquo;re interested in the future of edge-replicated data, we’d love your support.</p>
+<p>You can check out the source code, contribute, or just give us a star on GitHub: <a href="https://github.com/ankur-anand/unisondb" target="_blank" rel="noopener noreferrer">github.com/ankur-anand/unisondb</a>
+</p>
+
+  </div>
+
+  
+  
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+  <a class="flex align-center" href="https://github.com/ankur-anand/unisondb/edit/main/docs/content/blog/linked-list-wal-atomic-writes-large-data.md" target="_blank" rel="noopener edit">
+    <img src="/icons/edit.svg" class="book-icon" alt="Edit" />
+    <span>Edit this page</span>
+  </a>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-hard-wall-of-distributed-systems">The &ldquo;Hard Wall&rdquo; of Distributed Systems</a></li>
+        <li><a href="#why-isr-edge-replication-changes-the-stakes">Why ISR Edge Replication Changes the Stakes</a></li>
+        <li><a href="#why-manual-chunking-fails">Why Manual Chunking Fails</a></li>
+        <li><a href="#unisondb-solution-a-wal-that-remembers-its-past">Unisondb Solution: A WAL That Remembers Its Past</a></li>
+        <li><a href="#the-flow-begin-prepare-commit">The Flow: BEGIN, PREPARE, COMMIT</a></li>
+        <li><a href="#seeing-it-in-the-code">Seeing it in the Code</a></li>
+        <li><a href="#the-recovery-walk">The Recovery Walk</a>
+          <ul>
+            <li><a href="#reconstructing-the-value">Reconstructing the Value</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

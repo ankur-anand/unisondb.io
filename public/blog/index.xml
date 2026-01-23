@@ -6,8 +6,15 @@
     <description>Recent content in Blog Posts on UnisonDB</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 14 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1314/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes</title>
+      <link>http://localhost:1314/blog/breaking-kv-size-limits-linked-list-wal/</link>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1314/blog/breaking-kv-size-limits-linked-list-wal/</guid>
+      <description>In this post, we explore how UnisonDB uses standard size limits to protect itself, while providing a way to write large Key-Value, Wide-Column, and LOB data without sacrificing the atomicity promise.</description>
+    </item>
     <item>
       <title>Building a Corruption-Proof Write-Ahead Log in Go</title>
       <link>http://localhost:1314/blog/building-corruption-proof-write-ahead-log-in-go/</link>

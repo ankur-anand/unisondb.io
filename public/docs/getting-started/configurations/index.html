@@ -23,7 +23,7 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="UnisonDB Configuration Guide">
   <meta itemprop="description" content="Comprehensive guide to configuring UnisonDB — learn how to set up data directories, WAL parameters, replication settings, and Watch API options for edge and distributed deployments.">
-  <meta itemprop="wordCount" content="1987">
+  <meta itemprop="wordCount" content="2115">
   <meta itemprop="image" content="http://localhost:1314/images/og-image.png">
   <meta itemprop="keywords" content="UnisonDB configuration,UnisonDB setup guide,configure UnisonDB,database configuration file,UnisonDB WAL settings,UnisonDB replication config,edge database tuning,distributed database configuration,UnisonDB performance optimization,Watch API configuration">
 
@@ -35,7 +35,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.caedc3a13e331df2041507a059245af02b377d78b932029ba34efcb795b8d797.js" integrity="sha256-yu3DoT4zHfIEFQegWSRa8Cs3fXi5MgKbo078t5W415c=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.16f885df0b4b63f180b3a871a873dc2752576b883f4af9961562197a06a7e417.js" integrity="sha256-FviF3wtLY/GAs6hxqHPcJ1JXa4g/SvmWFWIZegan5Bc=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -340,6 +340,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/blog/breaking-kv-size-limits-linked-list-wal/" class="">
+      Breaking Key-Value Size Limits: Linked List WALs for Atomic Large Writes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/blog/building-corruption-proof-write-ahead-log-in-go/" class="">
       Building a Corruption-Proof Write-Ahead Log in Go</a>
   
@@ -487,7 +501,14 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db_engine</span> = <span style="color:#e6db74">&#34;LMDB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">btree_flush_interval</span> = <span style="color:#e6db74">&#34;0s&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">wal_fsync_interval</span> = <span style="color:#e6db74">&#34;1s&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## B-tree configuration</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">btree_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">no_sync</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mmap_size</span> = <span style="color:#e6db74">&#34;4GB&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## WAL cleanup configuration</span>
 </span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">wal_cleanup_config</span>]
@@ -563,6 +584,12 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## IMPORTANT: segment_size must match upstream server!</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db_engine</span> = <span style="color:#e6db74">&#34;LMDB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">btree_flush_interval</span> = <span style="color:#e6db74">&#34;0s&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">btree_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">no_sync</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mmap_size</span> = <span style="color:#e6db74">&#34;4GB&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## Replica configuration - can have multiple upstreams</span>
 </span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">replica_config</span>]
@@ -795,8 +822,13 @@ Replica/relay modes are read-only and will error if Raft is enabled.</p>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">bytes_per_sync</span> = <span style="color:#e6db74">&#34;1MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">segment_size</span> = <span style="color:#e6db74">&#34;16MB&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">arena_size</span> = <span style="color:#e6db74">&#34;4MB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db_engine</span> = <span style="color:#e6db74">&#34;LMDB&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">btree_flush_interval</span> = <span style="color:#e6db74">&#34;0s&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">wal_fsync_interval</span> = <span style="color:#e6db74">&#34;1s&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">disable_entry_type_check</span> = <span style="color:#66d9ef">false</span></span></span></code></pre></div><h4 id="base_dir"><code>base_dir</code><a class="anchor" href="#base_dir">#</a></h4>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">btree_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">no_sync</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mmap_size</span> = <span style="color:#e6db74">&#34;4GB&#34;</span></span></span></code></pre></div><h4 id="base_dir"><code>base_dir</code><a class="anchor" href="#base_dir">#</a></h4>
 <ul>
 <li><strong>Type</strong>: String</li>
 <li><strong>Default</strong>: <code>&quot;./data&quot;</code></li>
@@ -843,6 +875,36 @@ Replica/relay modes are read-only and will error if Raft is enabled.</p>
 <li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code>, <code>m</code></li>
 <li><strong>Description</strong>: Interval for periodic WAL fsync</li>
 <li><strong>Trade-off</strong>: Lower = better durability, higher = better performance</li>
+</ul>
+<h4 id="db_engine"><code>db_engine</code><a class="anchor" href="#db_engine">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String</li>
+<li><strong>Default</strong>: <code>&quot;LMDB&quot;</code></li>
+<li><strong>Valid Values</strong>: <code>&quot;LMDB&quot;</code>, <code>&quot;BOLT&quot;</code></li>
+<li><strong>Description</strong>: Backing store used for the B-tree index</li>
+</ul>
+<h4 id="btree_flush_interval"><code>btree_flush_interval</code><a class="anchor" href="#btree_flush_interval">#</a></h4>
+<ul>
+<li><strong>Type</strong>: String (duration)</li>
+<li><strong>Default</strong>: <code>&quot;0s&quot;</code> (disabled)</li>
+<li><strong>Valid Units</strong>: <code>ms</code>, <code>s</code>, <code>m</code></li>
+<li><strong>Description</strong>: Interval for periodic B-tree fsync. When disabled, fsync happens after each memtable flush.</li>
+</ul>
+<h4 id="b-tree-configuration">B-tree Configuration<a class="anchor" href="#b-tree-configuration">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">btree_config</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">no_sync</span> = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">mmap_size</span> = <span style="color:#e6db74">&#34;4GB&#34;</span></span></span></code></pre></div><h5 id="btree_configno_sync"><code>btree_config.no_sync</code><a class="anchor" href="#btree_configno_sync">#</a></h5>
+<ul>
+<li><strong>Type</strong>: Boolean</li>
+<li><strong>Default</strong>: <code>true</code></li>
+<li><strong>Description</strong>: Disable sync writes for the B-tree store</li>
+</ul>
+<h5 id="btree_configmmap_size"><code>btree_config.mmap_size</code><a class="anchor" href="#btree_configmmap_size">#</a></h5>
+<ul>
+<li><strong>Type</strong>: String (with unit)</li>
+<li><strong>Default</strong>: <code>&quot;4GB&quot;</code></li>
+<li><strong>Valid Units</strong>: <code>KB</code>, <code>MB</code>, <code>GB</code></li>
+<li><strong>Description</strong>: Memory-mapped file size for the B-tree store (LMDB only; ignored for BOLT)</li>
 </ul>
 <h4 id="wal-cleanup-configuration">WAL Cleanup Configuration<a class="anchor" href="#wal-cleanup-configuration">#</a></h4>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">storage_config</span>.<span style="color:#a6e22e">wal_cleanup_config</span>]
