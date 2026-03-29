@@ -1,6 +1,6 @@
 ---
 title: UnisonDB – Log-Native Database For AI And Edge Computing
-description: Reactive, log-native database for AI agents and edge AI and edge computing — delivering real-time replication, local-first sync, and multimodal data storage.
+description: Reactive, log-native database for AI agents and edge computing — delivering real-time replication over gRPC or blob/object storage, local-first sync, and multimodal data storage.
 images: ['/images/og-image.png']
 layout: doc
 keywords: [
@@ -35,19 +35,28 @@ keywords: [
 
 UnisonDB is an open-source database designed specifically for [**Edge AI**](https://www.ibm.com/think/topics/edge-ai) and [**Edge Computing**](https://en.wikipedia.org/wiki/Edge_computing).  
 
-It is a **reactive**, [**log-native**](https://www.unisondb.io/docs/architecture/) and [**multi-model database**](https://en.wikipedia.org/wiki/Multi-model_database) built for real-time and edge-scale applications.  UnisonDB combines a [**B+Tree storage engine**](https://en.wikipedia.org/wiki/B%2B_tree) with WAL-based ([**Write-Ahead Logging**](https://en.wikipedia.org/wiki/Write-ahead_logging)) streaming replication, enabling near-instant fan-out replication across hundreds of nodes — all while preserving strong consistency and durability.
+It is a **reactive**, [**log-native**](https://www.unisondb.io/docs/architecture/) and [**multi-model database**](https://en.wikipedia.org/wiki/Multi-model_database) built for real-time and edge-scale applications. UnisonDB combines a [**B+Tree storage engine**](https://en.wikipedia.org/wiki/B%2B_tree) with WAL-based ([**Write-Ahead Logging**](https://en.wikipedia.org/wiki/Write-ahead_logging)) replication over **gRPC** or **S3-compatible blob/object storage**, enabling near-instant fan-out replication across hundreds of nodes while preserving strong consistency and durability.
 
 
 ## Replication Model
 
-Writes are committed by a [Raft](https://raft.github.io/) quorum on the write servers (if enabled); read‑only edge replicas/relayers stay ISR‑synced for low‑latency reads.
+Writes are committed by a [Raft](https://raft.github.io/) quorum on the write servers (if enabled); read-only edge replicas and relayers can consume WAL through either a live **gRPC** stream or **blob-backed replication** using S3-compatible object storage.
+
+Blob-backed replication changes the fan-out model:
+
+- The writer publishes WAL durably into object storage
+- Any number of readers can poll and catch up directly from the blob store
+- Teams already running S3 or MinIO do not need to maintain an always-on gRPC replication path for every replica
+
+See [`cmd/examples/blobstore-minio`](https://github.com/ankur-anand/unisondb/tree/main/cmd/examples/blobstore-minio) for a local MinIO example.
 
 ## Key Features
 
 UnisonDB brings together high-performance storage, real-time replication, and edge-native design to power AI and Edge Computing workloads.  
 
 - **High Availability Writes**: [Raft](https://raft.github.io/) consensus on write servers (quorum acks).
-- **Streaming Replication** – In-sync replica (ISR)-based WAL replication with sub-second fan-out to 1000+ edge replicas ensures real-time data synchronization across distributed nodes.  
+- **Streaming Replication** – WAL replication over **gRPC** or **S3-compatible blob/object storage**, depending on how you want to ship WAL to replicas.  
+- **Blob Fan-Out** – Publish WAL once into object storage and let any number of readers poll directly from S3 or MinIO-backed replication stores.  
 - **Multi-Model Storage** – Supports [Key-Value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database), [Wide-Column](https://en.wikipedia.org/wiki/Wide-column_store), and [Large Object (LOB)](https://en.wikipedia.org/wiki/Binary_large_object) data models — allowing flexible schema design for AI agents and edge systems.  
 - **Durable & Fast** – Backed by a high-performance B+Tree storage engine with WAL-based durability for consistent and crash-safe writes.  
 - **Edge-First Architecture** – Purpose-built for Edge Computing and local-first applications, ensuring near-device computation and reduced cloud dependency.  

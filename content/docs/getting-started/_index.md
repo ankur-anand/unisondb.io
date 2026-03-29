@@ -302,23 +302,28 @@ bytes_per_sync = "1MB"
 segment_size = "16MB"
 arena_size = "4MB"
 
-## Replica configuration - connects to upstream
-[replica_config.primary]
+## Relayer configuration - gRPC upstream
+[relayer_config.primary]
 namespaces = ["default", "users", "products"]
+streamer_type = "grpc"
 cert_path = "./certs/client.crt"
 key_path = "./certs/client.key"
 ca_path = "./certs/ca.crt"
 upstream_address = "localhost:4001"
-segment_lag_threshold = 100
+lsn_lag_threshold = 100
 allow_insecure = false
 
-## Optional: Connect to multiple upstreams
-# [replica_config.secondary]
+## Optional: Blob store upstream instead of gRPC
+# [relayer_config.edge_blob]
 # namespaces = ["products"]
-# upstream_address = "other-server:4001"
-# cert_path = "./certs/client.crt"
-# key_path = "./certs/client.key"
-# ca_path = "./certs/ca.crt"
+# streamer_type = "blobstore"
+# lsn_lag_threshold = 100
+#
+# [relayer_config.edge_blob.blobstore]
+# bucket_url = "s3://my-bucket?region=us-east-1"
+# prefix = "unisondb/prod"
+# cache_dir = "/tmp/unisondb/blob-cache"
+# refresh_interval = "1s"
 
 ## ZeroMQ notifications (optional)
 [notifier_config.default]
@@ -368,11 +373,12 @@ base_dir = "./data/replica"
 namespaces = ["default"]
 segment_size = "16MB"  # Must match server!
 
-[replica_config.primary]
+[relayer_config.primary]
 namespaces = ["default"]
+streamer_type = "grpc"
 upstream_address = "localhost:4001"
 allow_insecure = true  # WARNING: Development only!
-segment_lag_threshold = 100
+lsn_lag_threshold = 100
 
 [log_config]
 log_level = "debug"

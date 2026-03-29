@@ -81,6 +81,19 @@ bootstrap = true
 # serf_bind_port = 7946
 # serf_peers = ["127.0.0.1:7946"]
 
+## Optional: publish WAL to object storage per namespace
+[blob_store_streaming]
+enabled = true
+flush_interval = "2s"
+
+[blob_store_streaming.namespaces.default]
+bucket_url = "s3://my-bucket?region=us-east-1"
+base_prefix = "unisondb/prod"
+
+[blob_store_streaming.namespaces.tenant_1]
+bucket_url = "s3://my-bucket?region=us-east-1"
+base_prefix = "unisondb/prod"
+
 ## Write notify config - coalesces notifications from WAL writers to readers
 [write_notify_config]
 enabled = true
@@ -150,11 +163,12 @@ btree_flush_interval = "0s"
 no_sync = true
 mmap_size = "4GB"
 
-## Replica configuration - can have multiple upstreams
-[replica_config]
+## Relayer configuration - can have multiple upstreams
+[relayer_config]
 
-[replica_config.replica1]
+[relayer_config.grpc_primary]
 namespaces = ["default", "tenant_1", "tenant_2"]
+streamer_type = "grpc"
 cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
 ca_path = "../../certs/ca.crt"
@@ -164,14 +178,17 @@ allow_insecure = false
 # Optional: custom gRPC service config JSON
 grpc_service_config = ""
 
-## Optional: Add more replicas for different upstream sources
-[replica_config.replica2]
+## Optional: Blob store based replication
+[relayer_config.blob_edge]
 namespaces = ["tenant_3"]
-cert_path = "../../certs/client2.crt"
-key_path = "../../certs/client2.key"
-ca_path = "../../certs/ca.crt"
-upstream_address = "remote-server:4001"
+streamer_type = "blobstore"
 lsn_lag_threshold = 100
+
+[relayer_config.blob_edge.blobstore]
+bucket_url = "s3://my-bucket?region=us-east-1"
+prefix = "unisondb/prod"
+cache_dir = "/tmp/unisondb/blob-cache"
+refresh_interval = "1s"
 
 [log_config]
 log_level = "info"
@@ -580,22 +597,64 @@ while True:
 
 ---
 
-### Replica Configuration
+### Blob Store Streaming Configuration
 
-Replica configuration allows a UnisonDB instance to stream WAL changes from one or more upstream servers. This is useful for:
-- **Read scaling**: Run multiple read replicas
-- **Data locality**: Keep data close to consumers in different regions
-- **Backup**: Maintain hot standbys
+Blob store streaming publishes committed WAL records from writable server nodes into object storage. This is configured only in **server mode**.
+
+```toml
+[blob_store_streaming]
+enabled = true
+flush_interval = "2s"
+
+[blob_store_streaming.namespaces.default]
+bucket_url = "s3://my-bucket?region=us-east-1"
+base_prefix = "unisondb/prod"
+
+[blob_store_streaming.namespaces.tenant_1]
+bucket_url = "s3://my-bucket?region=us-east-1"
+base_prefix = "unisondb/prod"
+```
+
+#### `enabled`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable blob store WAL publishing on server nodes
+
+#### `flush_interval`
+- **Type**: String (duration)
+- **Default**: Uses streamer defaults
+- **Description**: Flush cadence for publishing committed WAL into blob-backed `isledb`
+
+#### `namespaces`
+- **Type**: Map of namespace name to config
+- **Required**: Yes when blob store streaming is enabled
+- **Description**: Per-namespace object-store destinations for WAL publishing
+
+#### `bucket_url`
+- **Type**: String
+- **Description**: Object storage URL for the namespace store
+- **Examples**: `s3://bucket?region=us-east-1`, `azblob://container`, `file:///data`
+
+#### `base_prefix`
+- **Type**: String
+- **Description**: Base prefix within the bucket/container; the namespace is appended automatically
+
+---
+
+### Relayer Configuration
+
+Relayer configuration controls how `replica` and `relay` mode instances consume upstream changes. A namespace can use either gRPC streaming or blob store polling.
 
 **Note**: The same configuration can be started with either command:
-- `unisondb replica --config replica.toml` — Read-only replica (cannot serve downstream)
+- `unisondb replica --config replica.toml` — Read-only replica
 - `unisondb relay --config replica.toml` — Relay mode (can serve downstream replicas via gRPC)
 
 ```toml
-[replica_config]
+[relayer_config]
 
-[replica_config.replica1]
+[relayer_config.grpc_primary]
 namespaces = ["default", "tenant_1"]
+streamer_type = "grpc"
 cert_path = "../../certs/client.crt"
 key_path = "../../certs/client.key"
 ca_path = "../../certs/ca.crt"
@@ -603,57 +662,48 @@ upstream_address = "primary-server:4001"
 lsn_lag_threshold = 100
 allow_insecure = false
 grpc_service_config = ""
+
+[relayer_config.blob_edge]
+namespaces = ["tenant_2"]
+streamer_type = "blobstore"
+lsn_lag_threshold = 100
+
+[relayer_config.blob_edge.blobstore]
+bucket_url = "s3://my-bucket?region=us-east-1"
+prefix = "unisondb/prod"
+cache_dir = "/tmp/unisondb/blob-cache"
+refresh_interval = "1s"
 ```
 
-#### Map Key (e.g., `replica1`)
+#### Map Key (e.g., `grpc_primary`)
 - **Type**: String
-- **Description**: Unique identifier for this replica connection
-- **Note**: Multiple replicas can be configured with different keys
+- **Description**: Unique identifier for this relayer connection
+- **Note**: Multiple relayers can be configured with different keys
 
 #### `namespaces`
 - **Type**: Array of Strings
 - **Required**: Yes
-- **Description**: List of namespaces to replicate from this upstream
-- **Note**: Namespaces must exist on both upstream and local instance
+- **Description**: List of namespaces handled by this relayer entry
 
-#### `cert_path`
+#### `streamer_type`
 - **Type**: String
-- **Description**: Path to client TLS certificate for mTLS
-- **Required**: Yes (unless `allow_insecure = true`)
-
-#### `key_path`
-- **Type**: String
-- **Description**: Path to client private key for mTLS
-- **Required**: Yes (unless `allow_insecure = true`)
-
-#### `ca_path`
-- **Type**: String
-- **Description**: Path to CA certificate to verify upstream server
-- **Required**: Yes (unless `allow_insecure = true`)
-
-#### `upstream_address`
-- **Type**: String
-- **Required**: Yes
-- **Description**: Address of upstream gRPC server
-- **Format**: `host:port` (e.g., `"localhost:4001"`, `"10.0.1.5:4001"`)
+- **Default**: `"grpc"`
+- **Valid Values**: `"grpc"`, `"blobstore"`
+- **Description**: Upstream transport used for replication
 
 #### `lsn_lag_threshold`
 - **Type**: Integer
 - **Default**: `100`
 - **Description**: Maximum LSN lag before logging warnings
-- **Note**: Helps monitor replication health
 
-#### `allow_insecure`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Allow insecure connection to upstream (no TLS)
-- **Warning**: Only for development!
+#### gRPC-only fields
+- `cert_path`, `key_path`, `ca_path`, `upstream_address`, `allow_insecure`, and `grpc_service_config` apply only when `streamer_type = "grpc"`
 
-#### `grpc_service_config`
-- **Type**: String (JSON)
-- **Default**: `""` (uses built-in defaults)
-- **Description**: Custom gRPC service configuration JSON
-- **Advanced**: See gRPC documentation for format
+#### Blob store fields
+- `blobstore.bucket_url`: Object storage URL for the upstream namespace store
+- `blobstore.prefix`: Base prefix within the bucket/container; the namespace is appended automatically
+- `blobstore.cache_dir`: Local SST cache directory
+- `blobstore.refresh_interval`: Poll interval for checking newly committed WAL in object storage
 
 ---
 
